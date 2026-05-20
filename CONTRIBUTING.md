@@ -1,6 +1,6 @@
 # Contributing to C_DSA_interactive_suite
 
-Thank you for taking the time to contribute! This project is open to learners, systems enthusiasts, and low-level programmers who want to build something meaningful in C.
+Thank you for taking the time to contribute! This project is open to learners, systems enthusiasts, and low-level programmers who want to build something meaningful in C. You dont need deep technical knowledge, as this project is made with raw C, you will only need algorithmic thinking and logical thinking. Thats it.
 
 ---
 
@@ -22,16 +22,21 @@ Thank you for taking the time to contribute! This project is open to learners, s
 ## Code of Conduct
 
 <!-- Add your code of conduct or link to a CODE_OF_CONDUCT.md -->
+Be civil and respectful, thats it, no more demands, just dont be sexist or racist and you are good. Also dont spam "any updates" in the PR thread, wait for 2-3 days before a follow up.
 
 ---
 
 ## Getting Started
 
+### Note for SSOC contributors
+
+This project is Linux native. Which means it is made, maintained on Linux and works the best on Linux, however, you can definitely develop and run/use this application on windows through WSL(Windows Subsystem for Linux). WSL will work in VScode too so you can rest assured, just be familiar with WSL before contributing to this project. You can also use a VM, but WSL is sufficient as per the project requirements
+
 ### Prerequisites
 
 - GCC (or compatible C compiler)
 - GNU Make ≥ 3.81
-- Valgrind (for memory testing)
+- Valgrind (for checking memory leaks)
 - Git
 
 ### Fork & Clone
@@ -60,9 +65,9 @@ make clean
 
 You can contribute in the following ways:
 
-- Fix an open issue
+- Fix an open issue or open an issue
 - Implement a new data structure or algorithm
-- Improve existing implementations
+- Improve existing implementations (refactoring)
 - Add or improve test cases
 - Improve documentation
 
@@ -79,18 +84,21 @@ docs/<short-description>         # for documentation changes
 test/<short-description>         # for adding/improving tests
 ```
 
+same as commit conventions, whatever you are doing, followed by slash followed by brief one line description 
+
 Example: `feature/avl-tree`, `fix/bst-delete-edge-case`
 
 ---
 
 ## Commit Message Guidelines
 
-Use clear, concise commit messages in the imperative form:
+Use clear, concise commit messages in the following form:
 
 ```
-Add AVL tree insertion with rotation logic
-Fix memory leak in DLL delete_node
-Refactor hash table to use safe_input API
+feat: Add AVL tree insertion with rotation logic
+fix: Fix memory leak in DLL delete_node
+refactor: Refactor hash table to use safe_input_int API
+docs: Fix typo in README.md
 ```
 
 Avoid vague messages like `fix stuff` or `update code`.
@@ -105,10 +113,10 @@ This project is written in **C11**. All contributions must follow the existing s
 - One `.h` / `.c` pair per logical module — no exceptions
 - No function definitions inside header files
 - Prefix all public functions with the module name (e.g., `bst_insert`, `sll_delete`)
-- Use `static` for all file-local helper functions
-- Use `const` where pointer safety is appropriate
+- Use `static` for all file-local helper functions which are not supposed to used elsewhere but where they are created
+- Use `const` where pointer safety is appropriate ie functions which do not modify data but only read data, like sll_printlist(), sll_search() functions
 - All user input must go through `safe_input_int()` — no raw `scanf`
-- Compile cleanly under `-Wall -Wextra -std=c11` with zero warnings
+- Compile cleanly under `-Wall -Wextra -Werror -std=c11` so even warning are treated as errors. It helps to avoid accumulation of dead code.
 
 ---
 
@@ -130,7 +138,7 @@ Steps:
 1. Create the module directory under `src/`
 2. Implement the core logic in `your_module.c`
 3. Expose the public API via `your_module.h`
-4. Write the interactive demo in `your_module_demo.c`
+4. Write the interactive demo in `your_module_demo.c` (refer existing demos and respect and keep the style)
 5. Hook it into the main menu
 6. Update the `Makefile` to include the new module
 7. Add corresponding tests under `tests/`
@@ -141,7 +149,7 @@ Steps:
 
 <!-- Describe your test structure, how to run tests, and what is expected -->
 
-All contributions must include tests:
+All contributions which introduces a new module (ds/algo) must include tests:
 
 ```bash
 # Run all tests
@@ -158,14 +166,11 @@ The CI pipeline runs all tests and Valgrind checks automatically on every push a
 ## Pull Request Process
 
 1. Fork the repository and create your branch from `main`
-2. Make your changes following the coding standards above
-3. Ensure all tests pass and Valgrind reports no errors
-4. Format your code with `clang-format`
-5. Open a pull request with a clear title and description
+2. Make your changes following the **coding standards** above
+3. Ensure all tests pass and Valgrind reports with no errors
 6. Link the relevant issue using `Closes #<issue-number>`
-7. Wait for review — address any feedback promptly
 
-PRs without tests, failing CI, or unformatted code will not be merged.
+PRs without tests(in case of new ds/algo), failing CI, or unformatted code will not be merged.
 
 ---
 
@@ -178,10 +183,4 @@ When opening an issue, please include:
 - Expected vs actual behavior
 - Your OS and GCC version
 
-Use the appropriate label: `bug`, `enhancement`, `documentation`, `good first issue`, etc.
-
----
-
-## Questions?
-
-<!-- Add contact info, discussion board, or Discord link if any -->
+Use the appropriate label: `bug`, `enhancement`, `documentation`, `good first issue`, `refactor` etc.
