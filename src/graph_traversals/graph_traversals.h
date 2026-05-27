@@ -34,11 +34,11 @@ typedef struct weightedGraph
     Edge** array;
 } weightedGraph;
 
-//New function to support new graph and edge node structures
+// New function to support new graph and edge node structures
 weightedGraph* create_weightedGraph(int V);
 void add_edge_directed(weightedGraph* graph, int src, int dest, int wt);
 int edge_insertAtEnd(Edge** head, int dest, int weight);
 void free_weightedGraph(weightedGraph* graph);
-int minDistance(int visited[] , int dist[] , int size);
+int minDistance(int visited[], int dist[], int size);
 
 #endif

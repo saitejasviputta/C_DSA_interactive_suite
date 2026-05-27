@@ -1,17 +1,17 @@
 #include "graph_traversals.h"
+#include "safe_input.h"
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
-#include "safe_input.h"
 
-int minDistance(int visited[] , int dist[], int size)
+int minDistance(int visited[], int dist[], int size)
 {
     int minDist = INT_MAX;
     int u = -1;
-    for(int i = 0 ; i < size ; i++)
+    for (int i = 0; i < size; i++)
     {
-        if(!visited[i] && dist[i] < minDist)
+        if (!visited[i] && dist[i] < minDist)
         {
             minDist = dist[i];
             u = i;
@@ -28,7 +28,7 @@ void dijkstra(weightedGraph* graph, int start)
     int visited[size];
     int dist[size];
 
-    for(int i = 0 ; i < size ; i++)
+    for (int i = 0; i < size; i++)
     {
         visited[i] = 0;
         dist[i] = INT_MAX;
@@ -36,20 +36,21 @@ void dijkstra(weightedGraph* graph, int start)
 
     dist[start] = 0;
 
-    for(int count = 0 ; count < size - 1 ; count++)
+    for (int count = 0; count < size - 1; count++)
     {
-        int u = minDistance(visited,dist,size);
+        int u = minDistance(visited, dist, size);
         visited[u] = 1;
 
-        if(u == -1) break;
-        
+        if (u == -1)
+            break;
+
         Edge* current = graph->array[u];
 
         while (current != NULL)
         {
             int v = current->destination;
             int currentWeight = current->weight;
-            if(!visited[v] && dist[u] != INT_MAX && dist[u] + currentWeight < dist[v])
+            if (!visited[v] && dist[u] != INT_MAX && dist[u] + currentWeight < dist[v])
                 dist[v] = dist[u] + currentWeight;
 
             current = current->next;
@@ -59,12 +60,12 @@ void dijkstra(weightedGraph* graph, int start)
     printf("Start -> Vertex  \t  Distance\n");
     printf("---------------  \t  --------\n");
 
-    for(int i = 0 ; i < size ; i++)
+    for (int i = 0; i < size; i++)
     {
-        if(dist[i] == INT_MAX)
-            printf("    %d -> %d  \t            INF   \n",start,i);
+        if (dist[i] == INT_MAX)
+            printf("    %d -> %d  \t            INF   \n", start, i);
         else
-            printf("    %d -> %d  \t             %d   \n",start,i,dist[i]);
+            printf("    %d -> %d  \t             %d   \n", start, i, dist[i]);
     }
 }
 
@@ -72,20 +73,20 @@ weightedGraph* create_weightedGraph(int V)
 {
     weightedGraph* graph = malloc(sizeof(weightedGraph));
 
-    if(!graph)
+    if (!graph)
         return NULL;
 
     graph->V = V;
 
-    graph->array = malloc(V*sizeof(Edge*));
+    graph->array = malloc(V * sizeof(Edge*));
 
-    if(!graph->array)
+    if (!graph->array)
     {
         free(graph);
         return NULL;
     }
 
-    for(int i = 0 ; i < V ;  i++)
+    for (int i = 0; i < V; i++)
         graph->array[i] = NULL;
 
     return graph;
@@ -95,14 +96,14 @@ int edge_insertAtEnd(Edge** head, int dest, int weight)
 {
     Edge* edge = malloc(sizeof(Edge));
 
-    if(!edge)
+    if (!edge)
         return -1;
 
     edge->destination = dest;
     edge->weight = weight;
     edge->next = NULL;
-    
-    if(*head == NULL)
+
+    if (*head == NULL)
     {
         *head = edge;
         return 1;
@@ -119,23 +120,23 @@ int edge_insertAtEnd(Edge** head, int dest, int weight)
 
 void add_edge_directed(weightedGraph* graph, int src, int dest, int wt)
 {
-    if(!graph)
+    if (!graph)
         return;
 
-    if(src < 0 || src >= graph->V || dest < 0 || dest >= graph->V || wt < 0)
+    if (src < 0 || src >= graph->V || dest < 0 || dest >= graph->V || wt < 0)
     {
         printf("Invalid edge: %d -> %d\n", src, dest);
     }
 
-    edge_insertAtEnd(&graph->array[src],dest,wt);
+    edge_insertAtEnd(&graph->array[src], dest, wt);
 }
 
 void free_weightedGraph(weightedGraph* graph)
 {
-    if(!graph)
+    if (!graph)
         return;
-    
-    for(int i = 0 ; i < graph->V ; i++)
+
+    for (int i = 0; i < graph->V; i++)
     {
         Edge* temp = graph->array[i];
         while (temp != NULL)
@@ -208,7 +209,9 @@ void dijkstra_demo(void)
         break;
     }
 
-    printf("\nEnter source, destination, weight pairs (Source, Destination must be b/w 0 and %d (both inclusive)):\n",graph_capacity-1);
+    printf("\nEnter source, destination, weight pairs (Source, Destination must be b/w 0 and %d "
+           "(both inclusive)):\n",
+           graph_capacity - 1);
 
     for (int i = 0; i < edges; i++)
     {
@@ -287,6 +290,6 @@ void dijkstra_demo(void)
     }
 
     printf("\n");
-    dijkstra(graph,starting_node);
+    dijkstra(graph, starting_node);
     free_weightedGraph(graph);
 }
