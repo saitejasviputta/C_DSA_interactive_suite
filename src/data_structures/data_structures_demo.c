@@ -100,7 +100,7 @@ void data_structures_demo(void)
                                        "\nenter 1 for binary search tree demo"
                                        "\nenter 2 for threaded binary tree demo"
                                        "\nenter choice: ",
-                                       1, 3);
+                                       1, 2);
                     if (non_linear_ds_status == INPUT_EXIT_SIGNAL)
                         break;
                     if (non_linear_ds_status == 0)
