@@ -74,10 +74,8 @@ void parantheses_checker_demo(void)
     while (1)
     {
         int status = get_validated_input_parantheses(
-            parantheses_expression,
-            sizeof(parantheses_expression),
-            "\nenter an expression with parantheses, enter 'X' to exit: "
-        );
+            parantheses_expression, sizeof(parantheses_expression),
+            "\nenter an expression with parantheses, enter 'X' to exit: ");
 
         if (status == INPUT_EXIT_SIGNAL)
         {

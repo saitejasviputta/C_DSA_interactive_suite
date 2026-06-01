@@ -88,7 +88,7 @@ void binary_search_demo(void)
         printf("\nelement found at index %d.", res);
         if (res == -1)
             printf("\nelement not found in the given array");
-            
+
         printf("\ntotal CPU time taken for binary search:- %f seconds", total_t);
         printf("\n(most probably execution time would be lesser than clock resolution, resulting "
                "in 0.00)");

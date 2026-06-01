@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "stack.h"
 #include "data_structures.h"
 #include <stdlib.h>
@@ -53,4 +54,21 @@ int peek(const stack* s)
     if (s->top == NULL)
         return -1;
     return s->top->data;
+}
+
+void printStack(const stack* s)
+{
+    if (s == NULL || s->top == NULL)
+    {
+        printf("Stack is empty.\n");
+        return;
+    }
+    printf("Stack (top -> bottom): ");
+    Node* curr = s->top;
+    while (curr != NULL)
+    {
+        printf("| %c ", curr->data);
+        curr = curr->next;
+    }
+    printf("|\n");
 }
