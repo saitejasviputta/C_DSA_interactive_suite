@@ -4,29 +4,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// A structure to represent a subset for union-find
+/**
+ * Disjoint Set Union (DSU) / Union-Find Subset Structure.
+ * This structure helps keep track of connected components in a graph
+ * to efficiently check for cycles when adding new edges.
+ */
 typedef struct DSUSubset
 {
-    int parent;
-    int rank;
+    int parent; // Parent index of the node
+    int rank;   // Height/Rank of the tree (used to keep the tree balanced)
 } DSUSubset;
 
-// Find set of an element i (uses path compression technique)
+/**
+ * Find operation of DSU with Path Compression.
+ * Recursively finds the representative/root of the subset containing 'i'.
+ * Path compression flattens the tree structure by making every node
+ * in the path point directly to the root, optimizing future operations.
+ */
 static int dsu_find(DSUSubset subsets[], int i)
 {
+    // If 'i' is not its own parent, then it is not the root of its set.
     if (subsets[i].parent != i)
     {
+        // Path compression: update parent to point directly to the root
         subsets[i].parent = dsu_find(subsets, subsets[i].parent);
     }
     return subsets[i].parent;
 }
 
-// A function that does union of two sets of x and y (uses union by rank)
+/**
+ * Union operation of DSU using Union by Rank.
+ * Merges the subsets containing 'x' and 'y'.
+ * It attaches the smaller tree (lower rank) under the root of the larger tree
+ * to prevent the tree from becoming deep, keeping search operations fast.
+ */
 static void dsu_union(DSUSubset subsets[], int x, int y)
 {
     int xroot = dsu_find(subsets, x);
     int yroot = dsu_find(subsets, y);
 
+    // Attach smaller rank tree under root of high rank tree
     if (subsets[xroot].rank < subsets[yroot].rank)
     {
         subsets[xroot].parent = yroot;
@@ -37,12 +54,16 @@ static void dsu_union(DSUSubset subsets[], int x, int y)
     }
     else
     {
+        // If ranks are same, make one as root and increment its rank by one
         subsets[yroot].parent = xroot;
         subsets[xroot].rank++;
     }
 }
 
-// Compare function used by qsort to sort edges in ascending order of weight
+/**
+ * Comparator function for qsort.
+ * Sorts edges in ascending (non-decreasing) order of their weights.
+ */
 static int compare_edges(const void* a, const void* b)
 {
     KruskalEdge* a_edge = (KruskalEdge*)a;
@@ -51,22 +72,23 @@ static int compare_edges(const void* a, const void* b)
 }
 
 /**
- * Runs Kruskal's MST algorithm.
+ * Kruskal's Minimum Spanning Tree (MST) Algorithm.
  * 
- * @param edges Array of all graph edges
+ * @param edges Array containing all edges in the graph
  * @param V Number of vertices
  * @param E Number of edges
- * @param mst_edges Pre-allocated array to store selected MST edges
- * @param mst_edge_count Output pointer to store actual number of MST edges included
+ * @param mst_edges Pre-allocated array to store the selected MST edges
+ * @param mst_edge_count Pointer to return the number of edges added to the MST
  */
 void kruskal_mst(KruskalEdge* edges, int V, int E, KruskalEdge* mst_edges, int* mst_edge_count)
 {
     *mst_edge_count = 0;
 
-    // 1. Sort all the edges in non-decreasing order of their weight
+    // STEP 1: Sort all edges in non-decreasing order of their weights.
+    // This allows us to greedily pick the lightest edges first.
     qsort(edges, E, sizeof(KruskalEdge), compare_edges);
 
-    // Allocate memory for creating V subsets
+    // Allocate memory for subsets to manage cycles
     DSUSubset* subsets = malloc(V * sizeof(DSUSubset));
     if (!subsets)
     {
@@ -74,33 +96,33 @@ void kruskal_mst(KruskalEdge* edges, int V, int E, KruskalEdge* mst_edges, int* 
         return;
     }
 
-    // Create V subsets with single elements
+    // Initialize each vertex as a separate subset containing only itself
     for (int v = 0; v < V; v++)
     {
         subsets[v].parent = v;
         subsets[v].rank = 0;
     }
 
-    int e_index = 0; // Index used to pick next edge
-    int m_index = 0; // Index used to write to mst_edges
+    int e_index = 0; // Index to iterate through sorted edges
+    int m_index = 0; // Index of the next edge to add to the MST
 
-    // Number of edges to be taken is equal to V-1
+    // An MST must contain exactly (V - 1) edges.
     while (m_index < V - 1 && e_index < E)
     {
-        // Step 2: Pick the smallest edge. And increment the index for next iteration
+        // STEP 2: Pick the lightest remaining edge
         KruskalEdge next_edge = edges[e_index++];
 
         int x = dsu_find(subsets, next_edge.src);
         int y = dsu_find(subsets, next_edge.dest);
 
-        // If including this edge doesn't cause cycle, include it in result
-        // and increment the index of result for next edge
+        // STEP 3: Check if adding this edge creates a cycle.
+        // If x == y, both vertices are already in the same connected component,
+        // so adding this edge would create a cycle. We discard it.
         if (x != y)
         {
-            mst_edges[m_index++] = next_edge;
-            dsu_union(subsets, x, y);
+            mst_edges[m_index++] = next_edge; // Include the edge in the MST
+            dsu_union(subsets, x, y);         // Merge the subsets
         }
-        // Else discard the next_edge
     }
 
     *mst_edge_count = m_index;
@@ -115,6 +137,7 @@ void kruskal_demo(void)
     int vertices = 0;
     int edges_num = 0;
 
+    // 1. Prompt for and validate the number of vertices
     while (1)
     {
         int status = safe_input_int(&vertices,
@@ -132,9 +155,10 @@ void kruskal_demo(void)
         break;
     }
 
+    // 2. Prompt for and validate the number of edges
     while (1)
     {
-        int max_edges = vertices * (vertices - 1) / 2; // Simple undirected graph maximum edges
+        int max_edges = vertices * (vertices - 1) / 2; // Maximum edges in simple undirected graph
         if (max_edges < 0) max_edges = 0;
         
         int status = safe_input_int(&edges_num,
@@ -158,6 +182,7 @@ void kruskal_demo(void)
         return;
     }
 
+    // Allocate memory for all edges and the output MST edges
     KruskalEdge* edges = malloc(edges_num * sizeof(KruskalEdge));
     KruskalEdge* mst_edges = malloc((vertices - 1) * sizeof(KruskalEdge));
 
@@ -172,6 +197,7 @@ void kruskal_demo(void)
     printf("\nEnter source, destination, and weight for each undirected edge:\n");
     printf("(Vertices must be between 0 and %d. Weights can be negative)\n", vertices - 1);
 
+    // 3. Collect edge inputs from the user
     for (int i = 0; i < edges_num; i++)
     {
         int src = 0, dest = 0, weight = 0;
@@ -215,9 +241,11 @@ void kruskal_demo(void)
         edges[i].weight = weight;
     }
 
+    // 4. Run Kruskal's algorithm
     int mst_edge_count = 0;
     kruskal_mst(edges, vertices, edges_num, mst_edges, &mst_edge_count);
 
+    // 5. Display the results
     printf("\nFollowing are the edges in the constructed MST:\n");
     printf("Source  <->  Destination   \t   Weight\n");
     printf("------       -----------   \t   ------\n");
@@ -231,6 +259,7 @@ void kruskal_demo(void)
 
     printf("\nTotal weight of Minimum Spanning Tree: %d\n", total_weight);
 
+    // If we have fewer than V-1 edges, it means the graph was disconnected.
     if (mst_edge_count < vertices - 1)
     {
         printf("Warning: The graph is disconnected! The output forms a Spanning Forest containing %d connected components.\n",
