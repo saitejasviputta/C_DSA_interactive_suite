@@ -131,7 +131,7 @@ DEQUE_TEST_SRC = \
 ASTAR_TEST_SRC = \
 	src/graph_traversals/astar.c \
 	src/graph_traversals/dijkstra.c \
-	src/graph_traversals/graph_io.c \
+	src/utils/graph_io.c \
 	src/utils/safe_input_int.c \
 	tests/test_astar.c
 AVL_TEST_SRC = \
@@ -149,7 +149,7 @@ TRIE_TEST_SRC = \
 GREEDY_BFS_TEST_SRC = \
 	src/graph_traversals/greedy_best_first_search.c \
 	src/graph_traversals/dijkstra.c \
-	src/graph_traversals/graph_io.c \
+	src/utils/graph_io.c \
 	src/utils/safe_input_int.c \
 	tests/test_greedy_best_first_search.c
 
