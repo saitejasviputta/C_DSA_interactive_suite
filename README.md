@@ -134,10 +134,10 @@ Both BFS and DFS are implemented **iteratively** (no recursion).
 
 
 #### Hashing Algorithms
--Linear Probing (with built-in linear search for demo)
--Separate Chaining
--Double Hashing
--Quadratic Probing
+- Linear Probing (with built-in linear search for demo)
+- Separate Chaining
+- Double Hashing
+- Quadratic Probing
 
 Linear Probing uses modulo arithmetic to wrap-around the hash table/array when last index is full, optimizing resources and using the full array. 
 
