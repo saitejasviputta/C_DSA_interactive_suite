@@ -91,4 +91,29 @@ void      trie_delete(TrieNode *root, const char *word);
 void      trie_free(TrieNode *node);
 void      trie_demo(void);
 
+// For B+ Tree
+typedef struct BPlusNode {
+    bool is_leaf;
+    int num_keys;
+    int *keys;                   // size: order
+    struct BPlusNode **children; // size: order + 1 (for internal nodes)
+    int *values;                 // size: order (for leaf nodes)
+    struct BPlusNode *next;      // for leaf nodes: pointer to next sibling leaf
+    struct BPlusNode *prev;      // for leaf nodes: pointer to previous sibling leaf
+} BPlusNode;
+
+typedef struct BPlusTree {
+    BPlusNode *root;
+    int order;
+} BPlusTree;
+
+BPlusTree* bplus_tree_create(int order);
+void       bplus_tree_destroy(BPlusTree* tree);
+bool       bplus_tree_search(BPlusTree* tree, int key, int* value_out);
+bool       bplus_tree_insert(BPlusTree* tree, int key, int value);
+bool       bplus_tree_delete(BPlusTree* tree, int key);
+void       bplus_tree_range_query(BPlusTree* tree, int lower, int upper);
+void       bplus_tree_print(BPlusTree* tree);
+void       bplus_tree_demo(void);
+
 #endif

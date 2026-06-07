@@ -14,8 +14,9 @@ void trees_demo(void)
             "\nenter 2 for AVL Tree demo"
             "\nenter 3 for Threaded Binary Tree demo"
             "\nenter 4 for Trie demo"
+            "\nenter 5 for B+ Tree demo"
             "\nenter choice : ",
-            1, 4
+            1, 5
         );
 
         if (tree_status == INPUT_EXIT_SIGNAL)
@@ -43,6 +44,10 @@ void trees_demo(void)
 
             case 4:
                 trie_demo();
+                break;
+
+            case 5:
+                bplus_tree_demo();
                 break;
         }
     }
