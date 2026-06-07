@@ -1,5 +1,4 @@
 #include "data_structures.h"
-#include "trees.h"
 #include "safe_input.h"
 #include <stdio.h>
 
@@ -12,9 +11,8 @@ void data_structures_demo(void)
             safe_input_int(&data_structures_choice,
                            "\nenter 1 for standard linear data structures"
                            "\nenter 2 for circular variants of linear data structures"
-                           "\nenter 3 for non-linear data structures"
                            "\nenter choice : ",
-                           1, 3);
+                           1, 2);
 
         if (data_structures_status == INPUT_EXIT_SIGNAL)
         {
@@ -109,43 +107,8 @@ void data_structures_demo(void)
                 }
 
                 break;
-
-            case 3: // non linear data structures case
-                while (1)
-                {
-                    int non_linear_ds_choice;
-                    int non_linear_ds_status =
-                        safe_input_int(&non_linear_ds_choice,
-                                       "\nenter 1 for binary search tree demo"
-                                       "\nenter 2 for threaded binary tree demo"
-                                       "\nenter 3 for AVL tree demo"
-                                       "\nenter 4 for Trie(prefix tree) demo"
-                                       "\nenter choice: ",
-                                       1, 4);
-                    if (non_linear_ds_status == INPUT_EXIT_SIGNAL)
-                        break;
-                    if (non_linear_ds_status == 0)
-                        continue;
-                    if (non_linear_ds_choice == 1)
-                    {
-                        binary_search_tree_Demo();
-                    }
-                    if (non_linear_ds_choice == 2)
-                    {
-                        TBT_demo();
-                    }
-                    if (non_linear_ds_choice == 3)
-                    {
-                        avl_demo();
-                    }
-                    if (non_linear_ds_choice == 4)
-                    {
-                        trie_demo();
-                    }
-                }
-                break;
-        }
-
+            }
+            
         printf("\nreturning to main menu....\n");
     }
 }
