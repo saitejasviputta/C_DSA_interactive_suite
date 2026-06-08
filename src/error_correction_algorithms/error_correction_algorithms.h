@@ -10,6 +10,7 @@
 void error_correction_algorithms_demo(void);
 void checksum_demo(void);
 void checksum_receiver_demo(void);
+void lrc_demo(void);
 
 // shared checksum helpers (defined in checksum.c, reused by the receiver side)
 void checksum_print_binary(int value, int bits);
