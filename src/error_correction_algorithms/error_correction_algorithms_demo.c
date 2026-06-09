@@ -17,12 +17,14 @@ void error_correction_algorithms_demo(void)
             "\nEnter 2 for Checksum (Receiver verification)"
             "\nEnter 3 for CRC (Sender)"
             "\nEnter 4 for CRC (Receiver verification)"
-            "\nEnter 5 for LRC"
-            "\nEnter 6 for Parity Bit"
-            "\nEnter 7 for VRC"
-            "\nEnter 8 for Hamming Code"
+            "\nEnter 5 for LRC (Sender)"
+            "\nEnter 6 for LRC (Receiver verification)"
+            "\nEnter 7 for Parity Bit"
+            "\nEnter 8 for VRC (Sender)"
+            "\nEnter 9 for VRC (Receiver verification)"
+            "\nEnter 10 for Hamming Code"
             "\nEnter -1 to exit: ",
-            1, 8);
+            1, 10);
 
         if (ECA_status == INPUT_EXIT_SIGNAL)
         {
@@ -56,14 +58,22 @@ void error_correction_algorithms_demo(void)
                 break;
 
             case 6:
-                parity_bit_demo();
+                lrc_receiver_demo();
                 break;
 
             case 7:
-                vrc_demo();
+                parity_bit_demo();
                 break;
 
             case 8:
+                vrc_demo();
+                break;
+
+            case 9:
+                vrc_receiver_demo();
+                break;
+
+            case 10:
                 hamming_demo();
                 break;
 

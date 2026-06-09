@@ -22,6 +22,11 @@ void crc_receiver_demo(void);
 
 /* LRC */
 void lrc_demo(void);
+void lrc_receiver_demo(void);
+
+/* VRC */
+void vrc_demo(void);
+void vrc_receiver_demo(void);
 
 /* Parity Bit */
 int generateEvenParity(const char *data);
@@ -30,8 +35,7 @@ int verifyEvenParity(const char *receivedData);
 int verifyOddParity(const char *receivedData);
 void parity_bit_demo(void);
 
-/* VRC */
-void vrc_demo(void);
+/* Hamming Code */
 void hamming_demo(void);
 
 /* Shared checksum helpers (implemented in checksum.c) */
