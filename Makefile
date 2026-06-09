@@ -262,7 +262,7 @@ TEST_BINS = test_circ_queue test_bst test_search test_hash_func \
 test_bplus_tree: $(TEST_DIR)/test_bplus_tree$(EXE)
 	$(TEST_DIR)/test_bplus_tree$(EXE)
 
-$(TEST_DIR)/test_bplus_tree$(EXE): $(OBJ_DIR)/src/trees/bplus_tree.o $(OBJ_DIR)/src/utils/safe_input_int.o tests/test_bplus_tree.c
+$(TEST_DIR)/test_bplus_tree$(EXE): $(OBJ_DIR)/src/trees/bplus_tree.o $(OBJ_DIR)/src/trees/mwst_utils.o $(OBJ_DIR)/src/utils/safe_input_int.o tests/test_bplus_tree.c
 	@$(call MKDIR_P,$(TEST_DIR))
 	$(CC) $(CFLAGS) $^ -o $@
 
