@@ -1,7 +1,8 @@
 #ifndef DSU_H
 #define DSU_H
 
-typedef struct DSU {
+typedef struct DSU
+{
     int* parent;
     int* rank;
     int n;

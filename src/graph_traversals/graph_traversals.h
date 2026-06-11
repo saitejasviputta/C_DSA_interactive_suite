@@ -85,4 +85,8 @@ void bellman_ford_demo(void);
 int kruskal_mst(weightedGraph* graph);
 void kruskal_demo(void);
 
+// ------------------For MST (Prim's)-----------------------
+int prim_mst(weightedGraph* graph, int start_node);
+void prim_demo(void);
+
 #endif
