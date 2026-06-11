@@ -38,7 +38,7 @@ BPlusNode* bplus_node_create(int order, bool is_leaf)
         return NULL;
     node->is_leaf = is_leaf;
     node->num_keys = 0;
-    
+
     node->keys = calloc(order, sizeof(int));
     if (!node->keys)
     {

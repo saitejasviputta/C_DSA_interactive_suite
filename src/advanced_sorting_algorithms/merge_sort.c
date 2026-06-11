@@ -16,8 +16,10 @@ static void merge(int arr[], int left, int mid, int right)
     if (left_array == NULL || right_array == NULL)
     {
         printf("\nMemory allocation failed during merge sort.\n");
-        if (left_array) free(left_array);
-        if (right_array) free(right_array);
+        if (left_array)
+            free(left_array);
+        if (right_array)
+            free(right_array);
         return;
     }
 
