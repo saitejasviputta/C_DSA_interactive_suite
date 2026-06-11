@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void test_prim_simple() {
+void test_prim_simple()
+{
     weightedGraph* graph = create_weightedGraph(4);
     assert(graph != NULL);
 
@@ -32,7 +33,8 @@ void test_prim_simple() {
     printf("test_prim_simple passed\n");
 }
 
-void test_prim_disconnected() {
+void test_prim_disconnected()
+{
     weightedGraph* graph = create_weightedGraph(4);
     assert(graph != NULL);
 
@@ -51,7 +53,8 @@ void test_prim_disconnected() {
     printf("test_prim_disconnected passed\n");
 }
 
-int main() {
+int main()
+{
     test_prim_simple();
     test_prim_disconnected();
 

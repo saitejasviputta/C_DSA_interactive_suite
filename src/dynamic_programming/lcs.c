@@ -86,13 +86,15 @@ static int safe_input_string(char* buffer, const char* prompt)
         if (scanf("%99s", buffer) != 1)
         {
             int c;
-            while ((c = getchar()) != '\n' && c != EOF);
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
             printf("Invalid input. Please try again.\n");
             continue;
         }
 
         int c;
-        while ((c = getchar()) != '\n' && c != EOF); // Clear the rest of the line
+        while ((c = getchar()) != '\n' && c != EOF)
+            ; // Clear the rest of the line
 
         if (strcmp(buffer, "X") == 0)
         {
@@ -111,15 +113,17 @@ void lcs_demo(void)
         char Y[100];
 
         printf("\nLCS Demo\n");
-        
-        int status_X = safe_input_string(X, "Enter first string (no spaces, max 99 chars), or 'X' to exit: ");
+
+        int status_X =
+            safe_input_string(X, "Enter first string (no spaces, max 99 chars), or 'X' to exit: ");
         if (status_X == INPUT_EXIT_SIGNAL)
         {
             printf("\nExiting LCS demo...\n");
             return;
         }
 
-        int status_Y = safe_input_string(Y, "Enter second string (no spaces, max 99 chars), or 'X' to exit: ");
+        int status_Y =
+            safe_input_string(Y, "Enter second string (no spaces, max 99 chars), or 'X' to exit: ");
         if (status_Y == INPUT_EXIT_SIGNAL)
         {
             printf("\nExiting LCS demo...\n");

@@ -201,10 +201,11 @@ void prim_demo(void)
     {
         while (1)
         {
-            int graph_capacity_status = safe_input_int(&graph_capacity,
-                                                        "\nEnter the number of vertices in the graph (1-100), "
-                                                        "enter '-1' to exit: ",
-                                                        1, 100);
+            int graph_capacity_status =
+                safe_input_int(&graph_capacity,
+                               "\nEnter the number of vertices in the graph (1-100), "
+                               "enter '-1' to exit: ",
+                               1, 100);
 
             if (graph_capacity_status == INPUT_EXIT_SIGNAL)
             {
@@ -227,9 +228,8 @@ void prim_demo(void)
 
         while (1)
         {
-            int edges_status = safe_input_int(&edges,
-                                              "\nEnter number of edges (0-1000), enter '-1' to exit: ",
-                                              0, 1000);
+            int edges_status = safe_input_int(
+                &edges, "\nEnter number of edges (0-1000), enter '-1' to exit: ", 0, 1000);
 
             if (edges_status == INPUT_EXIT_SIGNAL)
             {
@@ -244,8 +244,9 @@ void prim_demo(void)
             break;
         }
 
-        printf("\nEnter source, destination, weight pairs (Source, Destination between 0 and %d):\n",
-               graph_capacity - 1);
+        printf(
+            "\nEnter source, destination, weight pairs (Source, Destination between 0 and %d):\n",
+            graph_capacity - 1);
 
         for (int i = 0; i < edges; i++)
         {
@@ -298,7 +299,8 @@ void prim_demo(void)
 
     while (1)
     {
-        int start_status = safe_input_int(&starting_node, "\nEnter starting node: ", 0, graph_capacity - 1);
+        int start_status =
+            safe_input_int(&starting_node, "\nEnter starting node: ", 0, graph_capacity - 1);
         if (start_status == INPUT_EXIT_SIGNAL)
         {
             printf("\nExiting Prim's demo.....\n");

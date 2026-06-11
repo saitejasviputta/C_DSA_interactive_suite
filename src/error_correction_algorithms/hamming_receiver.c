@@ -14,8 +14,8 @@ void hamming_receiver_demo(void)
 
         int frame_status =
             safe_input_binary_string(frame, sizeof(frame),
-                                 "\n\nHamming Code Receiver Demo\n"
-                                 "enter received Hamming codeword or 'X' to exit:- ");
+                                     "\n\nHamming Code Receiver Demo\n"
+                                     "enter received Hamming codeword or 'X' to exit:- ");
 
         if (frame_status == INPUT_EXIT_SIGNAL)
         {

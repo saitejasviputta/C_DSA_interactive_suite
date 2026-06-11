@@ -62,7 +62,8 @@ void knapsack_demo(void)
         int status;
 
         printf("\n0/1 Knapsack Demo\n");
-        status = safe_input_int(&n, "Enter number of items (between 1 and 20), '-1' to exit: ", 1, 20);
+        status =
+            safe_input_int(&n, "Enter number of items (between 1 and 20), '-1' to exit: ", 1, 20);
         if (status == INPUT_EXIT_SIGNAL)
         {
             printf("\nExiting Knapsack demo...\n");
@@ -71,7 +72,8 @@ void knapsack_demo(void)
         if (status == 0)
             continue;
 
-        status = safe_input_int(&W, "Enter knapsack capacity (between 1 and 100), '-1' to exit: ", 1, 100);
+        status = safe_input_int(
+            &W, "Enter knapsack capacity (between 1 and 100), '-1' to exit: ", 1, 100);
         if (status == INPUT_EXIT_SIGNAL)
         {
             printf("\nExiting Knapsack demo...\n");

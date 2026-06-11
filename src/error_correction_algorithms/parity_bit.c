@@ -162,8 +162,8 @@ void parity_bit_demo(void)
     /* RECEIVER INPUT */
     while (1)
     {
-        int recv_status = safe_input_binary_string(received, sizeof(received),
-                                               "\nEnter received binary string or 'X' to exit:- ");
+        int recv_status = safe_input_binary_string(
+            received, sizeof(received), "\nEnter received binary string or 'X' to exit:- ");
 
         if (recv_status == INPUT_EXIT_SIGNAL)
         {

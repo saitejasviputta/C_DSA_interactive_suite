@@ -295,7 +295,7 @@ void print_graph(const Graph* graph)
         printf("Vertex %d -> ", i);
 
         Node* head = graph->array[i];
-        if(head == NULL)
+        if (head == NULL)
         {
             printf("\n");
             continue;
