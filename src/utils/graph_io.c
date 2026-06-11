@@ -327,13 +327,21 @@ void print_weightedGraph(const weightedGraph* graph)
 
     for (int i = 0; i < graph->V; i++)
     {
-        printf("vertex %d: HEAD->", i);
+        printf("Vertex %d -> ", i);
 
-        for (const Edge* edge = graph->array[i]; edge != NULL; edge = edge->next)
+        Edge* edge = graph->array[i];
+        if(edge == NULL)
         {
-            printf("%d(%d) ->", edge->destination, edge->weight);
+            printf("\n");
+            continue;
+        }
+        while(edge->next != NULL)
+        {
+            printf("%d(%d), ", edge->destination, edge->weight);
+            edge = edge->next;
         }
 
-        printf("NULL\n");
+        printf("%d(%d) ", edge->destination, edge->weight);
+        printf("\n");
     }
 }
