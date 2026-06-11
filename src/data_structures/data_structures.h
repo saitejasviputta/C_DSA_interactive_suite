@@ -127,32 +127,32 @@ typedef struct Queue
     int rear;
     int front;
     int N;
-    int* arr;
+    void** arr;
 } Queue;
 
 // For circular queue
 int init_circ_queue(int N, Queue* queue_ptr);
 void destroy_circ_queue(Queue* queue_ptr);
-int enqueue(Queue* queue_ptr, int value);
-int dequeue(Queue* queue_ptr);
+int enqueue(Queue* queue_ptr, void* value);
+void* dequeue(Queue* queue_ptr);
 void display_circ_queue(Queue* queue_ptr);
 void circular_queue_Demo(void);
 
 // For simple (linear) queue
 int init_simple_queue(int N, Queue* queue_ptr);
 void destroy_simple_queue(Queue* queue_ptr);
-int enqueue_simple(Queue* queue_ptr, int value);
-int dequeue_simple(Queue* queue_ptr);
+int enqueue_simple(Queue* queue_ptr, void* value);
+void* dequeue_simple(Queue* queue_ptr);
 void display_simple_queue(const Queue* queue_ptr);
 void simple_queue_Demo(void);
 
 // For Double-Ended Queue (Deque)
 int init_deque(int N, Queue* dq);
 void destroy_deque(Queue* dq);
-int deque_insert_front(Queue* dq, int value);
-int deque_insert_rear(Queue* dq, int value);
-int deque_delete_front(Queue* dq, int* val);
-int deque_delete_rear(Queue* dq, int* val);
+int deque_insert_front(Queue* dq, void* value);
+int deque_insert_rear(Queue* dq, void* value);
+void* deque_delete_front(Queue* dq);
+void* deque_delete_rear(Queue* dq);
 int deque_get_front(const Queue* dq);
 int deque_get_rear(const Queue* dq);
 bool deque_is_empty(const Queue* dq);
