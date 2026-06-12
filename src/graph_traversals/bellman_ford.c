@@ -173,7 +173,7 @@ void bellman_ford_demo(void)
 
         if (dest_status == INPUT_EXIT_SIGNAL)
         {
-            printf("\nExiting Dijsktra demo\n");
+            printf("\nExiting Bellman Ford demo\n");
             free_weightedGraph(graph);
             return;
         }
@@ -182,8 +182,15 @@ void bellman_ford_demo(void)
             goto retry;
         }
 
-        wt_status = safe_input_int(&wt, "weight: ", INT_MIN, INT_MAX);
+        wt_status = safe_input_int(
+            &wt, "weight (negative weights allowed; enter '-1' to exit): ", INT_MIN, INT_MAX);
 
+        if (wt_status == INPUT_EXIT_SIGNAL)
+        {
+            printf("\nExiting Bellman Ford demo\n");
+            free_weightedGraph(graph);
+            return;
+        }
         if (wt_status == 0)
         {
             goto retry;
