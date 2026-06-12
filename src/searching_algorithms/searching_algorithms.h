@@ -10,5 +10,7 @@ int binary_search(int arr[], int target, int length_of_array);
 int binary_search_recursive(int arr[], int target, int low, int high);
 int interpolation_search(int arr[], int target, int length_of_array);
 void interpolation_search_demo(void);
+int jump_search(int arr[], int target, int length_of_array);
+void jump_search_demo(void);
 
 #endif
