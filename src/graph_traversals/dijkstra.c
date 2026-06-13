@@ -135,7 +135,11 @@ void dijkstra(weightedGraph* graph, int start)
 
     start_t = clock();
 
-    insert_pq_graph(&pq, start, 0);
+    if(!insert_pq_graph(&pq, start, 0))
+    {
+        printf("Malloc failed\n");
+        return;
+    }
 
     PQ_graph_node currentNode;
 
@@ -155,7 +159,11 @@ void dijkstra(weightedGraph* graph, int start)
             if (dist[u] != INT_MAX && dist[u] + currentWeight < dist[v])
             {
                 dist[v] = dist[u] + currentWeight;
-                insert_pq_graph(&pq, v, dist[v]);
+                if(!insert_pq_graph(&pq, v, dist[v]))
+                {
+                    printf("Malloc Failed\n");
+                    return;
+                }
             }
 
             current = current->next;
