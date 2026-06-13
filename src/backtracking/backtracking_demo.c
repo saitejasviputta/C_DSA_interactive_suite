@@ -9,11 +9,12 @@ void backtracking_demo(void)
     {
         bt_status = safe_input_int(&bt_choice,
                                    "\n--- Backtracking Algorithms ---"
-                                   "\nenter 1 for N-Queens problem (coming soon)"
-                                   "\nenter 2 for Sudoku solver (coming soon)"
-                                   "\nenter 3 for Knight's Tour (coming soon)"
+                                   "\nenter 1 for N-Queens problem"
+                                   "\nenter 2 for Sudoku solver"
+                                   "\nenter 3 for Rat in a Maze"
+                                   "\nenter 4 for Graph Coloring"
                                    "\nenter choice : ",
-                                   1, 3);
+                                   1, 4);
 
         if (bt_status == INPUT_EXIT_SIGNAL)
         {
@@ -27,13 +28,16 @@ void backtracking_demo(void)
         switch (bt_choice)
         {
             case 1:
-                printf("\nN-Queens problem demo is coming soon!\n");
+                n_queens_demo();
                 break;
             case 2:
-                printf("\nSudoku solver demo is coming soon!\n");
+                sudoku_demo();
                 break;
             case 3:
-                printf("\nKnight's Tour demo is coming soon!\n");
+                rat_in_maze_demo();
+                break;
+            case 4:
+                graph_coloring_demo();
                 break;
         }
     }
