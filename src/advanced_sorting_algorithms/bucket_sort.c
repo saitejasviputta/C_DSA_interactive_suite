@@ -1,14 +1,10 @@
 #include "advanced_sorting.h"
+#include "data_structures.h"
 #include "history_logger.h"
 #include "safe_input.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-typedef struct BucketNode {
-    int val;
-    struct BucketNode* next;
-} BucketNode;
 
 void bucket_sort(int arr[], int n)
 {
@@ -40,7 +36,7 @@ void bucket_sort(int arr[], int n)
 
     // Establish N = n buckets
     int N = n;
-    BucketNode** buckets = calloc(N, sizeof(BucketNode*));
+    Node** buckets = calloc(N, sizeof(Node*));
     if (buckets == NULL)
     {
         return;
@@ -54,16 +50,16 @@ void bucket_sort(int arr[], int n)
         int bucket_idx = (int)((diff * (N - 1)) / (max_val - min_val));
 
         // Create new node and prepend to bucket list
-        BucketNode* new_node = malloc(sizeof(BucketNode));
+        Node* new_node = malloc(sizeof(Node));
         if (new_node == NULL)
         {
             // Cleanup allocated memory on error
             for (int j = 0; j < N; j++)
             {
-                BucketNode* curr = buckets[j];
+                Node* curr = buckets[j];
                 while (curr != NULL)
                 {
-                    BucketNode* next_node = curr->next;
+                    Node* next_node = curr->next;
                     free(curr);
                     curr = next_node;
                 }
@@ -71,7 +67,7 @@ void bucket_sort(int arr[], int n)
             free(buckets);
             return;
         }
-        new_node->val = arr[i];
+        new_node->data = arr[i];
         new_node->next = buckets[bucket_idx];
         buckets[bucket_idx] = new_node;
     }
@@ -87,7 +83,7 @@ void bucket_sort(int arr[], int n)
 
         // Count elements in the current bucket
         int bucket_size = 0;
-        BucketNode* curr = buckets[i];
+        Node* curr = buckets[i];
         while (curr != NULL)
         {
             bucket_size++;
@@ -96,7 +92,7 @@ void bucket_sort(int arr[], int n)
 
         if (bucket_size == 1)
         {
-            arr[arr_idx++] = buckets[i]->val;
+            arr[arr_idx++] = buckets[i]->data;
             free(buckets[i]);
             buckets[i] = NULL;
         }
@@ -109,13 +105,13 @@ void bucket_sort(int arr[], int n)
                 // Cleanup remaining buckets on memory failure
                 for (int j = i; j < N; j++)
                 {
-                    BucketNode* c = buckets[j];
+                    Node* c = buckets[j];
                     while (c != NULL)
                     {
-                        BucketNode* tmp = c->next;
+                        Node* tmp = c->next;
                         free(c);
                         c = tmp;
-                      }
+                    }
                 }
                 free(buckets);
                 return;
@@ -125,8 +121,8 @@ void bucket_sort(int arr[], int n)
             int temp_idx = 0;
             while (curr != NULL)
             {
-                temp_arr[temp_idx++] = curr->val;
-                BucketNode* to_free = curr;
+                temp_arr[temp_idx++] = curr->data;
+                Node* to_free = curr;
                 curr = curr->next;
                 free(to_free);
             }
