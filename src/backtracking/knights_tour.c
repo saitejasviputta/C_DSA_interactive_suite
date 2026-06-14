@@ -4,14 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "cross_platform.h"
 
 #ifdef _WIN32
 #include <windows.h>
-#define sleep_ms(ms) Sleep(ms)
 #define clear_screen() system("cls")
 #else
 #include <unistd.h>
-#define sleep_ms(ms) usleep((ms) * 1000)
 #define clear_screen() printf("\033[H\033[J")
 #endif
 
@@ -67,7 +66,7 @@ static void print_board(int N, int board[8][8], int knight_x, int knight_y)
     printf("\nLegend: ♞ Knight | Numbers show sequence of moves\n");
     printf("Delay: %dms\n", delay_time);
     fflush(stdout);
-    sleep_ms(delay_time);
+    sleep_seconds((float)delay_time / 1000);
 }
 
 // Standard Backtracking solver (no heuristic) - Good for small boards
