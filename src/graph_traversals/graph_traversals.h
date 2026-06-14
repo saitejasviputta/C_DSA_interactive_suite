@@ -106,4 +106,9 @@ void free_dsu(DSU* dsu);
 int prim_mst(weightedGraph* graph, int start_node);
 void prim_demo(void);
 
+
+// ------------------For Graph IO-----------------------
+weightedGraph* load_weightedGraph_from_csv(const char* path);
+weightedGraph* load_weightedGraph_with_heuristic_from_csv(const char* path, int** out_h);
+Graph* load_graph_from_csv(const char* path);
 #endif
