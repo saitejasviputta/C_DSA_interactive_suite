@@ -26,8 +26,8 @@ void rabin_karp_search(char* text, char* pattern, int q)
 
     for (i = 0; i < m; i++)
     {
-        p = (d * p + pattern[i]) % q;
-        t = (d * t + text[i]) % q;
+        p = (d * p + (unsigned char)pattern[i]) % q;
+        t = (d * t + (unsigned char)text[i]) % q;
     }
 
     for (i = 0; i <= n - m; i++)
@@ -56,7 +56,7 @@ void rabin_karp_search(char* text, char* pattern, int q)
 
         if (i < n - m)
         {
-            t = (d * (t - text[i] * h) + text[i + m]) % q;
+            t = (d * (t - (unsigned char)text[i] * h) + (unsigned char)text[i + m]) % q;
             if (t < 0)
                 t = (t + q);
         }
