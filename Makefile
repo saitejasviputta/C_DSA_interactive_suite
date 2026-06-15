@@ -99,7 +99,8 @@ TEST_BINS = test_circ_queue test_bst test_search test_hash_func \
             test_deque test_astar test_avl \
             test_greedy_bfs test_sorting_n2 test_advanced_sorting \
             test_history_logger test_shell_sort test_trie test_btree test_bplus_tree test_parity_bit \
-            test_prim test_kruskal test_floyd_warshall test_mcm
+            test_prim test_kruskal test_floyd_warshall test_mcm \
+            test_string_algorithms
 
 test: $(TEST_BINS)
 
@@ -282,6 +283,13 @@ test_advanced_sorting: $(TEST_DIR)/test_advanced_sorting$(EXE)
 	$(TEST_DIR)/test_advanced_sorting$(EXE)
 
 $(TEST_DIR)/test_advanced_sorting$(EXE): $(OBJ_DIR)/src/advanced_sorting_algorithms/quick_sort.o $(OBJ_DIR)/src/advanced_sorting_algorithms/merge_sort.o $(OBJ_DIR)/src/advanced_sorting_algorithms/heap_sort.o $(OBJ_DIR)/src/advanced_sorting_algorithms/radix_sort.o $(OBJ_DIR)/src/advanced_sorting_algorithms/bucket_sort.o $(OBJ_DIR)/src/data_structures/priority_queue.o $(OBJ_DIR)/src/data_structures/sll.o $(OBJ_DIR)/src/data_structures/array.o $(OBJ_DIR)/src/utils/safe_input_int.o $(OBJ_DIR)/src/utils/history_logger.o tests/test_advanced_sorting.c
+	@$(call MKDIR_P,$(TEST_DIR))
+	$(CC) $(CFLAGS) $^ -o $@
+
+test_string_algorithms: $(TEST_DIR)/test_string_algorithms$(EXE)
+	$(TEST_DIR)/test_string_algorithms$(EXE)
+
+$(TEST_DIR)/test_string_algorithms$(EXE): $(OBJ_DIR)/src/string_algorithms/naive_string_matching.o $(OBJ_DIR)/src/string_algorithms/kmp.o $(OBJ_DIR)/src/string_algorithms/rabin_karp.o $(OBJ_DIR)/src/utils/safe_input_string.o $(OBJ_DIR)/src/utils/history_logger.o tests/test_string_algorithms.c
 	@$(call MKDIR_P,$(TEST_DIR))
 	$(CC) $(CFLAGS) $^ -o $@
 
