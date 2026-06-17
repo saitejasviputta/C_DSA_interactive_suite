@@ -295,7 +295,7 @@ $(TEST_DIR)/test_shell_sort$(EXE): $(OBJ_DIR)/src/sorting_algorithms_n2/shell_so
 test_sorting_n2: $(TEST_DIR)/test_sorting_n2$(EXE)
 	$(TEST_DIR)/test_sorting_n2$(EXE)
 
-$(TEST_DIR)/test_sorting_n2$(EXE): $(OBJ_DIR)/src/sorting_algorithms_n2/bubble_sort.o $(OBJ_DIR)/src/sorting_algorithms_n2/insertion_sort.o $(OBJ_DIR)/src/sorting_algorithms_n2/selection_sort.o $(OBJ_DIR)/src/data_structures/array.o $(OBJ_DIR)/src/utils/safe_input_int.o $(OBJ_DIR)/src/utils/history_logger.o tests/test_sorting_n2.c
+$(TEST_DIR)/test_sorting_n2$(EXE): $(OBJ_DIR)/src/sorting_algorithms_n2/bubble_sort.o $(OBJ_DIR)/src/sorting_algorithms_n2/insertion_sort.o $(OBJ_DIR)/src/sorting_algorithms_n2/selection_sort.o $(OBJ_DIR)/src/data_structures/array.o $(OBJ_DIR)/src/utils/safe_input_int.o $(OBJ_DIR)/src/utils/history_logger.o $(OBJ_DIR)/src/utils/sorting_visualizer.o $(OBJ_DIR)/src/utils/cross_platform_timer.o tests/test_sorting_n2.c
 	@$(call MKDIR_P,$(TEST_DIR))
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
