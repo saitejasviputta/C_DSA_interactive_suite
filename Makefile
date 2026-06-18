@@ -288,7 +288,7 @@ $(TEST_DIR)/test_history_logger$(EXE): $(OBJ_DIR)/src/utils/history_logger.o tes
 test_shell_sort: $(TEST_DIR)/test_shell_sort$(EXE)
 	$(TEST_DIR)/test_shell_sort$(EXE)
 
-$(TEST_DIR)/test_shell_sort$(EXE): $(OBJ_DIR)/src/sorting_algorithms_n2/shell_sort.o $(OBJ_DIR)/src/data_structures/array.o $(OBJ_DIR)/src/utils/safe_input_int.o $(OBJ_DIR)/src/utils/history_logger.o tests/test_shell_sort.c
+$(TEST_DIR)/test_shell_sort$(EXE): $(OBJ_DIR)/src/sorting_algorithms_n2/shell_sort.o $(OBJ_DIR)/src/data_structures/array.o $(OBJ_DIR)/src/utils/safe_input_int.o $(OBJ_DIR)/src/utils/history_logger.o $(OBJ_DIR)/src/utils/sorting_visualizer.o $(OBJ_DIR)/src/utils/cross_platform_timer.o tests/test_shell_sort.c
 	@$(call MKDIR_P,$(TEST_DIR))
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
