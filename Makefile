@@ -309,7 +309,15 @@ $(TEST_DIR)/test_advanced_sorting$(EXE): $(OBJ_DIR)/src/advanced_sorting_algorit
 test_string_algorithms: $(TEST_DIR)/test_string_algorithms$(EXE)
 	$(TEST_DIR)/test_string_algorithms$(EXE)
 
-$(TEST_DIR)/test_string_algorithms$(EXE): $(OBJ_DIR)/src/string_algorithms/naive_string_matching.o $(OBJ_DIR)/src/string_algorithms/kmp.o $(OBJ_DIR)/src/string_algorithms/rabin_karp.o $(OBJ_DIR)/src/utils/safe_input_string.o $(OBJ_DIR)/src/utils/history_logger.o tests/test_string_algorithms.c
+$(TEST_DIR)/test_string_algorithms$(EXE): \
+    $(OBJ_DIR)/src/string_algorithms/naive_string_matching.o \
+    $(OBJ_DIR)/src/string_algorithms/kmp.o \
+    $(OBJ_DIR)/src/string_algorithms/rabin_karp.o \
+    $(OBJ_DIR)/src/utils/safe_input_string.o \
+    $(OBJ_DIR)/src/utils/history_logger.o \
+    $(OBJ_DIR)/src/utils/clear_screen.o \
+    $(OBJ_DIR)/src/utils/cross_platform_timer.o \
+    tests/test_string_algorithms.c
 	@$(call MKDIR_P,$(TEST_DIR))
 	$(CC) $(CFLAGS) $^ -o $@
 
