@@ -17,7 +17,17 @@ static int next_prime(int n)
             return i;
         }
     }
-    return -1;
+    // No prime greater than n fits in the table (n is near its upper bound).
+    // Fall back to the largest prime <= n so the multiplier stays a positive
+    // prime and hash_function never yields a negative (out-of-bounds) index.
+    for (int i = (n < size ? n : size - 1); i >= 2; i--)
+    {
+        if (PRIMES[i])
+        {
+            return i;
+        }
+    }
+    return 1;
 }
 
 int hash_function(int value, int length_of_array)
