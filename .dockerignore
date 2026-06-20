@@ -1,0 +1,7 @@
+.git
+.github
+object_files/
+test_binaries/
+*.o
+*.exe
+*.out
