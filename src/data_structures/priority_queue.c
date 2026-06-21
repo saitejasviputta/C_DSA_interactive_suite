@@ -37,6 +37,10 @@ int insert(priority_queue* pq, int val)
     pq->heap[i] = val;
     pq->size++;
 
+    printf("Inserted :%d\n", val);
+    printf("Before Heapify:\n");
+    display_heap(pq);
+
     while (i > 0)
     {
         int parent = (i - 1) / 2;
@@ -50,7 +54,10 @@ int insert(priority_queue* pq, int val)
             if (pq->heap[i] <= pq->heap[parent])
                 break;
         }
+        printf("Heapify Up : Swap(%d<->%d)\n", pq->heap[i], pq->heap[parent]);
         swap(&pq->heap[i], &pq->heap[parent]);
+        printf("\nAfter Heapify:\n");
+        display_heap(pq);
         i = parent;
     }
 
@@ -122,10 +129,46 @@ void destroy_pq(priority_queue* pq)
     free(pq);
 }
 
+void print_heap_tree(priority_queue* pq)
+{
+    if (pq == NULL || pq->size == 0)
+    {
+        printf("\nHeap Empty\n");
+        return;
+    }
+
+    printf("\nHeap Tree:\n");
+
+    int level = 0;
+    int index = 0;
+
+    while (index < pq->size)
+    {
+        int nodes = 1 << level;
+
+        // indentation
+        for (int s = 0; s < (3 - level) * 4; s++)
+            printf(" ");
+
+        for (int j = 0; j < nodes && index < pq->size; j++)
+        {
+            printf("%d", pq->heap[index++]);
+
+            // spacing between siblings
+            for (int s = 0; s < (4 - level) * 5; s++)
+                printf(" ");
+        }
+
+        printf("\n\n");
+
+        level++;
+    }
+}
 void display_heap(priority_queue* pq)
 {
-    printf("\nHeap: ");
+    printf("\nArray Representation: ");
     print_array(pq->heap, pq->size);
+    print_heap_tree(pq);
     printf("\n");
 }
 
@@ -193,8 +236,6 @@ void priority_queue_demo(void)
                     printf("\nHeap is full.\n");
                     continue;
                 }
-
-                display_heap(pq);
             }
             else if (pq_choice == 2)
             {
