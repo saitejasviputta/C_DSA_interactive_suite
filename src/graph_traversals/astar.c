@@ -391,7 +391,7 @@ void astar_demo(void)
                 int h_val;
                 int h_status;
                 char prompt[50];
-                sprintf(prompt, "h(%d): ", i);
+                snprintf(prompt, sizeof(prompt), "h(%d): ", i);
             retry_h:
                 h_status = safe_input_int(&h_val, prompt, 0, INT_MAX);
                 if (h_status == INPUT_EXIT_SIGNAL)
