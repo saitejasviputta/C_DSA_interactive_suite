@@ -4,9 +4,9 @@
 #include <string.h>
 
 // Include headers first so their declarations are parsed correctly
-#include "../src/utils/clear_screen.h"
-#include "../src/utils/cross_platform_timer.h"
-#include "../src/utils/config.h"
+#include "../../src/utils/clear_screen.h"
+#include "../../src/utils/cross_platform_timer.h"
+#include "../../src/utils/config.h"
 
 // Define overrides for non-interactive test execution
 #define TEST_MOCK_SYNC
@@ -15,7 +15,7 @@
 #define sleep_seconds(x) (void)0
 
 // Now include the source directly
-#include "../src/process_synchronization/dining_philosophers.c"
+#include "../../src/process_synchronization/dining_philosophers.c"
 
 void test_dining_philosophers_transitions()
 {

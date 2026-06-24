@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../src/job_scheduling/job_scheduling.h"
+#include "../../src/job_scheduling/job_scheduling.h"
 
 // Globals to feed input and collect output
 static Process g_input_procs[10];
@@ -61,7 +61,7 @@ int mock_safe_input_int(int* value, const char* prompt, int min, int max)
 
 // Include the source file directly so the compiler compiles round_robin_demo
 // as part of this translation unit, bypassing duplicate symbol linking.
-#include "../src/job_scheduling/round_robin.c"
+#include "../../src/job_scheduling/round_robin.c"
 
 void test_round_robin_basic()
 {

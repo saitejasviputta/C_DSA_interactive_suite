@@ -27,7 +27,7 @@ int mock_printf(const char* format, ...)
 
 // Redirect printf to our mock
 #define printf mock_printf
-#include "../src/graph_traversals/dijkstra.c"
+#include "../../src/graph_traversals/dijkstra.c"
 #undef printf
 
 void test_dijkstra_simple_path()

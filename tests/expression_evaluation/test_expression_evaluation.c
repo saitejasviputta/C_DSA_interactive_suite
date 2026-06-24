@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../src/expression_evaluation/expression.h"
-#include "../src/expression_evaluation/stack.h"
+#include "../../src/expression_evaluation/expression.h"
+#include "../../src/expression_evaluation/stack.h"
 
 void test_isOperator()
 {

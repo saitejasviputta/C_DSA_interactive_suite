@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
-#include "../src/backtracking/backtracking.h"
+#include "../../src/backtracking/backtracking.h"
 
 
 // --- 1. N-Queens Tests ---

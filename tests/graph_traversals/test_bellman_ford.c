@@ -27,7 +27,7 @@ int mock_printf(const char* format, ...)
 
 // Redirect printf to our mock
 #define printf mock_printf
-#include "../src/graph_traversals/bellman_ford.c"
+#include "../../src/graph_traversals/bellman_ford.c"
 #undef printf
 
 void test_bellman_ford_simple_path()

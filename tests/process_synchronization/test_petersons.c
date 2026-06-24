@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../src/utils/clear_screen.h"
-#include "../src/utils/cross_platform_timer.h"
-#include "../src/utils/config.h"
+#include "../../src/utils/clear_screen.h"
+#include "../../src/utils/cross_platform_timer.h"
+#include "../../src/utils/config.h"
 
 #define TEST_MOCK_SYNC
 #define is_instant() 1
@@ -13,7 +13,7 @@
 #define sleep_seconds(x) (void)0
 
 // Include Peterson's source to test state logic and step_process
-#include "../src/process_synchronization/petersons_algorithm.c"
+#include "../../src/process_synchronization/petersons_algorithm.c"
 
 void test_petersons_state_transitions()
 {

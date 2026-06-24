@@ -26,7 +26,7 @@ int mock_printf(const char* format, ...)
 
 // Redirect printf to our mock
 #define printf mock_printf
-#include "../src/graph_traversals/bfs.c"
+#include "../../src/graph_traversals/bfs.c"
 #undef printf
 
 void test_bfs_simple()

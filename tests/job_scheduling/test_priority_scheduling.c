@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../src/job_scheduling/job_scheduling.h"
+#include "../../src/job_scheduling/job_scheduling.h"
 
 // Globals to feed input and collect output
 static Process g_input_procs[10];
@@ -49,7 +49,7 @@ void mock_add_to_history(const char* algorithm, int size, double execution_time)
 
 // Include the source file directly so the compiler compiles priority_scheduling_demo
 // as part of this translation unit, bypassing duplicate symbol linking.
-#include "../src/job_scheduling/priority_scheduling.c"
+#include "../../src/job_scheduling/priority_scheduling.c"
 
 void test_priority_scheduling_basic()
 {

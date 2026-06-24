@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../src/utils/clear_screen.h"
-#include "../src/utils/cross_platform_timer.h"
-#include "../src/utils/config.h"
+#include "../../src/utils/clear_screen.h"
+#include "../../src/utils/cross_platform_timer.h"
+#include "../../src/utils/config.h"
 
 #define TEST_MOCK_SYNC
 #define is_instant() 1
@@ -65,7 +65,7 @@ int mock_printf(const char* format, ...)
 // Redirect functions using preprocessor macros
 #define safe_input_int mock_safe_input_int
 #define printf mock_printf
-#include "../src/process_synchronization/producer_consumer.c"
+#include "../../src/process_synchronization/producer_consumer.c"
 #undef safe_input_int
 #undef printf
 
