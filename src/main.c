@@ -9,6 +9,7 @@
 #include "hashing/hash.h"
 #include "job_scheduling/job_scheduling.h"
 #include "process_synchronization/process_synchronization.h"
+#include "utils/display_header.h"
 #include "utils/safe_input.h"
 #include "searching_algorithms/searching_algorithms.h"
 #include "sorting_algorithms_n2/sorting_algorithms_n2.h"
@@ -66,48 +67,63 @@ void run_legacy_menu()
         switch (choice)
         {
             case 1:
+                display_header("Data Structures");
                 data_structures_demo();
                 break;
             case 2:
+                display_header("Expression Evaluation");
                 expression_evaluation_demo();
                 break;
             case 3:
+                display_header("Sorting Algorithms (n^2)");
                 sorting_algorithms_n2_demo();
                 break;
             case 4:
+                display_header("Advanced Sorting Algorithms");
                 advanced_sorting_demo();
                 break;
             case 5:
+                display_header("Searching Algorithms");
                 searching_algorithms_demo();
                 break;
             case 6:
+                display_header("Graph Traversals");
                 graph_traversals_demo();
                 break;
             case 7:
+                display_header("Hashing Algorithms");
                 hashing_algorithms_demo();
                 break;
             case 8:
+                display_header("Trees");
                 trees_demo();
                 break;
             case 9:
+                display_header("Error Correction Algorithms");
                 error_correction_algorithms_demo();
                 break;
             case 10:
+                display_header("Job Scheduling");
                 job_scheduling_demo();
                 break;
             case 11:
+                display_header("Backtracking Algorithms");
                 backtracking_demo();
                 break;
             case 12:
+                display_header("Dynamic Programming Algorithms");
                 dynamic_programming_demo();
                 break;
             case 13:
+                display_header("String Algorithms");
                 string_algorithms_demo();
                 break;
             case 14:
+                display_header("Process Synchronization");
                 process_synchronization_demo();
                 break;
             case 15:
+                display_header("Settings");
                 settings_menu_demo();
                 break;
         }
