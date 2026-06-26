@@ -12,7 +12,12 @@
 #define is_instant() 1
 #define clear_screen() (void)0
 #define sleep_seconds(x) (void)0
-#define getchar() ((void)'\n')
+
+static int mock_getchar(void)
+{
+    return '\n';
+}
+#define getchar() mock_getchar()
 
 #include "mock_printf.h"
 
