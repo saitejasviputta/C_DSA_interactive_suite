@@ -58,28 +58,22 @@ void benchmark_menu_demo(void)
                 run_mst_benchmark(n);
                 break;
             case 5:
-                printf("\nJob Scheduling benchmark selected for N = %d\n", n);
-                printf("Benchmark module not implemented yet. Implementing in PR 7.\n");
+                run_scheduling_benchmark(n);
                 break;
             case 6:
-                printf("\nString Matching benchmark selected for N = %d\n", n);
-                printf("Benchmark module not implemented yet. Implementing in PR 8.\n");
+                run_strings_benchmark(n);
                 break;
             case 7:
-                printf("\nDynamic Programming vs Recursion benchmark selected for N = %d\n", n);
-                printf("Benchmark module not implemented yet. Implementing in PR 9.\n");
+                run_dp_benchmark(n);
                 break;
             case 8:
-                printf("\nHash Map Collision benchmark selected for N = %d\n", n);
-                printf("Benchmark module not implemented yet. Implementing in PR 10.\n");
+                run_hashing_benchmark(n);
                 break;
             case 9:
-                printf("\nTrees Performance benchmark selected for N = %d\n", n);
-                printf("Benchmark module not implemented yet. Implementing in PR 11.\n");
+                run_trees_benchmark(n);
                 break;
             case 10:
-                printf("\nBacktracking benchmark selected for N = %d\n", n);
-                printf("Benchmark module not implemented yet. Implementing in PR 12.\n");
+                run_backtracking_benchmark(n);
                 break;
         }
     }

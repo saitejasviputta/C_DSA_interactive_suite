@@ -50,4 +50,33 @@ void run_graphs_benchmark(int v);
  * Runs benchmarks for MST algorithms with input size V (vertices).
  */
 void run_mst_benchmark(int v);
+/**
+ * Runs benchmarks for Job Scheduling algorithms with input size N.
+ */
+void run_scheduling_benchmark(int n);
+
+/**
+ * Runs benchmarks for String Matching algorithms with input size N.
+ */
+void run_strings_benchmark(int n);
+
+/**
+ * Runs benchmarks for Dynamic Programming algorithms with input size N.
+ */
+void run_dp_benchmark(int n);
+
+/**
+ * Runs benchmarks for Hash Map collision resolution methods with input size N.
+ */
+void run_hashing_benchmark(int n);
+
+/**
+ * Runs benchmarks for Tree lookups and insertions with input size N.
+ */
+void run_trees_benchmark(int n);
+
+/**
+ * Runs benchmarks for Backtracking algorithms with input size N.
+ */
+void run_backtracking_benchmark(int n);
 #endif // BENCHMARK_H

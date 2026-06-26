@@ -388,6 +388,48 @@ $(TEST_DIR)/test_benchmark_mst$(EXE): $(OBJS) tests/benchmark/test_benchmark_mst
 	@$(call MKDIR_P,$(TEST_DIR))
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
+test_benchmark_scheduling: $(TEST_DIR)/test_benchmark_scheduling$(EXE)
+	$(TEST_DIR)/test_benchmark_scheduling$(EXE)
+
+$(TEST_DIR)/test_benchmark_scheduling$(EXE): $(OBJS) tests/benchmark/test_benchmark_scheduling.c
+	@$(call MKDIR_P,$(TEST_DIR))
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+test_benchmark_strings: $(TEST_DIR)/test_benchmark_strings$(EXE)
+	$(TEST_DIR)/test_benchmark_strings$(EXE)
+
+$(TEST_DIR)/test_benchmark_strings$(EXE): $(OBJS) tests/benchmark/test_benchmark_strings.c
+	@$(call MKDIR_P,$(TEST_DIR))
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+test_benchmark_dp: $(TEST_DIR)/test_benchmark_dp$(EXE)
+	$(TEST_DIR)/test_benchmark_dp$(EXE)
+
+$(TEST_DIR)/test_benchmark_dp$(EXE): $(OBJS) tests/benchmark/test_benchmark_dp.c
+	@$(call MKDIR_P,$(TEST_DIR))
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+test_benchmark_hashing: $(TEST_DIR)/test_benchmark_hashing$(EXE)
+	$(TEST_DIR)/test_benchmark_hashing$(EXE)
+
+$(TEST_DIR)/test_benchmark_hashing$(EXE): $(OBJS) tests/benchmark/test_benchmark_hashing.c
+	@$(call MKDIR_P,$(TEST_DIR))
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+test_benchmark_trees: $(TEST_DIR)/test_benchmark_trees$(EXE)
+	$(TEST_DIR)/test_benchmark_trees$(EXE)
+
+$(TEST_DIR)/test_benchmark_trees$(EXE): $(OBJS) tests/benchmark/test_benchmark_trees.c
+	@$(call MKDIR_P,$(TEST_DIR))
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+test_benchmark_backtracking: $(TEST_DIR)/test_benchmark_backtracking$(EXE)
+	$(TEST_DIR)/test_benchmark_backtracking$(EXE)
+
+$(TEST_DIR)/test_benchmark_backtracking$(EXE): $(OBJS) tests/benchmark/test_benchmark_backtracking.c
+	@$(call MKDIR_P,$(TEST_DIR))
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
 test_shell_sort: $(TEST_DIR)/test_shell_sort$(EXE)
 	$(TEST_DIR)/test_shell_sort$(EXE)
 
