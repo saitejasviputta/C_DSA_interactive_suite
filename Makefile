@@ -20,7 +20,8 @@ CFLAGS = -Wall -Wextra -Werror -std=c11 -g \
 	-Isrc/dynamic_programming \
 	-Isrc/string_algorithms \
 	-Isrc/backtracking \
-	-Isrc/process_synchronization
+	-Isrc/process_synchronization \
+	-Isrc/benchmark
 	# -Isrc/tui
 
 # LDFLAGS = -lncurses
@@ -40,7 +41,8 @@ SRC_DIRS = \
 	src/dynamic_programming \
 	src/string_algorithms \
 	src/backtracking \
-	src/process_synchronization
+	src/process_synchronization \
+	src/benchmark
 
 # SRCS = $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c))
 # OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
@@ -50,6 +52,7 @@ ifeq ($(OS),Windows_NT)
 	RM_DIR = cmd /c rmdir /s /q
 	EXE = .exe
 	MKDIR_P = cmd /c if not exist "$(subst /,\,$(1))" mkdir "$(subst /,\,$(1))"
+	LDFLAGS += -lpsapi
 else
 	RM = rm -f
 	RM_DIR = rm -rf
@@ -115,7 +118,7 @@ TEST_BINS = test_circ_queue test_bst test_search test_hash_func \
             test_string_algorithms test_expression_evaluation \
             test_fcfs test_sjf test_srtf test_round_robin test_priority_scheduling test_preemptive_priority \
             test_dining_philosophers test_petersons test_producer_consumer \
-            test_dijkstra test_bellman_ford test_bfs test_dfs test_topological_sort
+            test_dijkstra test_bellman_ford test_bfs test_dfs test_topological_sort test_benchmark
 
 test: $(TEST_BINS)
 
@@ -307,6 +310,13 @@ test_history_logger: $(TEST_DIR)/test_history_logger$(EXE)
 	$(TEST_DIR)/test_history_logger$(EXE)
 
 $(TEST_DIR)/test_history_logger$(EXE): $(OBJ_DIR)/src/utils/history_logger.o tests/utils/test_history_logger.c
+	@$(call MKDIR_P,$(TEST_DIR))
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+test_benchmark: $(TEST_DIR)/test_benchmark$(EXE)
+	$(TEST_DIR)/test_benchmark$(EXE)
+
+$(TEST_DIR)/test_benchmark$(EXE): $(OBJ_DIR)/src/benchmark/benchmark.o tests/benchmark/test_benchmark.c
 	@$(call MKDIR_P,$(TEST_DIR))
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 

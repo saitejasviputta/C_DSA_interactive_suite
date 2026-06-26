@@ -15,6 +15,7 @@
 #include "utils/config.h"
 #include "utils/display_header.h"
 #include "utils/safe_input.h"
+#include "benchmark.h"
 #ifndef _WIN32
 #include "tui/tui.h"
 #endif
@@ -50,8 +51,9 @@ void run_legacy_menu()
             "click 13 for string algorithms demo\n"
             "click 14 for process synchronization algorithms demo\n"
             "click 15 for setting animation speed (by default 2s)\n"
+            "click 16 for algorithm benchmarking and profiling demo\n"
             "enter choice : ",
-            1, 15 // limits
+            1, 16 // limits
         );
 
         if (status == -111)
@@ -125,6 +127,10 @@ void run_legacy_menu()
             case 15:
                 display_header("Settings");
                 settings_menu_demo();
+                break;
+            case 16:
+                display_header("Algorithm Benchmarking & Profiling");
+                benchmark_menu_demo();
                 break;
         }
     }
