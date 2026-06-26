@@ -21,6 +21,7 @@ set(SRC_DIRS
     src/string_algorithms
     src/backtracking
     src/process_synchronization
+    src/benchmark
 )
 
 # Header search paths
@@ -51,6 +52,10 @@ if(NOT WIN32)
     set(EXTRA_LIBS ${CURSES_LIBRARIES})
 else()
     set(EXTRA_LIBS "")
+endif()
+
+if(WIN32)
+    list(APPEND EXTRA_LIBS "psapi")
 endif()
 
 # Build library containing all common object files
