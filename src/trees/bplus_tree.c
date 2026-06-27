@@ -675,15 +675,21 @@ void bplus_tree_demo(void)
                         break;
                     if (s == 0)
                         continue;
+                    bool cancelled = false;
                     while (1)
                     {
                         int s2 = safe_input_int(&upper, "Enter upper bound key: ", lower, 10000);
                         if (s2 == INPUT_EXIT_SIGNAL)
+                        {
+                            cancelled = true;
                             break;
+                        }
                         if (s2 == 0)
                             continue;
                         break;
                     }
+                    if (cancelled)
+                        break;
                     printf("Range query results for [%d, %d]:\n", lower, upper);
                     bplus_tree_range_query(tree, lower, upper);
                     break;
