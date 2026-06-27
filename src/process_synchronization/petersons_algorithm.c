@@ -201,10 +201,6 @@ void petersons_algorithm_demo(void)
     {
         clear_screen();
     }
-    printf(
-        "\nPeterson's Algorithm simulation is not implemented yet (Structural baseline active).\n");
-    printf("Press Enter to continue...");
-    getchar();
     int flag[2] = {0, 0};
     int turn = 0;
     int pc[2] = {0, 0};
