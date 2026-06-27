@@ -367,6 +367,7 @@ void avl_demo(void)
             {
                 int delete_value;
                 int delete_status;
+                bool cancelled = false;
                 while (1)
                 {
                     delete_status = safe_input_int(
@@ -375,14 +376,15 @@ void avl_demo(void)
                         100);
                     if (delete_status == INPUT_EXIT_SIGNAL)
                     {
-                        printf("\nExiting AVL tree demo\n");
-                        destroy_avl(root);
-                        return;
+                        cancelled = true;
+                        break;
                     }
                     if (delete_status == 0)
                         continue;
                     break;
                 }
+                if (cancelled)
+                    continue;
                 int status = avl_delete(&root, delete_value);
                 if (status == 0)
                 {
