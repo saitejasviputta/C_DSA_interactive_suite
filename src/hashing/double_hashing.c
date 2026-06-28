@@ -5,6 +5,17 @@
 #include <stdio.h>
 #include <string.h>
 
+static int gcd(int a, int b)
+{
+    while (b != 0)
+    {
+        int t = b;
+        b = a % b;
+        a = t;
+    }
+    return a;
+}
+
 // secondary hash: the probe step size for double hashing. 1 + (value % (length - 1))
 // always lands in [1, length - 1], so the step is never 0 (which would stall probing)
 // and it depends on the key -- the defining property of double hashing. local helper,
@@ -15,7 +26,16 @@ static int second_hash(int value, int length_of_array)
     {
         return 1; // single-slot table: step value is irrelevant, just stay non-zero
     }
-    return 1 + (value % (length_of_array - 1));
+    int step = 1 + (value % (length_of_array - 1));
+    while (gcd(step, length_of_array) != 1)
+    {
+        step++;
+        if (step >= length_of_array)
+        {
+            step = 1;
+        }
+    }
+    return step;
 }
 
 void double_hashing_demo(void)
