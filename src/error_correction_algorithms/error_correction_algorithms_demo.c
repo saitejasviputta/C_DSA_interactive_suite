@@ -1,3 +1,4 @@
+#include "display_header.h"
 #include "error_correction_algorithms.h"
 #include "safe_input.h"
 #include <stdio.h>
@@ -38,46 +39,57 @@ void error_correction_algorithms_demo(void)
         switch (ECA_choice)
         {
             case 1:
+                display_header("Checksum (Sender)");
                 checksum_demo();
                 break;
 
             case 2:
+                display_header("Checksum (Receiver)");
                 checksum_receiver_demo();
                 break;
 
             case 3:
+                display_header("CRC (Sender)");
                 crc_demo();
                 break;
 
             case 4:
+                display_header("CRC (Receiver)");
                 crc_receiver_demo();
                 break;
 
             case 5:
+                display_header("LRC (Sender)");
                 lrc_demo();
                 break;
 
             case 6:
+                display_header("LRC (Receiver)");
                 lrc_receiver_demo();
                 break;
 
             case 7:
+                display_header("Parity Bit");
                 parity_bit_demo();
                 break;
 
             case 8:
+                display_header("VRC (Sender)");
                 vrc_demo();
                 break;
 
             case 9:
+                display_header("VRC (Receiver)");
                 vrc_receiver_demo();
                 break;
 
             case 10:
+                display_header("Hamming Code (Sender)");
                 hamming_demo();
                 break;
 
             case 11:
+                display_header("Hamming Code (Receiver)");
                 hamming_receiver_demo();
                 break;
 
