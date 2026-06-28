@@ -1,3 +1,4 @@
+#include "display_header.h"
 #include "hash.h"
 #include "safe_input.h"
 #include <stdio.h>
@@ -26,18 +27,22 @@ void hashing_algorithms_demo(void)
         switch (hash_algo_choice)
         {
             case 1:
+                display_header("Linear Probing");
                 linear_probing_demo();
                 break;
 
             case 2:
+                display_header("Separate Chaining");
                 separate_chaining_demo();
                 break;
 
             case 3:
+                display_header("Quadratic Probing");
                 quadratic_probing_demo();
                 break;
 
             case 4:
+                display_header("Double Hashing");
                 double_hashing_demo();
                 break;
         }
