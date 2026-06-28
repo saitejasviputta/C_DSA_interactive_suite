@@ -86,7 +86,7 @@ void test_query_range(void)
     assert(query_range(st, 0, 0, n - 1, 2, 2) == 5);  // Single element
 
     // Test out-of-bounds ranges
-    assert(query_range(st, 0, 0, n - 1, -5, -1) == 0); // Entirely left
+    assert(query_range(st, 0, 0, n - 1, -5, -1) == 0);  // Entirely left
     assert(query_range(st, 0, 0, n - 1, 6, 10) == 0);   // Entirely right
     assert(query_range(st, 0, 0, n - 1, -5, 10) == 36); // Enclosing range
     assert(query_range(st, 0, 0, n - 1, -2, 2) == 9);   // Overlapping left: elements 0 to 2
@@ -116,8 +116,8 @@ void test_update_point(void)
     // Update index 5 from 11 to -3
     update_point(st, 0, 0, n - 1, 5, -3);
     assert(query_range(st, 0, 0, n - 1, 5, 5) == -3);
-    assert(query_range(st, 0, 0, n - 1, 4, 5) == 6);   // 9 + (-3)
-    assert(query_range(st, 0, 0, n - 1, 0, 5) == 27);  // 41 - 11 - 3
+    assert(query_range(st, 0, 0, n - 1, 4, 5) == 6);  // 9 + (-3)
+    assert(query_range(st, 0, 0, n - 1, 0, 5) == 27); // 41 - 11 - 3
 
     destroy_segment_tree(st);
     printf("test_update_point passed.\n");

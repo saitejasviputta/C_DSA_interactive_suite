@@ -226,4 +226,3 @@ void printStack(const stack* s);
 void printStackAsInts(const stack* s);
 
 #endif
-
