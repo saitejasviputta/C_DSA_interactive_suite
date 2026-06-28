@@ -1,4 +1,5 @@
 #include "data_structures.h"
+#include "display_header.h"
 #include "safe_input.h"
 #include <stdio.h>
 
@@ -51,26 +52,31 @@ void data_structures_demo(void)
 
                     if (linear_ds_choice == 1)
                     {
+                        display_header("Singly Linked List");
                         sll_demo();
                         continue;
                     }
                     if (linear_ds_choice == 2)
                     {
+                        display_header("Doubly Linked List");
                         dll_demo();
                         continue;
                     }
                     if (linear_ds_choice == 3)
                     {
+                        display_header("Arrays");
                         array_demo();
                         continue;
                     }
                     if (linear_ds_choice == 4)
                     {
+                        display_header("Priority Queue");
                         priority_queue_demo();
                         continue;
                     }
                     if (linear_ds_choice == 5)
                     {
+                        display_header("Simple Queue");
                         simple_queue_demo();
                         continue;
                     }
@@ -96,18 +102,22 @@ void data_structures_demo(void)
                         break;
                     if (circular_variant_choice == 1)
                     {
+                        display_header("Circular Queue");
                         circular_queue_demo();
                     }
                     if (circular_variant_choice == 2)
                     {
+                        display_header("Singly Circular Linked List");
                         scll_demo();
                     }
                     if (circular_variant_choice == 3)
                     {
+                        display_header("Doubly Circular Linked List");
                         dcll_demo();
                     }
                     if (circular_variant_choice == 4)
                     {
+                        display_header("Double-Ended Queue (Deque)");
                         deque_demo();
                     }
                 }
@@ -115,6 +125,7 @@ void data_structures_demo(void)
                 break;
 
             case 3:
+                display_header("Segment Tree");
                 segment_tree_demo();
                 break;
         }
