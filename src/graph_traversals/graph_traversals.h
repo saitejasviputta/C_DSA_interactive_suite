@@ -131,4 +131,7 @@ bool bipartite_color(Graph* graph, int* color);
 int max_bipartite_matching(Graph* graph, int** match_pairs, int* match_count);
 int hopcroft_karp(Graph* graph, int** match_pairs, int* match_count);
 
+// ------------------For Eulerian Path----------------------------------------
+int find_eulerian_path(Graph* graph, int** path, int* path_len);
+
 #endif
