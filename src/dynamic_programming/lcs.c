@@ -14,9 +14,24 @@ static int max(int a, int b)
 int lcs(char* X, char* Y, int m, int n)
 {
     int** L = malloc((m + 1) * sizeof(int*));
+    if (L == NULL)
+    {
+        printf("Memory allocation failed for DP table.\n");
+        return -1;
+    }
     for (int i = 0; i <= m; i++)
     {
         L[i] = malloc((n + 1) * sizeof(int));
+        if (L[i] == NULL)
+        {
+            printf("Memory allocation failed for DP table row %d.\n", i);
+            for (int j = 0; j < i; j++)
+            {
+                free(L[j]);
+            }
+            free(L);
+            return -1;
+        }
     }
 
     int i, j;

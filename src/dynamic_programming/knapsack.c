@@ -14,9 +14,24 @@ int knapsack(int W, int wt[], int val[], int n)
 {
     int i, w;
     int** K = malloc((n + 1) * sizeof(int*));
+    if (K == NULL)
+    {
+        printf("Memory allocation failed for DP table.\n");
+        return -1;
+    }
     for (i = 0; i <= n; i++)
     {
         K[i] = malloc((W + 1) * sizeof(int));
+        if (K[i] == NULL)
+        {
+            printf("Memory allocation failed for DP table row %d.\n", i);
+            for (int j = 0; j < i; j++)
+            {
+                free(K[j]);
+            }
+            free(K);
+            return -1;
+        }
     }
 
     for (i = 0; i <= n; i++)

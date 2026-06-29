@@ -22,6 +22,11 @@ long long fibonacci_iterative(int n)
         return n;
 
     long long* dp = malloc((n + 1) * sizeof(long long));
+    if (dp == NULL)
+    {
+        printf("Memory allocation failed for DP array.\n");
+        return -1;
+    }
     dp[0] = 0;
     dp[1] = 1;
 
@@ -53,6 +58,11 @@ void fibonacci_demo(void)
             continue;
 
         long long* memo = malloc((n + 1) * sizeof(long long));
+        if (memo == NULL)
+        {
+            printf("Memory allocation failed for memoization array.\n");
+            continue;
+        }
         for (int i = 0; i <= n; i++)
         {
             memo[i] = -1;
