@@ -24,8 +24,9 @@ void graph_traversals_demo(void)
                                                     "10. Prim MST\n"
                                                     "11. Floyd-Warshall\n"
                                                     "12. Strongly Connected Components (SCC)\n"
+                                                    "13. Maximum Flow\n"
                                                     "\nEnter choice (-1 to return): ",
-                                                    1, 12);
+                                                    1, 13);
 
         if (graph_traversal_status == INPUT_EXIT_SIGNAL)
         {
@@ -87,6 +88,10 @@ void graph_traversals_demo(void)
             case 12:
                 display_header("Strongly Connected Components (SCC)");
                 scc_demo();
+                break;
+            case 13:
+                display_header("Maximum Flow");
+                max_flow_demo();
                 break;
         }
     }
