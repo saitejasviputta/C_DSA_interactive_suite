@@ -1,6 +1,6 @@
+#include "advanced_graph_algorithms.h"
 #include "clear_screen.h"
 #include "config.h"
-#include "advanced_graph_algorithms.h"
 #include "safe_input.h"
 #include <stdio.h>
 #include <stdlib.h>
