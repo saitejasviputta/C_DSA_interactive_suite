@@ -325,3 +325,120 @@ void destroy_fibonacci_heap(FibonacciNode* min_node)
     }
     free(roots);
 }
+
+/* Cuts node x from parent y and adds x to the root list */
+static FibonacciNode* fib_heap_cut(FibonacciNode* min_node, FibonacciNode* x, FibonacciNode* y)
+{
+    /* Remove x from y's child list */
+    if (x->right == x)
+    {
+        y->child = NULL;
+    }
+    else
+    {
+        if (y->child == x)
+        {
+            y->child = x->right;
+        }
+        list_remove(x);
+    }
+    y->degree--;
+
+    /* Add x to the root list */
+    list_insert(min_node, x);
+    x->parent = NULL;
+    x->mark = false;
+
+    return min_node;
+}
+
+/* Performs cascading cut on node y */
+static FibonacciNode* fib_heap_cascading_cut(FibonacciNode* min_node, FibonacciNode* y)
+{
+    FibonacciNode* z = y->parent;
+    if (z != NULL)
+    {
+        if (y->mark == false)
+        {
+            y->mark = true;
+        }
+        else
+        {
+            /* Cut y from z and repeat cascading cut on z */
+            min_node = fib_heap_cut(min_node, y, z);
+            min_node = fib_heap_cascading_cut(min_node, z);
+        }
+    }
+    return min_node;
+}
+
+/* Decreases the key of target node in the Fibonacci Heap */
+FibonacciNode* fib_heap_decrease_key(FibonacciNode* min_node, FibonacciNode* target, int new_key)
+{
+    if (target == NULL || min_node == NULL || new_key > target->key)
+    {
+        return min_node;
+    }
+
+    target->key = new_key;
+    FibonacciNode* y = target->parent;
+
+    if (y != NULL && target->key < y->key)
+    {
+        min_node = fib_heap_cut(min_node, target, y);
+        min_node = fib_heap_cascading_cut(min_node, y);
+    }
+
+    if (target->key < min_node->key)
+    {
+        min_node = target;
+    }
+
+    return min_node;
+}
+
+/* Deletes a node from the Fibonacci Heap */
+FibonacciNode* fib_heap_delete(FibonacciNode* min_node, FibonacciNode* target)
+{
+    if (min_node == NULL || target == NULL)
+    {
+        return min_node;
+    }
+
+    /* Decrease key to negative infinity */
+    min_node = fib_heap_decrease_key(min_node, target, -2147483647 - 1);
+
+    /* Extract the minimum element (which is now target) */
+    return fib_heap_extract_min(min_node, NULL, NULL);
+}
+
+/* Recursively searches for a node with the given key starting from a root/sibling list */
+FibonacciNode* fib_heap_find_node(FibonacciNode* min_node, int key)
+{
+    if (min_node == NULL)
+    {
+        return NULL;
+    }
+
+    FibonacciNode* curr = min_node;
+    FibonacciNode* start = min_node;
+
+    do
+    {
+        if (curr->key == key)
+        {
+            return curr;
+        }
+
+        /* Search children of current node */
+        FibonacciNode* res = fib_heap_find_node(curr->child, key);
+        if (res != NULL)
+        {
+            return res;
+        }
+
+        curr = curr->right;
+    } while (curr != start);
+
+    return NULL;
+}

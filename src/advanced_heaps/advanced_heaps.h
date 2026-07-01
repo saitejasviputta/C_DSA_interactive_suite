@@ -53,5 +53,8 @@ void destroy_fibonacci_heap(FibonacciNode* min_node);
 FibonacciNode* fib_heap_insert(FibonacciNode* min_node, int key, int value);
 FibonacciNode* fib_heap_union(FibonacciNode* min1, FibonacciNode* min2);
 FibonacciNode* fib_heap_extract_min(FibonacciNode* min_node, int* min_key, int* min_val);
+FibonacciNode* fib_heap_decrease_key(FibonacciNode* min_node, FibonacciNode* target, int new_key);
+FibonacciNode* fib_heap_delete(FibonacciNode* min_node, FibonacciNode* target);
+FibonacciNode* fib_heap_find_node(FibonacciNode* min_node, int key);
 
 #endif /* ADVANCED_HEAPS_H */
