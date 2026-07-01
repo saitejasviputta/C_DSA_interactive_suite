@@ -1,3 +1,4 @@
+#include "display_header.h"
 #include "process_synchronization.h"
 #include "safe_input.h"
 #include <stdio.h>
