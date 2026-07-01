@@ -6,6 +6,8 @@ void process_synchronization_demo(void)
 {
     while (1)
     {
+        display_header("Process Synchronization");
+
         int choice;
         int status = safe_input_int(&choice,
                                     "\n\n--- Process Synchronization Demos ---\n"

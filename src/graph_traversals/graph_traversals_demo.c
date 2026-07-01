@@ -9,6 +9,8 @@ void graph_traversals_demo(void)
 {
     while (1)
     {
+        display_header("Graph Traversals");
+
         int graph_traversal_choice;
         int graph_traversal_status = safe_input_int(&graph_traversal_choice,
                                                     "\nGraph Algorithms Demo\n"

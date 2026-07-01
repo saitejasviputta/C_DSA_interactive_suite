@@ -7,6 +7,8 @@ void data_structures_demo(void)
 {
     while (1)
     {
+        display_header("Data Structures");
+
         int data_structures_choice;
         int data_structures_status =
             safe_input_int(&data_structures_choice,

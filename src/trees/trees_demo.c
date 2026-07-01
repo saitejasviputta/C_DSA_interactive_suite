@@ -9,6 +9,8 @@ void trees_demo(void)
 
     while (1)
     {
+        display_header("Trees");
+
         tree_status = safe_input_int(&tree_choice,
                                      "\nenter 1 for Binary Search Tree demo"
                                      "\nenter 2 for AVL Tree demo"

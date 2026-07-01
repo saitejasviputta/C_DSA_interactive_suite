@@ -172,6 +172,8 @@ void job_scheduling_demo(void)
 {
     while (1)
     {
+        display_header("Job Scheduling");
+
         int sched_choice;
         int sched_status =
             safe_input_int(&sched_choice,

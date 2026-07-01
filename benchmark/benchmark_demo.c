@@ -1,3 +1,4 @@
+#include "display_header.h"
 #include "benchmark.h"
 #include "safe_input.h"
 #include <stdio.h>
@@ -6,6 +7,8 @@ void benchmark_menu_demo(void)
 {
     while (1)
     {
+        display_header("Algorithm Benchmarking & Profiling");
+
         int choice;
         int status = safe_input_int(&choice,
                                     "\n--- Algorithm Benchmarking & Profiling Menu ---\n"
