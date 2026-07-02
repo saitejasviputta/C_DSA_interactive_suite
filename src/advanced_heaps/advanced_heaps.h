@@ -85,12 +85,14 @@ typedef struct SkewNode
     struct SkewNode* right;
 } SkewNode;
 
+/* Leftist Heap Operations */
 LeftistNode* create_leftist_node(int key, int value);
 void destroy_leftist_heap(LeftistNode* root);
 LeftistNode* leftist_heap_merge(LeftistNode* h1, LeftistNode* h2);
 LeftistNode* leftist_heap_insert(LeftistNode* root, int key, int value);
 LeftistNode* leftist_heap_extract_min(LeftistNode* root, int* min_key, int* min_val);
 
+/* Skew Heap Operations */
 SkewNode* create_skew_node(int key, int value);
 void destroy_skew_heap(SkewNode* root);
 SkewNode* skew_heap_merge(SkewNode* h1, SkewNode* h2);
@@ -123,7 +125,6 @@ bool min_max_heap_get_min(MinMaxHeap* heap, int* min_key, int* min_val);
 bool min_max_heap_get_max(MinMaxHeap* heap, int* max_key, int* max_val);
 bool min_max_heap_extract_min(MinMaxHeap* heap, int* min_key, int* min_val);
 bool min_max_heap_extract_max(MinMaxHeap* heap, int* max_key, int* max_val);
-
 /*
  * =========================================================================
  *                              d-Ary Heap
@@ -151,5 +152,4 @@ bool dary_heap_extract_min(DAryHeap* heap, int* min_key, int* min_val);
 bool dary_heap_decrease_key(DAryHeap* heap, int index, int new_key);
 bool dary_heap_get_min(DAryHeap* heap, int* min_key, int* min_val);
 int dary_heap_find_index(DAryHeap* heap, int key);
-
 #endif /* ADVANCED_HEAPS_H */
