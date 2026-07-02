@@ -19,12 +19,16 @@ typedef struct BinomialNode
     struct BinomialNode* sibling;
 } BinomialNode;
 
+/* Constructor & Destructor */
 BinomialNode* create_binomial_node(int key, int value);
 void destroy_binomial_heap(BinomialNode* head);
+
+/* Core Heap Operations */
 BinomialNode* binomial_heap_insert(BinomialNode* head, int key, int value);
 BinomialNode* binomial_heap_merge(BinomialNode* head1, BinomialNode* head2);
 BinomialNode* binomial_heap_extract_min(BinomialNode* head, int* min_key, int* min_val);
 BinomialNode* binomial_heap_decrease_key(BinomialNode* head, BinomialNode* target, int new_key);
+/* Search / Utility Helpers */
 BinomialNode* binomial_heap_find_node(BinomialNode* head, int key);
 
 /*
@@ -90,5 +94,4 @@ void destroy_skew_heap(SkewNode* root);
 SkewNode* skew_heap_merge(SkewNode* h1, SkewNode* h2);
 SkewNode* skew_heap_insert(SkewNode* root, int key, int value);
 SkewNode* skew_heap_extract_min(SkewNode* root, int* min_key, int* min_val);
-
 #endif /* ADVANCED_HEAPS_H */
