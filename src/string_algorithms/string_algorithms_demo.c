@@ -14,8 +14,9 @@ void string_algorithms_demo(void)
                                 "\nenter 1 for Naive String Matching demo"
                                 "\nenter 2 for Knuth-Morris-Pratt (KMP) demo"
                                 "\nenter 3 for Rabin-Karp demo"
+                                "\nenter 4 for Suffix Array & Kasai's LCP demo"
                                 "\nenter choice : ",
-                                1, 3);
+                                1, 4);
 
         if (status == INPUT_EXIT_SIGNAL)
         {
@@ -39,6 +40,10 @@ void string_algorithms_demo(void)
             case 3:
                 display_header("Rabin-Karp");
                 rabin_karp_demo();
+                break;
+            case 4:
+                display_header("Suffix Array & Kasai's LCP");
+                suffix_array_demo();
                 break;
         }
     }
