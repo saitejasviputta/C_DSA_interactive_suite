@@ -48,10 +48,12 @@ typedef struct doubly_ll_Node
     struct doubly_ll_Node* next;
 } doubly_ll_Node;
 
-// Insert a value at the beginning of a doubly linked list. Returns 1 on success, -1 on allocation failure.
+// Insert a value at the beginning of a doubly linked list. Returns 1 on success, -1 on allocation
+// failure.
 int dll_insertAtBeginning(doubly_ll_Node** head_ref, int value);
 
-// Insert a value at the end of a doubly linked list. Returns 1 on success, -1 on allocation failure.
+// Insert a value at the end of a doubly linked list. Returns 1 on success, -1 on allocation
+// failure.
 int dll_insertAtEnd(doubly_ll_Node** head_ref, int value);
 
 // Print the elements of a doubly linked list.
@@ -60,13 +62,15 @@ void dll_printlist(const doubly_ll_Node* head);
 // Search for a key in a doubly linked list. Returns The index of the key or -1 if not found.
 int dll_search(const doubly_ll_Node* head, int key);
 
-// Delete the first element from a doubly linked list. Returns 1 on success, -1 if the list is empty.
+// Delete the first element from a doubly linked list. Returns 1 on success, -1 if the list is
+// empty.
 int dll_deleteAtBeginning(doubly_ll_Node** head_ref);
 
 // Delete the last element from a doubly linked list. Returns 1 on success, -1 if the list is empty.
 int dll_deleteAtEnd(doubly_ll_Node** head_ref);
 
-// Delete the first occurrence of a key from a doubly linked list. Returns 1 on success, -1 if not found.
+// Delete the first occurrence of a key from a doubly linked list. Returns 1 on success, -1 if not
+// found.
 int dll_deleteByValue(doubly_ll_Node** head_ref, int key);
 
 // Free all nodes in a doubly linked list.
@@ -81,10 +85,12 @@ int dll_reverselist(doubly_ll_Node** head_ref);
 // Get the number of nodes in a doubly linked list. Returns The number of nodes in the list.
 int dll_getLength(const doubly_ll_Node* head);
 
-// Insert a value at a specific position in a doubly linked list. Returns 1 on success, -1 on allocation failure, -2 on invalid position.
+// Insert a value at a specific position in a doubly linked list. Returns 1 on success, -1 on
+// allocation failure, -2 on invalid position.
 int dll_insertAtPosition(doubly_ll_Node** head_ref, int value, int position);
 
-// Delete a node at a specific position in a doubly linked list. Returns 1 on success, -1 if the list is empty, -2 on invalid position.
+// Delete a node at a specific position in a doubly linked list. Returns 1 on success, -1 if the
+// list is empty, -2 on invalid position.
 int dll_deleteAtPosition(doubly_ll_Node** head_ref, int position);
 
 // For single linked list
@@ -97,19 +103,23 @@ typedef struct Node
 // Print the elements of a singly linked list.
 void sll_printlist(const Node* head);
 
-// Insert a value at the end of a singly linked list. Returns 1 on success, -1 on allocation failure.
+// Insert a value at the end of a singly linked list. Returns 1 on success, -1 on allocation
+// failure.
 int sll_insertAtEnd(Node** head_ref, int value);
 
-// Delete the first element from a singly linked list. Returns 1 on success, -1 if the list is empty.
+// Delete the first element from a singly linked list. Returns 1 on success, -1 if the list is
+// empty.
 int sll_deleteAtBeginning(Node** head_ref);
 
 // Delete the last element from a singly linked list. Returns 1 on success, -1 if the list is empty.
 int sll_deleteAtEnd(Node** head_ref);
 
-// Delete the first occurrence of a value from a singly linked list. Returns 1 on success, -2 if the list is empty, -1 if not found.
+// Delete the first occurrence of a value from a singly linked list. Returns 1 on success, -2 if the
+// list is empty, -1 if not found.
 int sll_deleteByValue(Node** head_ref, int value);
 
-// Insert a value at the beginning of a singly linked list. Returns 1 on success, -1 on allocation failure.
+// Insert a value at the beginning of a singly linked list. Returns 1 on success, -1 on allocation
+// failure.
 int sll_insertAtBeginning(Node** head_ref, int value);
 
 // Run the singly linked list demonstration module.
@@ -118,7 +128,8 @@ void sll_demo(void);
 // Search for a key in a singly linked list. Returns The index of the key or -1 if not found.
 int sll_search(const Node* head, int key);
 
-// Reverse a singly linked list in place. Returns 1 on success, -2 if empty, -1 if only one node exists.
+// Reverse a singly linked list in place. Returns 1 on success, -2 if empty, -1 if only one node
+// exists.
 int sll_reverseList(Node** head_ref);
 
 // Free all nodes in a singly linked list.
@@ -127,10 +138,12 @@ void delete_sll(Node* head);
 // Get the number of nodes in a singly linked list. Returns The number of nodes in the list.
 int sll_getLength(const Node* head);
 
-// Insert a value at a specific position in a singly linked list. Returns 1 on success, -1 on allocation failure, -2 on invalid position.
+// Insert a value at a specific position in a singly linked list. Returns 1 on success, -1 on
+// allocation failure, -2 on invalid position.
 int sll_insertAtPosition(Node** head_ref, int value, int position);
 
-// Delete a node at a specific position in a singly linked list. Returns 1 on success, -1 if the list is empty, -2 on invalid position.
+// Delete a node at a specific position in a singly linked list. Returns 1 on success, -1 if the
+// list is empty, -2 on invalid position.
 int sll_deleteAtPosition(Node** head_ref, int position);
 
 // For Priority Queue
@@ -147,16 +160,19 @@ typedef struct priority_queue
     int heap[HEAP_CAPACITY];
 } priority_queue;
 
-// Allocate and initialize a priority queue. Returns Pointer to the created priority queue, or NULL on failure.
+// Allocate and initialize a priority queue. Returns Pointer to the created priority queue, or NULL
+// on failure.
 priority_queue* pq_init(HeapType heapType);
 
 // Insert a value into a priority queue. Returns 1 on success, -1 on failure.
 int insert(priority_queue* pq, int val);
 
-// Remove the top value from a priority queue. Returns true if a value was extracted, false if the queue is empty.
+// Remove the top value from a priority queue. Returns true if a value was extracted, false if the
+// queue is empty.
 bool extractTop(priority_queue* pq, int* result);
 
-// Peek at the top value of a priority queue without removing it. Returns true if the queue is not empty, false otherwise.
+// Peek at the top value of a priority queue without removing it. Returns true if the queue is not
+// empty, false otherwise.
 bool peek_pq(priority_queue* pq, int* result);
 
 // Free resources used by a priority queue.
@@ -187,31 +203,39 @@ typedef struct scll
 // Initialize a singly circular linked list.
 void scll_init(scll* list);
 
-// Insert a value at the beginning of a singly circular linked list. Returns 1 on success, -1 on failure.
+// Insert a value at the beginning of a singly circular linked list. Returns 1 on success, -1 on
+// failure.
 int scll_insertAtBeginning(scll* list, int value);
 
 // Insert a value at the end of a singly circular linked list. Returns 1 on success, -1 on failure.
 int scll_insertAtEnd(scll* list, int value);
 
-// Insert a value at a specific position in a singly circular linked list. Returns 1 on success, -1 on failure, -2 on invalid position.
+// Insert a value at a specific position in a singly circular linked list. Returns 1 on success, -1
+// on failure, -2 on invalid position.
 int scll_insertAtPosition(scll* list, int value, int position);
 
-// Delete the first element from a singly circular linked list. Returns 1 on success, -1 if the list is empty.
+// Delete the first element from a singly circular linked list. Returns 1 on success, -1 if the list
+// is empty.
 int scll_deleteAtBeginning(scll* list);
 
-// Delete the last element from a singly circular linked list. Returns 1 on success, -1 if the list is empty.
+// Delete the last element from a singly circular linked list. Returns 1 on success, -1 if the list
+// is empty.
 int scll_deleteAtEnd(scll* list);
 
-// Delete the first occurrence of a value from a singly circular linked list. Returns 1 on success, -1 on failure.
+// Delete the first occurrence of a value from a singly circular linked list. Returns 1 on success,
+// -1 on failure.
 int scll_deleteByValue(scll* list, int value);
 
-// Delete a node at a specific position in a singly circular linked list. Returns 1 on success, -1 if the list is empty, -2 on invalid position.
+// Delete a node at a specific position in a singly circular linked list. Returns 1 on success, -1
+// if the list is empty, -2 on invalid position.
 int scll_deleteAtPosition(scll* list, int position);
 
-// Search for a value in a singly circular linked list. Returns The index of the value or -1 if not found.
+// Search for a value in a singly circular linked list. Returns The index of the value or -1 if not
+// found.
 int scll_search(const scll* list, int key);
 
-// Get the number of nodes in a singly circular linked list. Returns The number of nodes in the list.
+// Get the number of nodes in a singly circular linked list. Returns The number of nodes in the
+// list.
 int scll_getLength(const scll* list);
 
 // Print the contents of a singly circular linked list.
@@ -259,7 +283,8 @@ void destroy_simple_queue(Queue* queue_ptr);
 // Enqueue a value into a simple linear queue. Returns 1 on success, -1 if the queue is full.
 int enqueue_simple(Queue* queue_ptr, void* value);
 
-// Dequeue a value from a simple linear queue. Returns Pointer to the dequeued value, or NULL if empty.
+// Dequeue a value from a simple linear queue. Returns Pointer to the dequeued value, or NULL if
+// empty.
 void* dequeue_simple(Queue* queue_ptr);
 
 // Display the contents of a simple linear queue.
@@ -280,10 +305,12 @@ int deque_insert_front(Queue* dq, void* value);
 // Insert a value at the rear of a deque. Returns 1 on success, -1 if the deque is full.
 int deque_insert_rear(Queue* dq, void* value);
 
-// Delete and return the front value from a deque. Returns Pointer to the removed value, or NULL if empty.
+// Delete and return the front value from a deque. Returns Pointer to the removed value, or NULL if
+// empty.
 void* deque_delete_front(Queue* dq);
 
-// Delete and return the rear value from a deque. Returns Pointer to the removed value, or NULL if empty.
+// Delete and return the rear value from a deque. Returns Pointer to the removed value, or NULL if
+// empty.
 void* deque_delete_rear(Queue* dq);
 
 // Get the front value from a deque without removing it. Returns The front value.
@@ -323,31 +350,39 @@ typedef struct dcll
 // Initialize a doubly circular linked list.
 void dcll_init(dcll* list);
 
-// Insert a value at the beginning of a doubly circular linked list. Returns 1 on success, -1 on failure.
+// Insert a value at the beginning of a doubly circular linked list. Returns 1 on success, -1 on
+// failure.
 int dcll_insertAtBeginning(dcll* list, int value);
 
 // Insert a value at the end of a doubly circular linked list. Returns 1 on success, -1 on failure.
 int dcll_insertAtEnd(dcll* list, int value);
 
-// Insert a value at a specific position in a doubly circular linked list. Returns 1 on success, -1 on failure, -2 on invalid position.
+// Insert a value at a specific position in a doubly circular linked list. Returns 1 on success, -1
+// on failure, -2 on invalid position.
 int dcll_insertAtPosition(dcll* list, int value, int position);
 
-// Delete the first element from a doubly circular linked list. Returns 1 on success, -1 if the list is empty.
+// Delete the first element from a doubly circular linked list. Returns 1 on success, -1 if the list
+// is empty.
 int dcll_deleteAtBeginning(dcll* list);
 
-// Delete the last element from a doubly circular linked list. Returns 1 on success, -1 if the list is empty.
+// Delete the last element from a doubly circular linked list. Returns 1 on success, -1 if the list
+// is empty.
 int dcll_deleteAtEnd(dcll* list);
 
-// Delete the first occurrence of a value from a doubly circular linked list. Returns 1 on success, -1 if not found.
+// Delete the first occurrence of a value from a doubly circular linked list. Returns 1 on success,
+// -1 if not found.
 int dcll_deleteByValue(dcll* list, int value);
 
-// Delete a node at a specific position in a doubly circular linked list. Returns 1 on success, -1 if the list is empty, -2 on invalid position.
+// Delete a node at a specific position in a doubly circular linked list. Returns 1 on success, -1
+// if the list is empty, -2 on invalid position.
 int dcll_deleteAtPosition(dcll* list, int position);
 
-// Search for a value in a doubly circular linked list. Returns The index of the value or -1 if not found.
+// Search for a value in a doubly circular linked list. Returns The index of the value or -1 if not
+// found.
 int dcll_search(const dcll* list, int key);
 
-// Get the number of nodes in a doubly circular linked list. Returns The number of nodes in the list.
+// Get the number of nodes in a doubly circular linked list. Returns The number of nodes in the
+// list.
 int dcll_getLength(const dcll* list);
 
 // Print the contents of a doubly circular linked list.

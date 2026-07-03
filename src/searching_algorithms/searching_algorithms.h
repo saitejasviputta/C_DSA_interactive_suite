@@ -19,10 +19,12 @@ int linear_search(int arr[], int target, int length_of_array);
 // Search for a value using binary search. Returns The index of the target or -1 if not found.
 int binary_search(int arr[], int target, int length_of_array);
 
-// Search for a value using recursive binary search. Returns The index of the target or -1 if not found.
+// Search for a value using recursive binary search. Returns The index of the target or -1 if not
+// found.
 int binary_search_recursive(int arr[], int target, int low, int high);
 
-// Search for a value using interpolation search. Returns The index of the target or -1 if not found.
+// Search for a value using interpolation search. Returns The index of the target or -1 if not
+// found.
 int interpolation_search(int arr[], int target, int length_of_array);
 
 // Run the interpolation search demonstration module.
