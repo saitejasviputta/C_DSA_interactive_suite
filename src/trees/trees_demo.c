@@ -20,6 +20,7 @@ void trees_demo(void)
                                      "\nenter 6 for B+ Tree demo"
                                      "\nenter 7 for Segment Tree demo"
                                      "\nenter 8 for Splay Tree demo"
+                                     "\nenter 8 for Red-Black Tree demo"
                                      "\nenter choice : ",
                                      1, 8);
 
@@ -65,6 +66,8 @@ void trees_demo(void)
             case 8:
                 display_header("Splay Tree");
                 splay_tree_demo();
+                display_header("Red-Black Tree");
+                red_black_tree_demo();
                 break;
         }
     }
