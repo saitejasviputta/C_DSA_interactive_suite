@@ -6,10 +6,20 @@
 rbTree* create_rb_tree(void)
 {
     rbTree* tree = (rbTree*)malloc(sizeof(rbTree));
+    if (tree == NULL)
+    {
+        return NULL;
+    }
     tree->TNULL = (rbNode*)malloc(sizeof(rbNode));
+    if (tree->TNULL == NULL)
+    {
+        free(tree);
+        return NULL;
+    }
     tree->TNULL->color = BLACK;
     tree->TNULL->left = NULL;
     tree->TNULL->right = NULL;
+    tree->TNULL->parent = NULL;
     tree->root = tree->TNULL;
     return tree;
 }
@@ -107,7 +117,13 @@ static void rb_insert_fixup(rbTree* tree, rbNode* k)
 
 void rb_insert(rbTree* tree, int key)
 {
+    if (tree == NULL)
+        return;
     rbNode* node = (rbNode*)malloc(sizeof(rbNode));
+    if (node == NULL)
+    {
+        return;
+    }
     node->data = key;
     node->parent = NULL;
     node->left = tree->TNULL;
@@ -203,6 +219,11 @@ void red_black_tree_demo(void)
 {
     printf("\n--- Red-Black Tree (Self-Balancing BST) Demo ---\n");
     rbTree* tree = create_rb_tree();
+    if (tree == NULL)
+    {
+        printf("Error: Failed to create Red-Black Tree due to memory allocation failure.\n");
+        return;
+    }
 
     printf("Action: Inserting 10, 20, 30, 15, 25...\n");
     rb_insert(tree, 10);
