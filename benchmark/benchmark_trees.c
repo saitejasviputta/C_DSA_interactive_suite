@@ -33,7 +33,8 @@ static void generate_unique_keys(int* keys, int n)
 
 void run_trees_benchmark(int n)
 {
-    srand((unsigned int)time(NULL));
+    // Seed random generator with fixed seed
+    srand(BENCHMARK_SEED);
 
     if (n > 5000)
     {
@@ -49,7 +50,7 @@ void run_trees_benchmark(int n)
     printf("\n========================================================================\n");
     printf("             BENCHMARK REPORT: TREES LOOKUP & INSERTION (N = %d)\n", n);
     printf("========================================================================\n");
-    printf("%-30s %-20s %-12s %-10s\n", "Structure", "Execution Time", "Peak Memory", "Status");
+    printf("%-30s %-25s %-15s %-10s\n", "Structure", "Execution Time", "Peak Memory", "Status");
     printf("------------------------------------------------------------------------\n");
 
     const char* algos[] = {"Binary Search Tree (BST)", "Threaded Binary Tree (TBT)",
@@ -58,161 +59,156 @@ void run_trees_benchmark(int n)
 
     for (int i = 0; i < 6; i++)
     {
-        size_t mem_before = benchmark_get_peak_memory();
-        double start_time = benchmark_get_time();
+        double times[BENCHMARK_DEFAULT_ITERATIONS];
+        size_t peak_mem = 0;
 
-        // Redirect stdout
-        fflush(stdout);
-        int stdout_dup = dup(1);
+        RUN_BENCHMARK(times, peak_mem, {
+            // Redirect stdout
+            fflush(stdout);
+            int stdout_dup = dup(1);
 #ifdef _WIN32
-        FILE* fnull = fopen("NUL", "w");
+            FILE* fnull = fopen("NUL", "w");
 #else
-        FILE* fnull = fopen("/dev/null", "w");
+            FILE* fnull = fopen("/dev/null", "w");
 #endif
-        if (fnull != NULL && stdout_dup >= 0)
-        {
-            dup2(fileno(fnull), 1);
-        }
+            if (fnull != NULL && stdout_dup >= 0)
+            {
+                dup2(fileno(fnull), 1);
+            }
 
-        if (i == 0) // BST
-        {
-            bstNode* root = NULL;
-            for (int k = 0; k < n; k++)
+            if (i == 0) // BST
             {
-                bst_insert(&root, keys[k]);
-            }
-            for (int k = 0; k < n; k++)
-            {
-                bstNode* curr = root;
-                int key = keys[k];
-                while (curr)
-                {
-                    if (curr->data == key)
-                        break;
-                    curr = (key < curr->data) ? curr->left : curr->right;
-                }
-            }
-            destroy_bst(root);
-        }
-        else if (i == 1) // TBT
-        {
-            TBTnode* root = NULL;
-            for (int k = 0; k < n; k++)
-            {
-                insert_node_tbt(&root, keys[k]);
-            }
-            for (int k = 0; k < n; k++)
-            {
-                TBTnode* curr = root;
-                int key = keys[k];
-                while (curr)
-                {
-                    if (curr->data == key)
-                        break;
-                    if (key < curr->data)
-                    {
-                        if (curr->lthread)
-                            break;
-                        curr = curr->left;
-                    }
-                    else
-                    {
-                        if (curr->rthread)
-                            break;
-                        curr = curr->right;
-                    }
-                }
-            }
-            destroy_tbt(root);
-        }
-        else if (i == 2) // AVL
-        {
-            avlNode* root = NULL;
-            for (int k = 0; k < n; k++)
-            {
-                avl_insert(&root, keys[k]);
-            }
-            for (int k = 0; k < n; k++)
-            {
-                avlNode* curr = root;
-                int key = keys[k];
-                while (curr)
-                {
-                    if (curr->data == key)
-                        break;
-                    curr = (key < curr->data) ? curr->left : curr->right;
-                }
-            }
-            destroy_avl(root);
-        }
-        else if (i == 3) // Trie
-        {
-            TrieNode* root = trie_create_node();
-            char buf[32];
-            for (int k = 0; k < n; k++)
-            {
-                sprintf(buf, "%d", keys[k]);
-                trie_insert(root, buf);
-            }
-            for (int k = 0; k < n; k++)
-            {
-                sprintf(buf, "%d", keys[k]);
-                trie_search(root, buf);
-            }
-            trie_free(root);
-        }
-        else if (i == 4) // B-Tree
-        {
-            btreeNode* root = NULL;
-            int t = 3;
-            for (int k = 0; k < n; k++)
-            {
-                btree_insert(&root, keys[k], t);
-            }
-            for (int k = 0; k < n; k++)
-            {
-                btree_search(root, keys[k]);
-            }
-            btree_destroy(root);
-        }
-        else if (i == 5) // B+ Tree
-        {
-            BPlusTree* tree = bplus_tree_create(4);
-            if (tree)
-            {
+                bstNode* root = NULL;
                 for (int k = 0; k < n; k++)
                 {
-                    bplus_tree_insert(tree, keys[k], keys[k]);
+                    bst_insert(&root, keys[k]);
                 }
-                int val_out;
                 for (int k = 0; k < n; k++)
                 {
-                    bplus_tree_search(tree, keys[k], &val_out);
+                    bstNode* curr = root;
+                    int key = keys[k];
+                    while (curr)
+                    {
+                        if (curr->data == key)
+                            break;
+                        curr = (key < curr->data) ? curr->left : curr->right;
+                    }
                 }
-                bplus_tree_destroy(tree);
+                destroy_bst(root);
             }
-        }
+            else if (i == 1) // TBT
+            {
+                TBTnode* root = NULL;
+                for (int k = 0; k < n; k++)
+                {
+                    insert_node_tbt(&root, keys[k]);
+                }
+                for (int k = 0; k < n; k++)
+                {
+                    TBTnode* curr = root;
+                    int key = keys[k];
+                    while (curr)
+                    {
+                        if (curr->data == key)
+                            break;
+                        if (key < curr->data)
+                        {
+                            if (curr->lthread)
+                                break;
+                            curr = curr->left;
+                        }
+                        else
+                        {
+                            if (curr->rthread)
+                                break;
+                            curr = curr->right;
+                        }
+                    }
+                }
+                destroy_tbt(root);
+            }
+            else if (i == 2) // AVL
+            {
+                avlNode* root = NULL;
+                for (int k = 0; k < n; k++)
+                {
+                    avl_insert(&root, keys[k]);
+                }
+                for (int k = 0; k < n; k++)
+                {
+                    avlNode* curr = root;
+                    int key = keys[k];
+                    while (curr)
+                    {
+                        if (curr->data == key)
+                            break;
+                        curr = (key < curr->data) ? curr->left : curr->right;
+                    }
+                }
+                destroy_avl(root);
+            }
+            else if (i == 3) // Trie
+            {
+                TrieNode* root = trie_create_node();
+                char buf[32];
+                for (int k = 0; k < n; k++)
+                {
+                    sprintf(buf, "%d", keys[k]);
+                    trie_insert(root, buf);
+                }
+                for (int k = 0; k < n; k++)
+                {
+                    sprintf(buf, "%d", keys[k]);
+                    trie_search(root, buf);
+                }
+                trie_free(root);
+            }
+            else if (i == 4) // B-Tree
+            {
+                btreeNode* root = NULL;
+                int t = 3;
+                for (int k = 0; k < n; k++)
+                {
+                    btree_insert(&root, keys[k], t);
+                }
+                for (int k = 0; k < n; k++)
+                {
+                    btree_search(root, keys[k]);
+                }
+                btree_destroy(root);
+            }
+            else if (i == 5) // B+ Tree
+            {
+                BPlusTree* tree = bplus_tree_create(4);
+                if (tree)
+                {
+                    for (int k = 0; k < n; k++)
+                    {
+                        bplus_tree_insert(tree, keys[k], keys[k]);
+                    }
+                    int val_out;
+                    for (int k = 0; k < n; k++)
+                    {
+                        bplus_tree_search(tree, keys[k], &val_out);
+                    }
+                    bplus_tree_destroy(tree);
+                }
+            }
 
-        // Restore stdout
-        fflush(stdout);
-        if (stdout_dup >= 0)
-        {
-            dup2(stdout_dup, 1);
-            close(stdout_dup);
-        }
-        if (fnull != NULL)
-        {
-            fclose(fnull);
-        }
+            // Restore stdout
+            fflush(stdout);
+            if (stdout_dup >= 0)
+            {
+                dup2(stdout_dup, 1);
+                close(stdout_dup);
+            }
+            if (fnull != NULL)
+            {
+                fclose(fnull);
+            }
+        });
 
-        double duration = benchmark_get_time() - start_time;
-        size_t mem_after = benchmark_get_peak_memory();
-        size_t mem_used = (mem_after > mem_before) ? (mem_after - mem_before) : 0;
-        if (mem_used == 0)
-            mem_used = mem_after;
-
-        printf("%-30s %-20.6f %-12zu %-10s\n", algos[i], duration * 1000.0, mem_used, "PASSED");
-        benchmark_export_csv("trees", algos[i], n, duration, mem_used);
+        benchmark_report_result("trees", algos[i], n, times, peak_mem);
     }
     printf("========================================================================\n");
     printf("Exported results to 'benchmarks/trees.csv'.\n");

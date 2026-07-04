@@ -7,8 +7,8 @@
 
 void run_searching_benchmark(int n)
 {
-    // Seed random generator
-    srand((unsigned int)time(NULL));
+    // Seed random generator with fixed seed
+    srand(BENCHMARK_SEED);
 
     // Allocate sorted array
     int* arr = malloc(n * sizeof(int));
@@ -44,7 +44,7 @@ void run_searching_benchmark(int n)
     printf("             BENCHMARK REPORT: SEARCHING ALGORITHMS (N = %d, Loops = %d)\n", n,
            num_queries);
     printf("========================================================================\n");
-    printf("%-30s %-20s %-12s %-10s\n", "Algorithm", "Execution Time", "Peak Memory", "Status");
+    printf("%-30s %-25s %-15s %-10s\n", "Algorithm", "Execution Time", "Peak Memory", "Status");
     printf("------------------------------------------------------------------------\n");
 
     const char* algos[] = {"Linear Search", "Binary Search (Iterative)",
@@ -63,64 +63,44 @@ void run_searching_benchmark(int n)
 
         if (skip)
         {
-            printf("%-30s %-20s %-12s %-10s\n", name, "Skipped (N > 10000)", "N/A", "SKIPPED");
+            printf("%-30s %-25s %-15s %-10s\n", name, "Skipped (N > 10000)", "N/A", "SKIPPED");
             continue;
         }
 
-        // Track memory before
-        size_t mem_before = benchmark_get_peak_memory();
-        double start_time = benchmark_get_time();
+        double times[BENCHMARK_DEFAULT_ITERATIONS];
+        size_t peak_mem = 0;
 
-        volatile int dummy = 0;
-        for (int q = 0; q < num_queries; q++)
-        {
-            int target = queries[q];
-            int res = -1;
-            switch (i)
+        RUN_BENCHMARK(times, peak_mem, {
+            volatile int dummy = 0;
+            for (int q = 0; q < num_queries; q++)
             {
-                case 0:
-                    res = linear_search(arr, target, n);
-                    break;
-                case 1:
-                    res = binary_search(arr, target, n);
-                    break;
-                case 2:
-                    res = binary_search_recursive(arr, target, 0, n - 1);
-                    break;
-                case 3:
-                    res = jump_search(arr, target, n);
-                    break;
-                case 4:
-                    res = interpolation_search(arr, target, n);
-                    break;
+                int target = queries[q];
+                int res = -1;
+                switch (i)
+                {
+                    case 0:
+                        res = linear_search(arr, target, n);
+                        break;
+                    case 1:
+                        res = binary_search(arr, target, n);
+                        break;
+                    case 2:
+                        res = binary_search_recursive(arr, target, 0, n - 1);
+                        break;
+                    case 3:
+                        res = jump_search(arr, target, n);
+                        break;
+                    case 4:
+                        res = interpolation_search(arr, target, n);
+                        break;
+                }
+                dummy += res;
             }
-            dummy += res;
-        }
+            (void)dummy;
+        });
 
-        double end_time = benchmark_get_time();
-        size_t mem_after = benchmark_get_peak_memory();
-
-        double elapsed = end_time - start_time;
-        size_t peak_mem = (mem_after > mem_before) ? mem_after : mem_before;
-
-        // Print row
-        char time_str[30];
-        if (elapsed < 0.001)
-        {
-            snprintf(time_str, sizeof(time_str), "%.6f ms", elapsed * 1000.0);
-        }
-        else
-        {
-            snprintf(time_str, sizeof(time_str), "%.2f ms", elapsed * 1000.0);
-        }
-
-        char mem_str[30];
-        snprintf(mem_str, sizeof(mem_str), "%zu KB", peak_mem);
-
-        printf("%-30s %-20s %-12s %-10s\n", name, time_str, mem_str, "PASSED");
-
-        // Export to CSV
-        benchmark_export_csv("searching", name, n, elapsed, peak_mem);
+        // Print row and export
+        benchmark_report_result("searching", name, n, times, peak_mem);
     }
 
     printf("========================================================================\n");

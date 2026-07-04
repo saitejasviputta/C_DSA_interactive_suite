@@ -17,8 +17,8 @@
 
 void run_graphs_benchmark(int v)
 {
-    // Seed random generator
-    srand((unsigned int)time(NULL));
+    // Seed random generator with fixed seed
+    srand(BENCHMARK_SEED);
 
     // Safety Guard: bypass all graph benchmarks if V is too large to prevent freezes
     if (v > 2000)
@@ -73,7 +73,7 @@ void run_graphs_benchmark(int v)
     printf("\n========================================================================\n");
     printf("             BENCHMARK REPORT: GRAPH SHORTEST PATH (V = %d)\n", v);
     printf("========================================================================\n");
-    printf("%-30s %-20s %-12s %-10s\n", "Algorithm", "Execution Time", "Peak Memory", "Status");
+    printf("%-30s %-25s %-15s %-10s\n", "Algorithm", "Execution Time", "Peak Memory", "Status");
     printf("------------------------------------------------------------------------\n");
 
     const char* algos[] = {"Dijkstra", "Bellman-Ford", "A* Search", "Greedy Best-First Search"};
@@ -94,80 +94,59 @@ void run_graphs_benchmark(int v)
 
         if (skip)
         {
-            printf("%-30s %-20s %-12s %-10s\n", name, "Skipped (V > 500)", "N/A", "SKIPPED");
+            printf("%-30s %-25s %-15s %-10s\n", name, "Skipped (V > 500)", "N/A", "SKIPPED");
             continue;
         }
 
-        // Track memory before
-        size_t mem_before = benchmark_get_peak_memory();
-        double start_time = benchmark_get_time();
+        double times[BENCHMARK_DEFAULT_ITERATIONS];
+        size_t peak_mem = 0;
 
-        // Redirect stdout to suppress prints from algorithm steps
-        fflush(stdout);
-        int stdout_dup = dup(1);
+        RUN_BENCHMARK(times, peak_mem, {
+            // Redirect stdout to suppress prints from algorithm steps
+            fflush(stdout);
+            int stdout_dup = dup(1);
 #ifdef _WIN32
-        FILE* fnull = fopen("NUL", "w");
+            FILE* fnull = fopen("NUL", "w");
 #else
-        FILE* fnull = fopen("/dev/null", "w");
+            FILE* fnull = fopen("/dev/null", "w");
 #endif
-        if (fnull != NULL && stdout_dup >= 0)
-        {
-            dup2(fileno(fnull), 1);
-        }
+            if (fnull != NULL && stdout_dup >= 0)
+            {
+                dup2(fileno(fnull), 1);
+            }
 
-        // Run algorithm
-        switch (i)
-        {
-            case 0:
-                dijkstra(graph, start);
-                break;
-            case 1:
-                bellman_ford(graph, start);
-                break;
-            case 2:
-                astar(graph, start, dest, h);
-                break;
-            case 3:
-                greedy_best_first_search(graph, start, dest, h);
-                break;
-        }
+            // Run algorithm
+            switch (i)
+            {
+                case 0:
+                    dijkstra(graph, start);
+                    break;
+                case 1:
+                    bellman_ford(graph, start);
+                    break;
+                case 2:
+                    astar(graph, start, dest, h);
+                    break;
+                case 3:
+                    greedy_best_first_search(graph, start, dest, h);
+                    break;
+            }
 
-        // Restore stdout
-        fflush(stdout);
-        if (stdout_dup >= 0)
-        {
-            dup2(stdout_dup, 1);
-            close(stdout_dup);
-        }
-        if (fnull != NULL)
-        {
-            fclose(fnull);
-        }
+            // Restore stdout
+            fflush(stdout);
+            if (stdout_dup >= 0)
+            {
+                dup2(stdout_dup, 1);
+                close(stdout_dup);
+            }
+            if (fnull != NULL)
+            {
+                fclose(fnull);
+            }
+        });
 
-        double end_time = benchmark_get_time();
-        size_t mem_after = benchmark_get_peak_memory();
-
-        double elapsed = end_time - start_time;
-        size_t peak_mem = (mem_after > mem_before) ? mem_after : mem_before;
-
-        // Format row print details
-        char time_str[30];
-        if (elapsed < 0.001)
-        {
-            snprintf(time_str, sizeof(time_str), "%.6f ms", elapsed * 1000.0);
-        }
-        else
-        {
-            snprintf(time_str, sizeof(time_str), "%.2f ms", elapsed * 1000.0);
-        }
-
-        char mem_str[30];
-        snprintf(mem_str, sizeof(mem_str), "%zu KB", peak_mem);
-
-        printf("%-30s %-20s %-12s %-10s\n", name, time_str, mem_str, "PASSED");
-
-        // Export to CSV
-        benchmark_export_csv("graphs", name, v, elapsed, peak_mem);
+        // Print row and export
+        benchmark_report_result("graphs", name, v, times, peak_mem);
     }
 
     printf("========================================================================\n");

@@ -8,6 +8,29 @@
 int _fileno(FILE*);
 #endif
 
+#define BENCHMARK_SEED 12345
+#define BENCHMARK_DEFAULT_ITERATIONS 5
+
+#define RUN_BENCHMARK(times_arr, peak_mem_var, ...)                                                \
+    do                                                                                             \
+    {                                                                                              \
+        peak_mem_var = 0;                                                                          \
+        for (int iter = 0; iter < BENCHMARK_DEFAULT_ITERATIONS; iter++)                            \
+        {                                                                                          \
+            size_t mem_before = benchmark_get_peak_memory();                                       \
+            double start_time = benchmark_get_time();                                              \
+            __VA_ARGS__;                                                                           \
+            double end_time = benchmark_get_time();                                                \
+            times_arr[iter] = end_time - start_time;                                               \
+            size_t mem_after = benchmark_get_peak_memory();                                        \
+            size_t peak_mem = (mem_after > mem_before) ? (mem_after - mem_before) : 0;             \
+            if (peak_mem > peak_mem_var)                                                           \
+            {                                                                                      \
+                peak_mem_var = peak_mem;                                                           \
+            }                                                                                      \
+        }                                                                                          \
+    } while (0)
+
 /**
  * Returns a high-resolution monotonic timestamp in seconds.
  * Suitable for measuring code execution duration.
@@ -94,5 +117,10 @@ void run_flow_benchmark(int v);
  * Runs benchmarks for Advanced Heaps with input size N.
  */
 void run_heaps_benchmark(int n);
+
+double benchmark_mean(const double* values, int count);
+double benchmark_stddev(const double* values, int count, double mean);
+void benchmark_report_result(const char* category, const char* name, int n, const double times[],
+                             size_t peak_mem);
 
 #endif // BENCHMARK_H
