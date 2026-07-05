@@ -14,12 +14,38 @@
 #define LRC_MAX_ROWS 20
 #define LRC_MAX_COLS 64
 
+// lrc_calculate: computes the LRC by XOR-ing each column across all `words`.
+// Writes a null-terminated binary string of length `word_len` to `lrc_out`.
+void lrc_calculate(const char* const* words, int num_words, int word_len, char* lrc_out)
+{
+    for (int j = 0; j < word_len; j++)
+    {
+        int ones = 0;
+        for (int i = 0; i < num_words; i++)
+        {
+            if (words[i][j] == '1')
+            {
+                ones++;
+            }
+        }
+        lrc_out[j] = (ones % 2 == 0) ? '0' : '1';
+    }
+    lrc_out[word_len] = '\0';
+}
+
+// lrc_verify: returns 1 if the computed LRC matches `received_lrc`, 0 otherwise.
+int lrc_verify(const char* const* words, int num_words, int word_len, const char* received_lrc)
+{
+    char computed_lrc[LRC_MAX_COLS + 1];
+    lrc_calculate(words, num_words, word_len, computed_lrc);
+    return (strcmp(computed_lrc, received_lrc) == 0) ? 1 : 0;
+}
+
 void lrc_demo(void)
 {
     int rows;
     printf("\n=== LRC (Longitudinal Redundancy Check) ===\n");
 
-    // Fix 1: Use safe_input_int() instead of scanf()
     int result = safe_input_int(&rows, "Enter number of data words (1-20): ", 1, LRC_MAX_ROWS);
     if (result == -111)
     {
@@ -38,7 +64,6 @@ void lrc_demo(void)
     printf("Enter binary data words (same length, e.g. 10110011):\n");
     for (int i = 0; i < rows; i++)
     {
-        // Fix 2: Use fgets() instead of scanf() for strings
         printf("  Word %d: ", i + 1);
         if (fgets(data[i], sizeof(data[i]), stdin) == NULL)
         {
@@ -46,7 +71,6 @@ void lrc_demo(void)
             return;
         }
 
-        // Remove trailing newline; if absent, input exceeded buffer — flush stdin
         int len = strlen(data[i]);
         if (len > 0 && data[i][len - 1] == '\n')
         {
@@ -60,7 +84,6 @@ void lrc_demo(void)
                 ;
         }
 
-        /* validate: only '0' and '1' allowed */
         if (len == 0)
         {
             printf("Error: word cannot be empty.\n");
@@ -76,7 +99,6 @@ void lrc_demo(void)
             }
         }
 
-        /* all words must have the same length */
         if (cols == -1)
         {
             cols = len;
@@ -88,21 +110,15 @@ void lrc_demo(void)
         }
     }
 
-    /* compute LRC: XOR each column across all rows */
-    char lrc[LRC_MAX_COLS + 1];
-    for (int j = 0; j < cols; j++)
+    const char* words[LRC_MAX_ROWS];
+    for (int i = 0; i < rows; i++)
     {
-        int ones = 0;
-        for (int i = 0; i < rows; i++)
-        {
-            if (data[i][j] == '1')
-                ones++;
-        }
-        lrc[j] = (ones % 2 == 0) ? '0' : '1';
+        words[i] = data[i];
     }
-    lrc[cols] = '\0';
 
-    /* display results */
+    char lrc[LRC_MAX_COLS + 1];
+    lrc_calculate(words, rows, cols, lrc);
+
     printf("\nTransmitted Block:\n");
     printf("------------------\n");
     for (int i = 0; i < rows; i++)

@@ -8,8 +8,8 @@
 
 void run_sorting_benchmark(int n)
 {
-    // Seed random generator
-    srand((unsigned int)time(NULL));
+    // Seed random generator with fixed seed
+    srand(BENCHMARK_SEED);
 
     // Allocate master array
     int* master = malloc(n * sizeof(int));
@@ -29,7 +29,7 @@ void run_sorting_benchmark(int n)
     printf("\n========================================================================\n");
     printf("             BENCHMARK REPORT: SORTING ALGORITHMS (N = %d)\n", n);
     printf("========================================================================\n");
-    printf("%-20s %-25s %-15s %-10s\n", "Algorithm", "Execution Time", "Peak Memory", "Status");
+    printf("%-30s %-25s %-15s %-10s\n", "Algorithm", "Execution Time", "Peak Memory", "Status");
     printf("------------------------------------------------------------------------\n");
 
     const char* algos[] = {"Bubble Sort", "Selection Sort", "Insertion Sort",
@@ -49,7 +49,7 @@ void run_sorting_benchmark(int n)
 
         if (skip)
         {
-            printf("%-20s %-25s %-15s %-10s\n", name, "Skipped (N > 10000)", "N/A", "SKIPPED");
+            printf("%-30s %-25s %-15s %-10s\n", name, "Skipped (N > 10000)", "N/A", "SKIPPED");
             continue;
         }
 
@@ -57,71 +57,49 @@ void run_sorting_benchmark(int n)
         int* clone = malloc(n * sizeof(int));
         if (clone == NULL)
         {
-            printf("%-20s %-25s %-15s %-10s\n", name, "Alloc Failure", "N/A", "FAILED");
+            printf("%-30s %-25s %-15s %-10s\n", name, "Alloc Failure", "N/A", "FAILED");
             continue;
         }
-        memcpy(clone, master, n * sizeof(int));
 
-        // Track memory before
-        size_t mem_before = benchmark_get_peak_memory();
-        double start_time = benchmark_get_time();
+        double times[BENCHMARK_DEFAULT_ITERATIONS];
+        size_t peak_mem = 0;
 
-        // Run algorithm
-        switch (i)
-        {
-            case 0:
-                bubble_sort_optimized(clone, n);
-                break;
-            case 1:
-                selection_sort(clone, n);
-                break;
-            case 2:
-                insertion_sort(clone, n);
-                break;
-            case 3:
-                shell_sort(clone, n);
-                break;
-            case 4:
-                merge_sort(clone, n);
-                break;
-            case 5:
-                quicksort(clone, 0, n - 1);
-                break;
-            case 6:
-                heap_sort(clone, n);
-                break;
-            case 7:
-                radix_sort(clone, n);
-                break;
-            case 8:
-                bucket_sort(clone, n);
-                break;
-        }
+        RUN_BENCHMARK(times, peak_mem, {
+            memcpy(clone, master, n * sizeof(int));
+            switch (i)
+            {
+                case 0:
+                    bubble_sort_optimized(clone, n);
+                    break;
+                case 1:
+                    selection_sort(clone, n);
+                    break;
+                case 2:
+                    insertion_sort(clone, n);
+                    break;
+                case 3:
+                    shell_sort(clone, n);
+                    break;
+                case 4:
+                    merge_sort(clone, n);
+                    break;
+                case 5:
+                    quicksort(clone, 0, n - 1);
+                    break;
+                case 6:
+                    heap_sort(clone, n);
+                    break;
+                case 7:
+                    radix_sort(clone, n);
+                    break;
+                case 8:
+                    bucket_sort(clone, n);
+                    break;
+            }
+        });
 
-        double end_time = benchmark_get_time();
-        size_t mem_after = benchmark_get_peak_memory();
-
-        double elapsed = end_time - start_time;
-        size_t peak_mem = (mem_after > mem_before) ? mem_after : mem_before;
-
-        // Print row
-        char time_str[30];
-        if (elapsed < 0.001)
-        {
-            snprintf(time_str, sizeof(time_str), "%.6f ms", elapsed * 1000.0);
-        }
-        else
-        {
-            snprintf(time_str, sizeof(time_str), "%.2f ms", elapsed * 1000.0);
-        }
-
-        char mem_str[30];
-        snprintf(mem_str, sizeof(mem_str), "%zu KB", peak_mem);
-
-        printf("%-20s %-25s %-15s %-10s\n", name, time_str, mem_str, "PASSED");
-
-        // Export to CSV
-        benchmark_export_csv("sorting", name, n, elapsed, peak_mem);
+        // Print row and export
+        benchmark_report_result("sorting", name, n, times, peak_mem);
 
         free(clone);
     }

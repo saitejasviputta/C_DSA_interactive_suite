@@ -24,6 +24,10 @@ int cmp(const void* a, const void* b)
 int* build_suffix_array(const char* txt, int n)
 {
     struct Suffix* suffixes = (struct Suffix*)malloc(n * sizeof(struct Suffix));
+    if (suffixes == NULL)
+    {
+        return NULL;
+    }
     for (int i = 0; i < n; i++)
     {
         suffixes[i].index = i;
@@ -34,6 +38,11 @@ int* build_suffix_array(const char* txt, int n)
     qsort(suffixes, n, sizeof(struct Suffix), cmp);
 
     int* ind = (int*)malloc(n * sizeof(int));
+    if (ind == NULL)
+    {
+        free(suffixes);
+        return NULL;
+    }
     for (int k = 4; k < 2 * n; k = k * 2)
     {
         int rank = 0;
@@ -65,6 +74,12 @@ int* build_suffix_array(const char* txt, int n)
     }
 
     int* suffix_arr = (int*)malloc(n * sizeof(int));
+    if (suffix_arr == NULL)
+    {
+        free(suffixes);
+        free(ind);
+        return NULL;
+    }
     for (int i = 0; i < n; i++)
     {
         suffix_arr[i] = suffixes[i].index;
@@ -77,8 +92,21 @@ int* build_suffix_array(const char* txt, int n)
 
 int* build_lcp_array(const char* txt, int* suffix_arr, int n)
 {
+    if (suffix_arr == NULL)
+    {
+        return NULL;
+    }
     int* lcp = (int*)calloc(n, sizeof(int));
+    if (lcp == NULL)
+    {
+        return NULL;
+    }
     int* inv_suff = (int*)malloc(n * sizeof(int));
+    if (inv_suff == NULL)
+    {
+        free(lcp);
+        return NULL;
+    }
 
     for (int i = 0; i < n; i++)
     {
@@ -111,7 +139,18 @@ int* build_lcp_array(const char* txt, int* suffix_arr, int n)
 void find_longest_repeated_substring(const char* txt, int n, char* output)
 {
     int* sa = build_suffix_array(txt, n);
+    if (sa == NULL)
+    {
+        output[0] = '\0';
+        return;
+    }
     int* lcp = build_lcp_array(txt, sa, n);
+    if (lcp == NULL)
+    {
+        free(sa);
+        output[0] = '\0';
+        return;
+    }
 
     int max_lcp = 0, max_idx = 0;
     for (int i = 0; i < n; i++)
@@ -139,6 +178,10 @@ void find_longest_repeated_substring(const char* txt, int n, char* output)
 
 void visualize_suffix_array(const char* txt, int n, int* sa, int* lcp)
 {
+    if (sa == NULL || lcp == NULL)
+    {
+        return;
+    }
     printf("\n--- Suffix Array & LCP Visualization ---\n");
     printf("i\tSA[i]\tLCP[i]\tSuffix\n");
     printf("----------------------------------------\n");
@@ -165,7 +208,18 @@ void suffix_array_demo(void)
 
         int n = strlen(txt);
         int* sa = build_suffix_array(txt, n);
+        if (sa == NULL)
+        {
+            printf("Error: Memory allocation failed for Suffix Array.\n");
+            return;
+        }
         int* lcp = build_lcp_array(txt, sa, n);
+        if (lcp == NULL)
+        {
+            printf("Error: Memory allocation failed for LCP Array.\n");
+            free(sa);
+            return;
+        }
 
         visualize_suffix_array(txt, n, sa, lcp);
 

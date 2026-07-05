@@ -136,3 +136,68 @@ int benchmark_export_csv(const char* category_name, const char* algo_name, int i
 
     return 0;
 }
+
+double benchmark_mean(const double* values, int count)
+{
+    if (count <= 0)
+        return 0.0;
+    double sum = 0.0;
+    for (int i = 0; i < count; i++)
+    {
+        sum += values[i];
+    }
+    return sum / count;
+}
+
+static double simple_sqrt(double x)
+{
+    if (x <= 0.0)
+        return 0.0;
+    double z = x;
+    for (int i = 0; i < 10; i++)
+    {
+        z = 0.5 * (z + x / z);
+    }
+    return z;
+}
+
+double benchmark_stddev(const double* values, int count, double mean)
+{
+    if (count <= 1)
+        return 0.0;
+    double variance_sum = 0.0;
+    for (int i = 0; i < count; i++)
+    {
+        double diff = values[i] - mean;
+        variance_sum += diff * diff;
+    }
+    return simple_sqrt(variance_sum / (count - 1));
+}
+
+void benchmark_report_result(const char* category, const char* name, int n, const double times[],
+                             size_t peak_mem)
+{
+    double mean = benchmark_mean(times, BENCHMARK_DEFAULT_ITERATIONS);
+    double stddev = benchmark_stddev(times, BENCHMARK_DEFAULT_ITERATIONS, mean);
+
+    char time_str[64];
+    if (mean < 0.001)
+    {
+        snprintf(time_str, sizeof(time_str), "%.3f ± %.3f ms", mean * 1000.0, stddev * 1000.0);
+    }
+    else if (mean < 1.0)
+    {
+        snprintf(time_str, sizeof(time_str), "%.2f ± %.2f ms", mean * 1000.0, stddev * 1000.0);
+    }
+    else
+    {
+        snprintf(time_str, sizeof(time_str), "%.3f ± %.3f s", mean, stddev);
+    }
+
+    char mem_str[32];
+    snprintf(mem_str, sizeof(mem_str), "%zu KB", peak_mem);
+
+    printf("%-30s %-25s %-15s %-10s\n", name, time_str, mem_str, "PASSED");
+
+    benchmark_export_csv(category, name, n, mean, peak_mem);
+}

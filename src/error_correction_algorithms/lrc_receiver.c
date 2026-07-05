@@ -82,6 +82,12 @@ void lrc_receiver_demo(void)
         }
     }
 
+    const char* words[LRC_MAX_ROWS];
+    for (int i = 0; i < rows; i++)
+    {
+        words[i] = data[i];
+    }
+
     char received_lrc[LRC_MAX_COLS + 1];
 
     printf("Enter received LRC: ");
@@ -113,29 +119,12 @@ void lrc_receiver_demo(void)
     }
 
     char computed_lrc[LRC_MAX_COLS + 1];
-
-    for (int j = 0; j < cols; j++)
-    {
-        int ones = 0;
-
-        for (int i = 0; i < rows; i++)
-        {
-            if (data[i][j] == '1')
-            {
-                ones++;
-            }
-        }
-
-        computed_lrc[j] = (ones % 2 == 0) ? '0' : '1';
-    }
-
-    computed_lrc[cols] = '\0';
+    lrc_calculate(words, rows, cols, computed_lrc);
 
     printf("\nReceived LRC : %s\n", received_lrc);
-
     printf("Computed LRC : %s\n", computed_lrc);
 
-    if (strcmp(received_lrc, computed_lrc) == 0)
+    if (lrc_verify(words, rows, cols, received_lrc))
     {
         printf("\n[SUCCESS] No error detected. Data accepted.\n");
     }

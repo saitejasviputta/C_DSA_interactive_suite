@@ -336,14 +336,14 @@ void run_binomial_demo(void)
         }
         else if (choice == 2)
         {
-            int key, val;
-            heap = binomial_heap_extract_min(heap, &key, &val);
-            if (key == -1 && val == -1 && heap == NULL)
+            if (heap == NULL)
             {
                 printf("\nHeap is already empty!\n");
             }
             else
             {
+                int key, val;
+                heap = binomial_heap_extract_min(heap, &key, &val);
                 printf("\nExtracted Min Node -> Key: %d, Value: %d\n", key, val);
             }
             printf("\nPress Enter to continue...");

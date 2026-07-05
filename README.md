@@ -206,6 +206,14 @@ If any test fails or Valgrind detects a memory error, the CI job fails automatic
 * Floyd-Warshall: **O(V³)**
 * Topological Sort (Kahn's Algorithm): **O(V+E)**
 
+### Advanced Graph Algorithms
+* Strongly Connected Components (Tarjan & Kosaraju): **O(V + E)**
+* Maximum Flow (Edmonds-Karp): **O(V·E²)**
+* Maximum Flow (Dinic's Algorithm): **O(V²·E)**
+* Bipartite Matching (Hopcroft-Karp): **O(E·√V)**
+* Eulerian Path (Hierholzer's Algorithm): **O(V + E)**
+
+
 ### Job scheduling
 * FCFS(First come,First Served): **O(n)**
 * SJF( Shortest Job First): **O(nlogn+n)**
@@ -230,6 +238,31 @@ If any test fails or Valgrind detects a memory error, the CI job fails automatic
 * Sudoko solver: **O(6^m)**
 * Knight's tour:**O(8^(n^2))**
 * N Queen's algorithm: **O(N!)**
+
+### Advanced Heaps & Priority Queues
+* Binomial Heap:
+  * Insert: **O(log n)** (worst case) / **O(1)** (amortized)
+  * Find Min: **O(log n)**
+  * Extract Min / Delete: **O(log n)**
+  * Merge: **O(log n)**
+* Fibonacci Heap:
+  * Insert: **O(1)**
+  * Find Min: **O(1)**
+  * Extract Min / Delete: **O(log n)** (amortized)
+  * Merge: **O(1)**
+* Leftist Heap:
+  * Insert / Merge / Extract Min: **O(log n)**
+* Skew Heap:
+  * Insert / Merge / Extract Min: **O(log n)** (amortized)
+* Min-Max Heap (Double-Ended Priority Queue):
+  * Find Min / Max: **O(1)**
+  * Insert / Extract Min / Extract Max: **O(log n)**
+* d-Ary Heap:
+  * Insert / Decrease Key: **O(log_d n)**
+  * Extract Min: **O(d·log_d n)**
+* Treap (Tree + Heap):
+  * Search / Insert / Delete: **O(log n)** (average/expected)
+
 
 
 

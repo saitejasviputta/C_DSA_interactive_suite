@@ -3,9 +3,133 @@
 #include <stdio.h>
 #include <string.h>
 
-// hamming code generation (sender side). the user supplies the binary data bits and
-// we build the (n, k) codeword by inserting r even-parity bits at the power-of-2
-// positions (1, 2, 4, 8, ...). a 1-based layout keeps the parity maths readable.
+// hamming_generate: builds the (n,k) Hamming codeword for `data` by inserting
+// r even-parity bits at the power-of-2 positions (1, 2, 4, 8, …).
+// The codeword is written to `codeword_out` (caller must supply a buffer of at
+// least k + ceil(log2(k+r+1)) + 1 bytes; CHECKSUM_MAX_BITS + 16 is safe).
+void hamming_generate(const char* data, char* codeword_out)
+{
+    int k = (int)strlen(data);
+
+    // Smallest r such that 2^r >= k + r + 1
+    int r = 0;
+    while ((1 << r) < (k + r + 1))
+    {
+        r++;
+    }
+    int n = k + r;
+
+    // ham[1..n]: power-of-2 positions are parity placeholders, all others hold data
+    int ham[CHECKSUM_MAX_BITS + 16];
+    int data_index = 0;
+    for (int pos = 1; pos <= n; pos++)
+    {
+        if ((pos & (pos - 1)) == 0) // power of two -> parity position
+        {
+            ham[pos] = 0;
+        }
+        else
+        {
+            ham[pos] = data[data_index] - '0';
+            data_index++;
+        }
+    }
+
+    // Compute each parity bit (even parity) over every position it covers
+    for (int i = 0; i < r; i++)
+    {
+        int parity_pos = (1 << i);
+        int parity = 0;
+        for (int pos = 1; pos <= n; pos++)
+        {
+            if ((pos & parity_pos) && pos != parity_pos)
+            {
+                parity ^= ham[pos];
+            }
+        }
+        ham[parity_pos] = parity;
+    }
+
+    for (int pos = 1; pos <= n; pos++)
+    {
+        codeword_out[pos - 1] = ham[pos] + '0';
+    }
+    codeword_out[n] = '\0';
+}
+
+// hamming_verify: recomputes the syndrome from a received codeword and returns
+// the 1-based position of a single-bit error (0 = no error, >n = uncorrectable
+// multi-bit error).  If the error position is within range it is corrected
+// in-place.  The corrected codeword and recovered data bits are written to
+// `corrected_codeword_out` and `data_out` respectively (both may be NULL).
+int hamming_verify(const char* received_codeword, char* corrected_codeword_out, char* data_out)
+{
+    int n = (int)strlen(received_codeword);
+
+    int ham[CHECKSUM_MAX_BITS + 16];
+    for (int pos = 1; pos <= n; pos++)
+    {
+        ham[pos] = received_codeword[pos - 1] - '0';
+    }
+
+    int r = 0;
+    while ((1 << r) <= n)
+    {
+        r++;
+    }
+
+    // Build syndrome
+    int syndrome = 0;
+    for (int i = 0; i < r; i++)
+    {
+        int parity_pos = (1 << i);
+        int parity = 0;
+        for (int pos = 1; pos <= n; pos++)
+        {
+            if (pos & parity_pos)
+            {
+                parity ^= ham[pos];
+            }
+        }
+        if (parity)
+        {
+            syndrome += parity_pos;
+        }
+    }
+
+    // Correct single-bit error if within range
+    if (syndrome > 0 && syndrome <= n)
+    {
+        ham[syndrome] ^= 1;
+    }
+
+    if (corrected_codeword_out != NULL)
+    {
+        for (int pos = 1; pos <= n; pos++)
+        {
+            corrected_codeword_out[pos - 1] = ham[pos] + '0';
+        }
+        corrected_codeword_out[n] = '\0';
+    }
+
+    if (data_out != NULL)
+    {
+        int data_idx = 0;
+        for (int pos = 1; pos <= n; pos++)
+        {
+            if ((pos & (pos - 1)) != 0) // not a power of two -> data bit
+            {
+                data_out[data_idx] = ham[pos] + '0';
+                data_idx++;
+            }
+        }
+        data_out[data_idx] = '\0';
+    }
+
+    return syndrome;
+}
+
+// hamming code generation demo (sender side).
 void hamming_demo(void)
 {
     while (1)
@@ -27,84 +151,30 @@ void hamming_demo(void)
             continue;
         }
 
+        char codeword[CHECKSUM_MAX_BITS + 16];
+        hamming_generate(data, codeword);
+
         int k = (int)strlen(data);
-
-        // number of parity bits r: the smallest r with 2^r >= k + r + 1, so that every
-        // codeword position (data + parity) can be addressed by the r parity checks.
-        int r = 0;
-        while ((1 << r) < (k + r + 1))
-        {
-            r++;
-        }
-
-        int n = k + r;
-
-        // ham[1..n] is the codeword in transmission order (position 1 is the MSB end).
-        int ham[CHECKSUM_MAX_BITS + 16];
-
-        // lay out the frame: power-of-2 positions are parity placeholders (filled below),
-        // every other position takes the next data bit in order.
-        int data_index = 0;
-        for (int pos = 1; pos <= n; pos++)
-        {
-            if ((pos & (pos - 1)) == 0) // pos is a power of two -> parity position
-            {
-                ham[pos] = 0;
-            }
-            else
-            {
-                ham[pos] = data[data_index] - '0';
-                data_index++;
-            }
-        }
-
-        // compute each parity bit (even parity) over the positions it covers: parity bit
-        // at position p = 2^i covers every position whose index has bit i set.
-        for (int i = 0; i < r; i++)
-        {
-            int parity_pos = (1 << i);
-            int parity = 0;
-
-            for (int pos = 1; pos <= n; pos++)
-            {
-                if ((pos & parity_pos) && pos != parity_pos)
-                {
-                    parity ^= ham[pos];
-                }
-            }
-
-            ham[parity_pos] = parity;
-        }
+        int n = (int)strlen(codeword);
+        int r = n - k;
 
         printf("\nData bits (k)        : %d", k);
         printf("\nParity bits (r)      : %d", r);
         printf("\nCodeword length (n)  : %d", n);
-
-        printf("\nParity bit values    :");
-        for (int i = 0; i < r; i++)
-        {
-            int parity_pos = (1 << i);
-            printf(" P%d=%d", parity_pos, ham[parity_pos]);
-        }
 
         printf("\nHamming Code (P=parity, transmitted left to right):\n");
         for (int pos = 1; pos <= n; pos++)
         {
             if ((pos & (pos - 1)) == 0)
             {
-                printf("P%d=%d ", pos, ham[pos]);
+                printf("P%d=%c ", pos, codeword[pos - 1]);
             }
             else
             {
-                printf("D%d=%d ", pos, ham[pos]);
+                printf("D%d=%c ", pos, codeword[pos - 1]);
             }
         }
 
-        printf("\nGenerated Hamming Code (%d,%d): ", n, k);
-        for (int pos = 1; pos <= n; pos++)
-        {
-            printf("%d", ham[pos]);
-        }
-        printf("\n");
+        printf("\nGenerated Hamming Code (%d,%d): %s\n", n, k, codeword);
     }
 }

@@ -268,14 +268,14 @@ void run_leftist_demo(void)
         }
         else if (choice == 2)
         {
-            int key, val;
-            heap = leftist_heap_extract_min(heap, &key, &val);
-            if (key == -1 && val == -1 && heap == NULL)
+            if (heap == NULL)
             {
                 printf("\nHeap is empty!\n");
             }
             else
             {
+                int key, val;
+                heap = leftist_heap_extract_min(heap, &key, &val);
                 printf("\nExtracted Min Node -> Key: %d, Value: %d\n", key, val);
             }
             printf("\nPress Enter to continue...");
@@ -321,14 +321,14 @@ void run_skew_demo(void)
         }
         else if (choice == 2)
         {
-            int key, val;
-            heap = skew_heap_extract_min(heap, &key, &val);
-            if (key == -1 && val == -1 && heap == NULL)
+            if (heap == NULL)
             {
                 printf("\nHeap is empty!\n");
             }
             else
             {
+                int key, val;
+                heap = skew_heap_extract_min(heap, &key, &val);
                 printf("\nExtracted Min Node -> Key: %d, Value: %d\n", key, val);
             }
             printf("\nPress Enter to continue...");
