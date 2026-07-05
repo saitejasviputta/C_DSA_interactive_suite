@@ -237,5 +237,12 @@ bool run_knights_tour_test(int n)
         for (int j = 0; j < n; j++)
             board[i][j] = -1;
     board[0][0] = 0;
-    return solve_standard(0, 0, 1, board, n) == 1;
+    if (n <= 5)
+    {
+        return solve_standard(0, 0, 1, board, n) == 1;
+    }
+    else
+    {
+        return solve_warnsdorff(0, 0, 1, board, n) == 1;
+    }
 }
