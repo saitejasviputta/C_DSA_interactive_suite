@@ -195,6 +195,10 @@ ifneq ($(wildcard tests/benchmark/test_benchmark_heaps.c),)
 TEST_BINS += test_benchmark_heaps
 endif
 
+ifneq ($(wildcard tests/profiler/test_memory_tracker.c),)
+TEST_BINS += test_memory_tracker
+endif
+
 test: $(TEST_BINS)
 
 test_mcm: $(TEST_DIR)/test_mcm$(EXE)
@@ -759,6 +763,13 @@ $(TEST_DIR)/test_hopcroft_karp$(EXE): $(filter-out $(OBJ_DIR)/src/advanced_graph
 test_eulerian_path: $(TEST_DIR)/test_eulerian_path$(EXE)
 	$(TEST_DIR)/test_eulerian_path$(EXE)
 $(TEST_DIR)/test_eulerian_path$(EXE): $(filter-out $(OBJ_DIR)/src/advanced_graph_algorithms/eulerian_path.o,$(OBJS)) tests/advanced_graph_algorithms/test_eulerian_path.c
+	@$(call MKDIR_P,$(TEST_DIR))
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+test_memory_tracker: $(TEST_DIR)/test_memory_tracker$(EXE)
+	$(TEST_DIR)/test_memory_tracker$(EXE)
+
+$(TEST_DIR)/test_memory_tracker$(EXE): $(OBJS) tests/profiler/test_memory_tracker.c
 	@$(call MKDIR_P,$(TEST_DIR))
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
