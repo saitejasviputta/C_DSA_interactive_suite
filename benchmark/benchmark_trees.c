@@ -235,19 +235,19 @@ void run_trees_benchmark(int n)
             fflush(stdout);
             if (stdout_dup >= 0)
             {
-                dup2(stdout_dup, 1);
-                close(stdout_dup);
+            dup2(stdout_dup, 1);
+            close(stdout_dup);
             }
             if (fnull != NULL)
             {
-                fclose(fnull);
+            fclose(fnull);
             }
-        });
+    });
 
-        benchmark_report_result("trees", algos[i], n, times, peak_mem);
-    }
-    printf("========================================================================\n");
-    printf("Exported results to 'benchmarks/trees.csv'.\n");
+    benchmark_report_result("trees", algos[i], n, times, peak_mem);
+}
+printf("========================================================================\n");
+printf("Exported results to 'benchmarks/trees.csv'.\n");
 
-    free(keys);
+free(keys);
 }
