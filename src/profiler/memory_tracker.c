@@ -1,5 +1,6 @@
 #define IN_MEMORY_TRACKER_C
 #include "memory_tracker.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -56,10 +57,10 @@ static void remove_block(void* addr)
     }
 }
 
-static void update_block(void* old_addr, void* new_addr, size_t new_size, const char* file,
+static void update_block(uintptr_t old_addr_key, void* new_addr, size_t new_size, const char* file,
                          int line)
 {
-    if (old_addr == NULL)
+    if (old_addr_key == (uintptr_t)NULL)
     {
         add_block(new_addr, new_size, file, line);
         return;
@@ -67,7 +68,7 @@ static void update_block(void* old_addr, void* new_addr, size_t new_size, const 
     AllocatedBlock* curr = head;
     while (curr != NULL)
     {
-        if (curr->address == old_addr)
+        if ((uintptr_t)curr->address == old_addr_key)
         {
             curr->address = new_addr;
             curr->size = new_size;
@@ -102,11 +103,11 @@ void* custom_calloc(size_t num, size_t size, const char* file, int line)
 
 void* custom_realloc(void* ptr, size_t size, const char* file, int line)
 {
-    void* old_addr = ptr;
+    uintptr_t old_addr_key = (uintptr_t)ptr;
     void* new_ptr = realloc(ptr, size);
     if (new_ptr != NULL)
     {
-        update_block(old_addr, new_ptr, size, file, line);
+        update_block(old_addr_key, new_ptr, size, file, line);
     }
     return new_ptr;
 }
