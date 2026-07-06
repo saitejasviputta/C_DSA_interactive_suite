@@ -1,6 +1,7 @@
 #include "data_structures.h"
 #include "safe_input.h"
 #include "sorting_visualizer.h"
+#include "step_debugger.h"
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
@@ -69,6 +70,10 @@ void bubble_sort_optimized(int arr[], int length_of_array)
 
         for (int j = 0; j < length_of_array - i - 1; j++)
         { // Swapping happens here
+            char msg[128];
+            snprintf(msg, sizeof(msg), "Bubble Sort: Comparing index %d (%d) and %d (%d)", j,
+                     arr[j], j + 1, arr[j + 1]);
+            algorithm_step_hook(msg);
             visualize_sort(arr, length_of_array, j, j + 1, -1, "Bubble Sort: Comparing elements");
             if (arr[j] > arr[j + 1])
             {
@@ -76,6 +81,8 @@ void bubble_sort_optimized(int arr[], int length_of_array)
                 arr[j] = arr[j + 1];
                 arr[j + 1] = temp;
                 swapped = 1;
+                snprintf(msg, sizeof(msg), "Bubble Sort: Swapped index %d and %d", j, j + 1);
+                algorithm_step_hook(msg);
                 visualize_sort(arr, length_of_array, j, j + 1, -1,
                                "Bubble Sort: Swapping elements");
             }

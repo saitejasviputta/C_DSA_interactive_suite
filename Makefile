@@ -364,7 +364,7 @@ $(TEST_DIR)/test_segment_tree$(EXE): $(OBJ_DIR)/src/trees/segment_tree.o $(OBJ_D
 	@$(call MKDIR_P,$(TEST_DIR))
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-ASTAR_DEPS = $(OBJ_DIR)/src/graph_traversals/astar.o $(OBJ_DIR)/src/graph_traversals/dijkstra.o $(OBJ_DIR)/src/graph_traversals/bfs.o $(OBJ_DIR)/src/utils/returnMallocVal.o $(OBJ_DIR)/src/data_structures/circular_queue.o $(OBJ_DIR)/src/data_structures/sll.o $(OBJ_DIR)/src/utils/safe_input_int.o $(OBJ_DIR)/src/graph_traversals/graph_io.o
+ASTAR_DEPS = $(OBJ_DIR)/src/graph_traversals/astar.o $(OBJ_DIR)/src/graph_traversals/dijkstra.o $(OBJ_DIR)/src/graph_traversals/bfs.o $(OBJ_DIR)/src/utils/returnMallocVal.o $(OBJ_DIR)/src/data_structures/circular_queue.o $(OBJ_DIR)/src/data_structures/sll.o $(OBJ_DIR)/src/utils/safe_input_int.o $(OBJ_DIR)/src/graph_traversals/graph_io.o $(OBJ_DIR)/src/utils/config.o
 
 ifneq ($(wildcard src/advanced_heaps/dary_heap.c),)
 ASTAR_DEPS += $(OBJ_DIR)/src/advanced_heaps/dary_heap.o $(OBJ_DIR)/src/utils/display_header.o $(OBJ_DIR)/src/utils/clear_screen.o $(OBJ_DIR)/src/utils/cross_platform_timer.o
