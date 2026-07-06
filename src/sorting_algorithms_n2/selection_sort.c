@@ -1,6 +1,7 @@
 #include "data_structures.h"
 #include "safe_input.h"
 #include "sorting_visualizer.h"
+#include "step_debugger.h"
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
@@ -63,6 +64,11 @@ void selection_sort(int arr[], int length_of_array)
 
         for (int j = i + 1; j < length_of_array; j++)
         {
+            char msg[128];
+            snprintf(msg, sizeof(msg),
+                     "Selection Sort: Comparing index %d (%d) and min_index %d (%d)", j, arr[j],
+                     min_index, arr[min_index]);
+            algorithm_step_hook(msg);
             visualize_sort(arr, length_of_array, j, min_index, i,
                            "Selection Sort: Comparing elements");
             if (arr[j] < arr[min_index])
@@ -73,6 +79,9 @@ void selection_sort(int arr[], int length_of_array)
 
         if (i != min_index)
         {
+            char msg[128];
+            snprintf(msg, sizeof(msg), "Selection Sort: Swapping index %d and %d", i, min_index);
+            algorithm_step_hook(msg);
             int temp = arr[min_index];
             arr[min_index] = arr[i];
             arr[i] = temp;

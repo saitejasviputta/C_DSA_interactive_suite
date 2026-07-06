@@ -2,6 +2,7 @@
 #include "graph_traversals.h"
 #include "returnMallocVal.h"
 #include "safe_input.h"
+#include "step_debugger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,7 +38,10 @@ void bfs(Graph* graph, int start)
 
     start_t = clock();
 
+    char msg[128];
     visited[start] = 1;
+    snprintf(msg, sizeof(msg), "BFS: Visited start node %d", start);
+    algorithm_step_hook(msg);
     enqueue(&nodes, returnMallocInt(start));
 
     while (1)
@@ -49,6 +53,8 @@ void bfs(Graph* graph, int start)
 
         int curr = *curr_ptr;
         free(curr_ptr);
+        snprintf(msg, sizeof(msg), "BFS: Dequeued node %d", curr);
+        algorithm_step_hook(msg);
 
         printf("%d->", curr);
 
@@ -61,6 +67,8 @@ void bfs(Graph* graph, int start)
             if (!visited[v])
             {
                 visited[v] = 1;
+                snprintf(msg, sizeof(msg), "BFS: Discovered node %d, enqueueing", v);
+                algorithm_step_hook(msg);
                 enqueue(&nodes, returnMallocInt(v));
             }
 

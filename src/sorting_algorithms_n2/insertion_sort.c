@@ -1,6 +1,7 @@
 #include "data_structures.h"
 #include "safe_input.h"
 #include "sorting_visualizer.h"
+#include "step_debugger.h"
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
@@ -68,13 +69,21 @@ void insertion_sort(int arr[], int length_of_array)
     {
         int key = arr[i];
         int j = i - 1;
+        char msg[128];
+        snprintf(msg, sizeof(msg), "Insertion Sort: Selecting key at index %d (%d)", i, key);
+        algorithm_step_hook(msg);
         visualize_sort(arr, length_of_array, i, -1, -1, "Insertion Sort: Selecting key");
         while (j >= 0 && arr[j] > key)
         {
+            snprintf(msg, sizeof(msg), "Insertion Sort: Shifting index %d (%d) to %d", j, arr[j],
+                     j + 1);
+            algorithm_step_hook(msg);
             visualize_sort(arr, length_of_array, j, j + 1, -1, "Insertion Sort: Shifting element");
             arr[j + 1] = arr[j];
             j--;
         }
+        snprintf(msg, sizeof(msg), "Insertion Sort: Inserting key (%d) at index %d", key, j + 1);
+        algorithm_step_hook(msg);
         arr[j + 1] = key;
         visualize_sort(arr, length_of_array, j + 1, -1, -1, "Insertion Sort: Inserting key");
 

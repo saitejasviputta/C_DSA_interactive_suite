@@ -1,6 +1,7 @@
 #include "advanced_heaps.h"
 #include "graph_traversals.h"
 #include "safe_input.h"
+#include "step_debugger.h"
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -170,6 +171,11 @@ void dijkstra(weightedGraph* graph, int start)
             if (currentNode.distance > dist[u])
                 continue;
 
+            char msg[128];
+            snprintf(msg, sizeof(msg), "Dijkstra (Binary): Extracted node %d (distance %d)", u,
+                     dist[u]);
+            algorithm_step_hook(msg);
+
             Edge* current = graph->array[u];
 
             while (current != NULL)
@@ -179,6 +185,10 @@ void dijkstra(weightedGraph* graph, int start)
                 if (dist[u] != INT_MAX && dist[u] + currentWeight < dist[v])
                 {
                     dist[v] = dist[u] + currentWeight;
+                    snprintf(msg, sizeof(msg),
+                             "Dijkstra (Binary): Relaxed edge %d -> %d (new dist %d)", u, v,
+                             dist[v]);
+                    algorithm_step_hook(msg);
                     if (!insert_pq_graph(&pq, v, dist[v]))
                     {
                         printf("Malloc Failed\n");
@@ -214,6 +224,11 @@ void dijkstra(weightedGraph* graph, int start)
             if (min_dist > dist[u])
                 continue;
 
+            char msg[128];
+            snprintf(msg, sizeof(msg), "Dijkstra (Fibonacci): Extracted node %d (distance %d)", u,
+                     dist[u]);
+            algorithm_step_hook(msg);
+
             Edge* current = graph->array[u];
             while (current != NULL)
             {
@@ -222,6 +237,10 @@ void dijkstra(weightedGraph* graph, int start)
                 if (dist[u] != INT_MAX && dist[u] + currentWeight < dist[v])
                 {
                     dist[v] = dist[u] + currentWeight;
+                    snprintf(msg, sizeof(msg),
+                             "Dijkstra (Fibonacci): Relaxed edge %d -> %d (new dist %d)", u, v,
+                             dist[v]);
+                    algorithm_step_hook(msg);
                     if (node_ptrs[v] == NULL)
                     {
                         node_ptrs[v] = fib_heap_insert(fib_heap, dist[v], v);
@@ -256,6 +275,11 @@ void dijkstra(weightedGraph* graph, int start)
             if (min_dist > dist[u])
                 continue;
 
+            char msg[128];
+            snprintf(msg, sizeof(msg), "Dijkstra (d-Ary): Extracted node %d (distance %d)", u,
+                     dist[u]);
+            algorithm_step_hook(msg);
+
             Edge* current = graph->array[u];
             while (current != NULL)
             {
@@ -264,6 +288,10 @@ void dijkstra(weightedGraph* graph, int start)
                 if (dist[u] != INT_MAX && dist[u] + currentWeight < dist[v])
                 {
                     dist[v] = dist[u] + currentWeight;
+                    snprintf(msg, sizeof(msg),
+                             "Dijkstra (d-Ary): Relaxed edge %d -> %d (new dist %d)", u, v,
+                             dist[v]);
+                    algorithm_step_hook(msg);
                     int idx = dary_heap_find_by_value(dary_heap, v);
                     if (idx == -1)
                     {

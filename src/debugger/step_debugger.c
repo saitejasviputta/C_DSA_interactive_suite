@@ -10,10 +10,6 @@
 #else
 #include <conio.h>
 #endif
-
-static int step_mode_active = 0;
-static int paused = 0;
-
 static char event_log[5][128];
 static int event_count = 0;
 
@@ -80,26 +76,6 @@ static int get_keypress(int block)
 #endif
 }
 
-void set_step_mode(int active)
-{
-    step_mode_active = active;
-}
-
-int get_step_mode(void)
-{
-    return step_mode_active;
-}
-
-void set_paused(int p)
-{
-    paused = p;
-}
-
-int get_paused(void)
-{
-    return paused;
-}
-
 void algorithm_step_hook(const char* event_msg)
 {
     if (event_msg == NULL)
@@ -122,29 +98,29 @@ void algorithm_step_hook(const char* event_msg)
         event_log[4][127] = '\0';
     }
 
-    if (!step_mode_active)
+    if (!get_step_mode())
         return;
 
     // Non-blocking keypress check to see if user wants to PAUSE during run
-    if (!paused)
+    if (!get_paused())
     {
         int ch = get_keypress(0);
         if (ch == ' ' || ch == 32)
         {
-            paused = 1;
+            set_paused(1);
             printf("\n[Paused by User]\n");
         }
         else if (ch == 'q' || ch == 'Q')
         {
-            step_mode_active = 0;
-            paused = 0;
+            set_step_mode(0);
+            set_paused(0);
             printf("\n[Step Debugger Disabled]\n");
         }
     }
 
     print_recent_events_card();
 
-    while (step_mode_active && paused)
+    while (get_step_mode() && get_paused())
     {
         printf("[Paused] Press [Space] to Resume, [s] to Step, [q] to Quit...\n");
         fflush(stdout);
@@ -152,7 +128,7 @@ void algorithm_step_hook(const char* event_msg)
         int ch = get_keypress(1);
         if (ch == ' ' || ch == 32)
         {
-            paused = 0;
+            set_paused(0);
             printf("Resuming execution...\n");
         }
         else if (ch == 's' || ch == 'S')
@@ -161,8 +137,8 @@ void algorithm_step_hook(const char* event_msg)
         }
         else if (ch == 'q' || ch == 'Q')
         {
-            step_mode_active = 0;
-            paused = 0;
+            set_step_mode(0);
+            set_paused(0);
             printf("Exiting step debugger mode. Running at full speed.\n");
         }
     }

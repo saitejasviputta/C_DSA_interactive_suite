@@ -1,11 +1,35 @@
 #include "config.h"
 #include "cross_platform_timer.h"
 #include "safe_input.h"
+#include "step_debugger.h"
 #include <stdio.h>
 
 // Global static variables to hold the state
 static int current_delay_seconds = 2;
 static const char* speed_name = "Normal (2.0s)";
+
+static int step_mode_active = 0;
+static int paused = 0;
+
+void set_step_mode(int active)
+{
+    step_mode_active = active;
+}
+
+int get_step_mode(void)
+{
+    return step_mode_active;
+}
+
+void set_paused(int p)
+{
+    paused = p;
+}
+
+int get_paused(void)
+{
+    return paused;
+}
 
 #if defined(__GNUC__) || defined(__clang__)
 __attribute__((weak)) void algorithm_step_hook(const char* event_msg)
@@ -61,28 +85,52 @@ void dynamic_sleep(void)
 
 void settings_menu_demo(void)
 {
-    int speed_choice;
-
-    printf("\n===================================\n");
-    printf("  Global Animation Speed Settings\n");
-    printf("===================================\n");
-    print_current_speed();
-    printf("\nSelect a new animation speed:\n");
-    printf("1. Slow (3.0s)\n");
-    printf("2. Normal (2.0s)\n");
-    printf("3. Fast (1.0s)\n");
-    printf("4. Instant (0.0s - Skip animations)\n");
-
-    int status = safe_input_int(&speed_choice, "Choice: ", 1, 4);
-
-    if (status == INPUT_EXIT_SIGNAL)
-        return;
-    if (status == 1)
+    while (1)
     {
-        set_animation_speed(speed_choice);
-        printf("\n[Success] ");
+        printf("\n===================================\n");
+        printf("        Settings & Debugger        \n");
+        printf("===================================\n");
         print_current_speed();
-        dynamic_sleep(); // Brief pause so they can read the success message
+        printf("Debugger Step Mode: %s\n", get_step_mode() ? "ON" : "OFF");
+        printf("\nOptions:\n");
+        printf("1. Set Animation Speed\n");
+        printf("2. Toggle Debugger Step Mode\n");
+        printf("Select option (or enter -1 to go back): \n");
+
+        int option;
+        int status = safe_input_int(&option, "Choice: ", 1, 2);
+
+        if (status == INPUT_EXIT_SIGNAL)
+            return;
+
+        if (status == 1)
+        {
+            if (option == 1)
+            {
+                int speed_choice;
+                printf("\nSelect a new animation speed:\n");
+                printf("1. Slow (3.0s)\n");
+                printf("2. Normal (2.0s)\n");
+                printf("3. Fast (1.0s)\n");
+                printf("4. Instant (0.0s - Skip animations)\n");
+
+                status = safe_input_int(&speed_choice, "Choice: ", 1, 4);
+                if (status == 1)
+                {
+                    set_animation_speed(speed_choice);
+                    printf("\n[Success] ");
+                    print_current_speed();
+                }
+            }
+            else if (option == 2)
+            {
+                int new_mode = !get_step_mode();
+                set_step_mode(new_mode);
+                set_paused(new_mode);
+                printf("\n[Success] Debugger Step Mode set to: %s\n",
+                       new_mode ? "ON (Auto-Paused)" : "OFF");
+            }
+        }
     }
 }
 

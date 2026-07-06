@@ -1,7 +1,7 @@
 #include "graph_traversals.h"
 #include "safe_input.h"
+#include "step_debugger.h"
 #include <stdio.h>
-
 #include <string.h>
 #include <time.h>
 
@@ -229,7 +229,10 @@ void dfs(Graph* graph, int start)
 
     start_t = clock();
 
+    char msg[128];
     visited[start] = 1;
+    snprintf(msg, sizeof(msg), "DFS: Visited start node %d", start);
+    algorithm_step_hook(msg);
     push(nodes, start);
 
     while (1)
@@ -239,6 +242,8 @@ void dfs(Graph* graph, int start)
         {
             break;
         }
+        snprintf(msg, sizeof(msg), "DFS: Popped node %d from stack", curr);
+        algorithm_step_hook(msg);
         printf("%d->", curr);
 
         Node* temp = graph->array[curr];
@@ -249,6 +254,8 @@ void dfs(Graph* graph, int start)
             if (!visited[v])
             {
                 visited[v] = 1;
+                snprintf(msg, sizeof(msg), "DFS: Discovered node %d, pushing to stack", v);
+                algorithm_step_hook(msg);
                 push(nodes, v);
             }
             temp = temp->next;
