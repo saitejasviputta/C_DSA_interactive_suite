@@ -200,20 +200,26 @@ void run_trees_benchmark(int n)
             else if (i == 6) // Segment Tree Simulation
             {
                 SegmentTree* st = create_segment_tree(keys, n);
-                for (int k = 0; k < n; k++)
+                if (st != NULL)
                 {
-                    update_point(st, 1, 0, n - 1, k, keys[k] / 2);
+                    for (int k = 0; k < n; k++)
+                    {
+                        update_point(st, 1, 0, n - 1, k, keys[k] / 2);
+                    }
+                    destroy_segment_tree(st);
                 }
-                destroy_segment_tree(st);
             }
             else if (i == 7) // Fenwick Tree Simulation
             {
                 FenwickTree* ft = create_fenwick_tree(n);
-                for (int k = 0; k < n; k++)
+                if (ft != NULL)
                 {
-                    fenwick_range_update(ft, 1, k + 1, keys[k]);
+                    for (int k = 0; k < n; k++)
+                    {
+                        fenwick_range_update(ft, 1, k + 1, keys[k]);
+                    }
+                    destroy_fenwick_tree(ft);
                 }
-                destroy_fenwick_tree(ft);
             }
 
             // Restore stdout
