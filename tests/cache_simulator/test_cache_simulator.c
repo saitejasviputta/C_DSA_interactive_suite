@@ -62,9 +62,70 @@ void test_fifo_basic()
     printf("FIFO basic cache tests passed\n");
 }
 
+void test_lru_basic()
+{
+    Cache cache;
+    cache_init(&cache, 3);
+
+    // Access 1, 2, 3: Misses
+    assert(!cache_access_lru(&cache, 1, false));
+    assert(!cache_access_lru(&cache, 2, false));
+    assert(!cache_access_lru(&cache, 3, false));
+
+    // Access 1: Hit (updates recency)
+    assert(cache_access_lru(&cache, 1, false));
+
+    // Access 2: Hit (updates recency)
+    assert(cache_access_lru(&cache, 2, false));
+
+    // Access 4: Miss. Recency list: 3 (least recent), 1, 2. So evict 3.
+    assert(!cache_access_lru(&cache, 4, false));
+
+    // 3 should no longer be in the cache
+    bool found_3 = false;
+    for (int i = 0; i < 3; i++)
+    {
+        if (cache.blocks[i].page_id == 3)
+            found_3 = true;
+    }
+    assert(!found_3);
+
+    printf("LRU basic cache tests passed\n");
+}
+
+void test_mru_basic()
+{
+    Cache cache;
+    cache_init(&cache, 3);
+
+    // Access 1, 2, 3: Misses
+    assert(!cache_access_mru(&cache, 1, false));
+    assert(!cache_access_mru(&cache, 2, false));
+    assert(!cache_access_mru(&cache, 3, false));
+
+    // Access 2: Hit (updates recency - 2 becomes most recent)
+    assert(cache_access_mru(&cache, 2, false));
+
+    // Access 4: Miss. Evict most recent (2).
+    assert(!cache_access_mru(&cache, 4, false));
+
+    // 2 should no longer be in the cache
+    bool found_2 = false;
+    for (int i = 0; i < 3; i++)
+    {
+        if (cache.blocks[i].page_id == 2)
+            found_2 = true;
+    }
+    assert(!found_2);
+
+    printf("MRU basic cache tests passed\n");
+}
+
 int main()
 {
     test_fifo_basic();
+    test_lru_basic();
+    test_mru_basic();
     printf("All cache simulator tests passed\n");
     return 0;
 }

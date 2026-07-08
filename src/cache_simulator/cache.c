@@ -14,6 +14,7 @@ void cache_init(Cache* cache, int capacity)
     cache->capacity = capacity;
     cache->size = 0;
     cache->fifo_index = 0;
+    cache->access_counter = 0;
     cache->hits = 0;
     cache->misses = 0;
     for (int i = 0; i < CACHE_MAX_CAPACITY; i++)
@@ -72,6 +73,126 @@ bool cache_access_fifo(Cache* cache, int page_id, bool is_write)
 
     // Update FIFO pointer (circular queue)
     cache->fifo_index = (cache->fifo_index + 1) % cache->capacity;
+
+    return false; // Miss (with eviction)
+}
+
+bool cache_access_lru(Cache* cache, int page_id, bool is_write)
+{
+    cache->access_counter++;
+
+    // Search for page in the cache (Hit check)
+    for (int i = 0; i < cache->capacity; i++)
+    {
+        if (cache->blocks[i].is_valid && cache->blocks[i].page_id == page_id)
+        {
+            cache->hits++;
+            cache->blocks[i].last_access_time = cache->access_counter;
+            if (is_write)
+            {
+                cache->blocks[i].is_dirty = true;
+            }
+            return true; // Hit
+        }
+    }
+
+    // Cache Miss
+    cache->misses++;
+
+    // If cache is not full, insert in the first invalid slot
+    if (cache->size < cache->capacity)
+    {
+        for (int i = 0; i < cache->capacity; i++)
+        {
+            if (!cache->blocks[i].is_valid)
+            {
+                cache->blocks[i].page_id = page_id;
+                cache->blocks[i].is_valid = true;
+                cache->blocks[i].is_dirty = is_write;
+                cache->blocks[i].last_access_time = cache->access_counter;
+                cache->size++;
+                return false; // Miss (inserted without eviction)
+            }
+        }
+    }
+
+    // Cache is full: Find block with MINIMUM last_access_time
+    int evict_idx = 0;
+    int min_access = cache->blocks[0].last_access_time;
+    for (int i = 1; i < cache->capacity; i++)
+    {
+        if (cache->blocks[i].last_access_time < min_access)
+        {
+            min_access = cache->blocks[i].last_access_time;
+            evict_idx = i;
+        }
+    }
+
+    // Perform eviction
+    cache->blocks[evict_idx].page_id = page_id;
+    cache->blocks[evict_idx].is_valid = true;
+    cache->blocks[evict_idx].is_dirty = is_write;
+    cache->blocks[evict_idx].last_access_time = cache->access_counter;
+
+    return false; // Miss (with eviction)
+}
+
+bool cache_access_mru(Cache* cache, int page_id, bool is_write)
+{
+    cache->access_counter++;
+
+    // Search for page in the cache (Hit check)
+    for (int i = 0; i < cache->capacity; i++)
+    {
+        if (cache->blocks[i].is_valid && cache->blocks[i].page_id == page_id)
+        {
+            cache->hits++;
+            cache->blocks[i].last_access_time = cache->access_counter;
+            if (is_write)
+            {
+                cache->blocks[i].is_dirty = true;
+            }
+            return true; // Hit
+        }
+    }
+
+    // Cache Miss
+    cache->misses++;
+
+    // If cache is not full, insert in the first invalid slot
+    if (cache->size < cache->capacity)
+    {
+        for (int i = 0; i < cache->capacity; i++)
+        {
+            if (!cache->blocks[i].is_valid)
+            {
+                cache->blocks[i].page_id = page_id;
+                cache->blocks[i].is_valid = true;
+                cache->blocks[i].is_dirty = is_write;
+                cache->blocks[i].last_access_time = cache->access_counter;
+                cache->size++;
+                return false; // Miss (inserted without eviction)
+            }
+        }
+    }
+
+    // Cache is full: Find block with MAXIMUM last_access_time
+    int evict_idx = 0;
+    int max_access = cache->blocks[0].last_access_time;
+    for (int i = 1; i < cache->capacity; i++)
+    {
+        if (cache->blocks[i].last_access_time > max_access)
+        {
+            max_access = cache->blocks[i].last_access_time;
+            evict_idx = i;
+        }
+    }
+
+    // Perform eviction
+    cache->blocks[evict_idx].page_id = page_id;
+    cache->blocks[evict_idx].is_valid = true;
+    cache->blocks[evict_idx].is_dirty = is_write;
+    cache->blocks[evict_idx].last_access_time = cache->access_counter;
 
     return false; // Miss (with eviction)
 }

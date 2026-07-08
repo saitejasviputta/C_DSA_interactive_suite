@@ -21,6 +21,7 @@ typedef struct
     int capacity;
     int size;
     int fifo_index;
+    int access_counter;
 
     // Statistics
     int hits;
@@ -29,6 +30,8 @@ typedef struct
 
 void cache_init(Cache* cache, int capacity);
 bool cache_access_fifo(Cache* cache, int page_id, bool is_write);
+bool cache_access_lru(Cache* cache, int page_id, bool is_write);
+bool cache_access_mru(Cache* cache, int page_id, bool is_write);
 void cache_print_status(const Cache* cache);
 void cache_simulator_demo(void);
 
