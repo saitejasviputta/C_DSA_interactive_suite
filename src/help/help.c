@@ -1,14 +1,10 @@
 #include "help.h"
+#include "display_header.h"
 #include <stdio.h>
 
 void launch_help_page(void)
 {
-    // Clear terminal screen for that immersive "man page" feel
-    printf("\033[H\033[2J");
-
-    printf("=================================================================\n");
-    printf("C DSA INTERACTIVE SUITE - USER MANUAL (man help)\n");
-    printf("=================================================================\n\n");
+    display_header("C DSA INTERACTIVE SUITE - USER MANUAL (man help)");
 
     printf("DESCRIPTION\n");
     printf("    The C DSA Interactive Suite is a terminal-based application\n");
