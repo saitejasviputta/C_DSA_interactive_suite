@@ -7,6 +7,7 @@
 #include "array.h"
 #include "backtracking.h"
 #include "benchmark.h"
+#include "cache.h"
 #include "config.h"
 #include "dcll.h"
 #include "display_header.h"
@@ -70,8 +71,9 @@ void run_legacy_menu()
             "eulerian path) demo\n"
             "click 18 for advanced heaps & priority queues suite demo\n"
             "click 19 for interactive algorithm step-debugger demo\n"
+            "click 20 for cache replacement simulator demo\n"
             "enter choice : ",
-            1, 19 // limits
+            1, 20 // limits
         );
 
         if (status == -111)
@@ -144,6 +146,9 @@ void run_legacy_menu()
                 break;
             case 19:
                 debugger_demo();
+                break;
+            case 20:
+                cache_simulator_demo();
                 break;
         }
     }

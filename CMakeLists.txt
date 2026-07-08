@@ -35,6 +35,7 @@ set(SRC_DIRS
     memory_profiler
     src/debugger
     benchmark
+    src/cache_simulator
 )
 
 # Header search paths

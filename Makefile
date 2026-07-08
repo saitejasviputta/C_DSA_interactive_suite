@@ -26,7 +26,8 @@ CFLAGS = -Wall -Wextra -Werror -std=c11 -g \
 	-Isrc/process_synchronization \
 	-Imemory_profiler \
 	-Isrc/debugger \
-	-Ibenchmark
+	-Ibenchmark \
+	-Isrc/cache_simulator
 	# -Itui
 
 # LDFLAGS = -lncurses
@@ -52,7 +53,8 @@ SRC_DIRS = \
 	src/process_synchronization \
 	memory_profiler \
 	src/debugger \
-	benchmark
+	benchmark \
+	src/cache_simulator
 
 # SRCS = $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c))
 # OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
@@ -147,7 +149,7 @@ TEST_BINS = test_circ_queue test_bst test_search test_hash_func \
             test_string_algorithms test_expression_evaluation \
             test_fcfs test_sjf test_srtf test_round_robin test_priority_scheduling test_preemptive_priority \
             test_dining_philosophers test_petersons test_producer_consumer \
-            test_dijkstra test_bellman_ford test_bfs test_dfs test_topological_sort test_benchmark test_scc test_ford_fulkerson test_edmonds_karp test_dinic test_bipartite_matching test_hopcroft_karp test_eulerian_path
+            test_dijkstra test_bellman_ford test_bfs test_dfs test_topological_sort test_benchmark test_scc test_ford_fulkerson test_edmonds_karp test_dinic test_bipartite_matching test_hopcroft_karp test_eulerian_path test_cache_simulator
 
 # Automatically find all advanced heap test sources and append their targets
 ADV_HEAP_TESTS = $(patsubst tests/advanced_heaps/%.c,%,$(wildcard tests/advanced_heaps/*.c))
@@ -788,6 +790,13 @@ test_memory_tracker: $(TEST_DIR)/test_memory_tracker$(EXE)
 	$(TEST_DIR)/test_memory_tracker$(EXE)
 
 $(TEST_DIR)/test_memory_tracker$(EXE): $(OBJS) tests/memory_profiler/test_memory_tracker.c
+	@$(call MKDIR_P,$(TEST_DIR))
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+test_cache_simulator: $(TEST_DIR)/test_cache_simulator$(EXE)
+	$(TEST_DIR)/test_cache_simulator$(EXE)
+
+$(TEST_DIR)/test_cache_simulator$(EXE): $(OBJ_DIR)/src/cache_simulator/cache.o tests/cache_simulator/test_cache_simulator.c
 	@$(call MKDIR_P,$(TEST_DIR))
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
