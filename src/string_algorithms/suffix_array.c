@@ -190,7 +190,7 @@ void find_longest_repeated_substring(const char* txt, int n, char* output)
 
 void visualize_suffix_array(const char* txt, int n, int* sa, int* lcp)
 {
-    if (sa == NULL || lcp == NULL)
+    if (txt == NULL || n <= 0 || sa == NULL || lcp == NULL)
     {
         return;
     }
@@ -212,13 +212,13 @@ void suffix_array_demo(void)
     {
         txt[strcspn(txt, "\n")] = 0; // Remove newline
 
-        if (strlen(txt) == 0)
+        int n = (int)strlen(txt);
+        if (n <= 0)
         {
             printf("Error: Empty string provided.\n");
             return;
         }
 
-        int n = strlen(txt);
         int* sa = build_suffix_array(txt, n);
         if (sa == NULL)
         {
