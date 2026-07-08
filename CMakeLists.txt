@@ -14,6 +14,7 @@ endif()
 
 # Source directories
 set(SRC_DIRS
+    src/help
     src/data_structures
     src/expression_evaluation
     src/sorting_algorithms_n2
@@ -31,6 +32,8 @@ set(SRC_DIRS
     src/string_algorithms
     src/backtracking
     src/process_synchronization
+    memory_profiler
+    src/debugger
     benchmark
 )
 
