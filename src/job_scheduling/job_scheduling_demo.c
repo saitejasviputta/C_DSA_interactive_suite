@@ -137,6 +137,12 @@ void js_add_segment(GanttSegment* segments, int* count, int id, int time)
 
 void js_print_gantt(const GanttSegment* segments, int count)
 {
+    if (count <= 0)
+    {
+        printf("\nNo scheduling segments to display.\n");
+        return;
+    }
+
     printf("\nGantt chart:\n");
 
     printf("|");
