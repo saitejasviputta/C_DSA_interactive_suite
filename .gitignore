@@ -1,7 +1,6 @@
 *.exe
 dsa
-/test_*
-output/benchmark_history.csv
+/test_binaries/
 /object_files/
 /build/
 /benchmarks/
