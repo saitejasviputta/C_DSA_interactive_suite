@@ -36,6 +36,7 @@ set(SRC_DIRS
     src/debugger
     benchmark
     src/cache_simulator
+    src/compression
 )
 
 # Header search paths
