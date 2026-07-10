@@ -3,6 +3,7 @@
 #include "safe_input.h"
 #include <limits.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
