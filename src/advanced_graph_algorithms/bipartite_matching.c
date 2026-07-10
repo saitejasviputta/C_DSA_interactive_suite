@@ -12,7 +12,9 @@ bool bipartite_color(Graph* graph, int* color)
     for (int i = 0; i < V; i++)
         color[i] = -1;
 
-    int* queue = malloc(sizeof(int) * V);
+    if (V <= 0)
+        return false;
+    int* queue = calloc(V, sizeof(int));
     if (queue == NULL)
         return false;
 
@@ -57,7 +59,9 @@ static bool bfs_dinic_matching(int V, int** residual, int source, int sink, int*
         level[i] = -1;
     level[source] = 0;
 
-    int* queue = malloc(sizeof(int) * V);
+    if (V <= 0)
+        return false;
+    int* queue = calloc(V, sizeof(int));
     if (queue == NULL)
         return false;
     int head = 0, tail = 0;
@@ -111,7 +115,9 @@ int max_bipartite_matching(Graph* graph, int** match_pairs, int* match_count)
         return 0;
 
     int V = graph->V;
-    int* color = malloc(sizeof(int) * V);
+    if (V <= 0)
+        return 0;
+    int* color = calloc(V, sizeof(int));
     if (color == NULL)
         return 0;
 
@@ -127,7 +133,7 @@ int max_bipartite_matching(Graph* graph, int** match_pairs, int* match_count)
     int sink = V + 1;
     int total_vertices = V + 2;
 
-    int** residual = malloc(sizeof(int*) * total_vertices);
+    int** residual = calloc(total_vertices, sizeof(int*));
     if (residual == NULL)
     {
         free(color);
@@ -168,8 +174,8 @@ int max_bipartite_matching(Graph* graph, int** match_pairs, int* match_count)
         }
     }
 
-    int* level = malloc(sizeof(int) * total_vertices);
-    int* start = malloc(sizeof(int) * total_vertices);
+    int* level = calloc(total_vertices, sizeof(int));
+    int* start = calloc(total_vertices, sizeof(int));
     if (level == NULL || start == NULL)
     {
         free(level);
@@ -214,7 +220,18 @@ int max_bipartite_matching(Graph* graph, int** match_pairs, int* match_count)
                 if (color[v] == 1 && residual[u][v] == 0)
                 {
                     count++;
-                    int* new_pairs = realloc(pairs, sizeof(int) * 2 * count);
+                    if ((size_t)count > SIZE_MAX / sizeof(int[2]))
+                    {
+                        free(pairs);
+                        free(level);
+                        free(start);
+                        for (int i = 0; i < total_vertices; i++)
+                            free(residual[i]);
+                        free(residual);
+                        free(color);
+                        return 0;
+                    }
+                    int* new_pairs = realloc(pairs, sizeof(int[2]) * count);
                     if (new_pairs == NULL)
                     {
                         free(pairs);
