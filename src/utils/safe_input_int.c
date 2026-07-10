@@ -17,15 +17,19 @@ int safe_input_int(int* input, const char* prompt, int min_val, int max_val)
             fflush(stdout);
         }
 
-        // Read input as a string safely
-        if (scanf("%99s", buffer) != 1)
+        // Read input safely and detect EOF
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL)
         {
-            goto clear_buffer;
+            if (feof(stdin))
+            {
+                clearerr(stdin);
+            }
+            printf("input ended unexpectedly\n");
+            return 0;
         }
 
-        // Clear the rest of the line from input buffer
-        while ((c = getchar()) != '\n' && c != EOF)
-            ;
+        // Remove trailing newline, if present
+        buffer[strcspn(buffer, "\n")] = '\0';
 
         // 1. Intercept "help" command
         if (strcmp(buffer, "help") == 0)
@@ -69,15 +73,4 @@ int safe_input_int(int* input, const char* prompt, int min_val, int max_val)
         *input = value;
         return 1; // Successful insertion
     }
-
-clear_buffer:
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
-    if (c == EOF)
-    {
-        clearerr(stdin);
-        printf("input ended unexpectedly\n");
-        return 0;
-    }
-    return 0;
 }
