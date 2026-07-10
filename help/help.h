@@ -7,4 +7,24 @@
  */
 void launch_help_page(void);
 
+/**
+ * @brief Sub-menu for Data Structures help.
+ */
+void help_data_structures_menu(void);
+
+/**
+ * @brief Sub-menu for Sorting & Searching help.
+ */
+void help_sorting_searching_menu(void);
+
+/**
+ * @brief Sub-menu for Graphs & Trees help.
+ */
+void help_graphs_trees_menu(void);
+
+/**
+ * @brief Sub-menu for Advanced Topics help.
+ */
+void help_advanced_topics_menu(void);
+
 #endif // HELP_H
