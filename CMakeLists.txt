@@ -33,7 +33,7 @@ set(SRC_DIRS
     src/backtracking
     src/process_synchronization
     memory_profiler
-    src/debugger
+    features/debugger
     benchmark
     src/cache_simulator
     src/compression
