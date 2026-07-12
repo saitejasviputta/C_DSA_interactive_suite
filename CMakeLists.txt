@@ -38,6 +38,7 @@ set(SRC_DIRS
     src/cache_simulator
     src/compression
     demos/data_structures
+    demos/trees
 )
 
 # Header search paths
