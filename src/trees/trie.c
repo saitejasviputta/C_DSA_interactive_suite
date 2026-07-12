@@ -114,4 +114,3 @@ void trie_free(TrieNode* node)
         trie_free(node->children[i]);
     free(node);
 }
-

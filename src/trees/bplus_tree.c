@@ -163,8 +163,8 @@ static BPlusNode* insert_recurse(BPlusTree* tree, BPlusNode* current, int key, i
             idx++;
         }
 
-        BPlusNode* child_split =
-            insert_recurse(tree, current->children[idx], key, value, promo_key, promo_node, success);
+        BPlusNode* child_split = insert_recurse(tree, current->children[idx], key, value, promo_key,
+                                                promo_node, success);
         if (!*success)
         {
             return NULL;
