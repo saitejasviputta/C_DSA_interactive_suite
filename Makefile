@@ -832,7 +832,7 @@ $(TEST_DIR)/test_%$(EXE): $(OBJS) tests/advanced_heaps/test_%.c
 	@$(call MKDIR_P,$(TEST_DIR))
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
  
-.PHONY: run fmt clean valgrind asan ubsan sanitize test-mem docker-build-dev docker-test
+.PHONY: run fmt clean valgrind asan ubsan sanitize test-mem docker-build-dev docker-test docker-build-runtime docker-run
 
 # Docker automation targets
 docker-build-dev:
@@ -841,4 +841,11 @@ docker-build-dev:
 docker-test:
 	docker build --target dev -t c-dsa-suite:dev .
 	docker run -it --rm c-dsa-suite:dev make test
+
+docker-build-runtime:
+	docker build --target runtime -t c-dsa-suite:slim .
+
+docker-run:
+	docker build --target runtime -t c-dsa-suite:slim .
+	docker run -it --rm c-dsa-suite:slim
 
