@@ -151,6 +151,12 @@ Each component serves a different purpose:
 
 These tools are complementary rather than competing solutions.
 
+### Multi-Stage Architecture
+
+The project uses a multi-stage `Dockerfile` to separate the build environment from the lightweight runtime image:
+- **Stage 1 (`dev`)**: A heavy development environment containing the full C build toolchain, `valgrind`, `gdb`, and the complete source repository.
+- **Stage 2 (`runtime`)**: A minimal image packaging only the compiled binary and `libncurses6` runtime library (no source code or compiler).
+
 ---
 
 ## Continuous Integration
