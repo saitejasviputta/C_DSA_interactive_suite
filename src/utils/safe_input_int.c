@@ -50,7 +50,8 @@ int safe_input_int(int* input, const char* prompt, int min_val, int max_val)
         }
         else
         {
-            // If they just typed -1, but it wasn't parsed as 1 item (shouldn't happen, but let's check)
+            // If they just typed -1, but it wasn't parsed as 1 item (shouldn't happen, but let's
+            // check)
             if (strcmp(buffer, "-1") == 0)
             {
                 return -111; // Return exit signal
