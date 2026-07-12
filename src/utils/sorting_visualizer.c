@@ -2,13 +2,6 @@
 #include "config.h"
 #include <stdio.h>
 
-#ifdef _WIN32
-#include <windows.h>
-#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
-#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
-#endif
-#endif
-
 void visualize_sort(const int arr[], int n, int active_idx1, int active_idx2, int pivot_idx,
                     const char* status_message)
 {
@@ -16,22 +9,6 @@ void visualize_sort(const int arr[], int n, int active_idx1, int active_idx2, in
     {
         return;
     }
-
-#ifdef _WIN32
-    static int windows_initialized = 0;
-    if (!windows_initialized)
-    {
-        HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-        DWORD dwMode = 0;
-        if (hOut != INVALID_HANDLE_VALUE && GetConsoleMode(hOut, &dwMode))
-        {
-            dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-            SetConsoleMode(hOut, dwMode);
-        }
-        SetConsoleOutputCP(CP_UTF8);
-        windows_initialized = 1;
-    }
-#endif
 
     // Find min and max values in the array for dynamic scaling
     int min_val = arr[0];

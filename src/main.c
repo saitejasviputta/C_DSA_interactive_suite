@@ -199,6 +199,8 @@ void tui_menu()
 
 int main(int argc, char* argv[])
 {
+    init_windows_console();
+
     for (int i = 1; i < argc; i++)
     {
         if (strcmp(argv[i], "--profile") == 0)

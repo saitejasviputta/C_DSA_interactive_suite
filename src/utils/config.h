@@ -19,4 +19,7 @@ int is_instant(void);
 // Checks if the output is a terminal
 int is_terminal_interactive(void);
 
+// Centralized Windows console initialization for UTF-8 and ANSI colors
+void init_windows_console(void);
+
 #endif

@@ -6,6 +6,10 @@
 
 #ifdef _WIN32
 #include <io.h>
+#include <windows.h>
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
 #else
 #include <unistd.h>
 #endif
@@ -156,4 +160,22 @@ int is_instant(void)
         return 1;
     }
     return (current_delay_seconds == 0) ? 1 : 0;
+}
+
+void init_windows_console(void)
+{
+#ifdef _WIN32
+    if (!is_terminal_interactive())
+    {
+        return;
+    }
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    if (hOut != INVALID_HANDLE_VALUE && GetConsoleMode(hOut, &dwMode))
+    {
+        dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        SetConsoleMode(hOut, dwMode);
+    }
+    SetConsoleOutputCP(CP_UTF8);
+#endif
 }
