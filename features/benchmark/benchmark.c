@@ -23,7 +23,7 @@ double benchmark_get_time(void)
 {
 #ifdef _WIN32
     LARGE_INTEGER count, freq;
-    if (QueryPerformanceCounter(&count) && QueryPerformanceFrequency(&freq))
+    if (QueryPerformanceCounter(&count) && QueryPerformanceFrequency(&freq) && freq.QuadPart > 0)
     {
         return (double)count.QuadPart / (double)freq.QuadPart;
     }
