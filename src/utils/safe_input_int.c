@@ -94,3 +94,10 @@ void trim_newline(char* str)
         str[--len] = '\0';
     }
 }
+
+void press_enter_to_continue(void)
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}

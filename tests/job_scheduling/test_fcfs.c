@@ -102,9 +102,31 @@ void test_fcfs_basic()
     printf("FCFS basic test passed\n");
 }
 
+void test_fcfs_zero_burst()
+{
+    // Initialize input processes
+    g_input_count = 1;
+
+    g_input_procs[0].id = 1;
+    g_input_procs[0].arrival = 0;
+    g_input_procs[0].burst = 0;
+    g_input_procs[0].priority = 0;
+
+    // Run the scheduler demo
+    fcfs_demo();
+
+    // Assert results
+    assert(g_output_count == 1);
+    assert(g_output_procs[0].completion == 0);
+    assert(g_output_procs[0].turnaround == 0);
+    assert(g_output_procs[0].waiting == 0);
+    printf("FCFS zero burst test passed\n");
+}
+
 int main()
 {
     test_fcfs_basic();
+    test_fcfs_zero_burst();
     printf("All FCFS tests passed\n");
     return 0;
 }
