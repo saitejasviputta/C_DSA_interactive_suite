@@ -165,13 +165,14 @@ void tui_menu()
     while (1)
     {
         int choice;
-        int status = safe_input_int(&choice,
-                                    "\nWelcome to DSA library built by Darshan Mukul Parekh"
-                                    "\n(at any point enter '-1' to exit that particular demo, or 'help' for manual)\n\n"
-                                    "click 1 for legacy menu\n"
-                                    "click 2 for tui menu\n"
-                                    "\nenter choice (\'-1\' to exit, or \'help\') : ",
-                                    1, 2 // limits
+        int status = safe_input_int(
+            &choice,
+            "\nWelcome to DSA library built by Darshan Mukul Parekh"
+            "\n(at any point enter '-1' to exit that particular demo, or 'help' for manual)\n\n"
+            "click 1 for legacy menu\n"
+            "click 2 for tui menu\n"
+            "\nenter choice (\'-1\' to exit, or \'help\') : ",
+            1, 2 // limits
         );
 
         if (status == -111)

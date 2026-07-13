@@ -16,8 +16,8 @@ void help_data_structures_menu(void)
         printf("4. Stacks & Queues\n");
         printf("5. Arrays & Priority Queues\n");
         int choice;
-        int status = safe_input_int(&choice,
-                                    "\nenter choice (\'-1\' to exit, or \'help\') : ", 1, 5);
+        int status =
+            safe_input_int(&choice, "\nenter choice (\'-1\' to exit, or \'help\') : ", 1, 5);
 
         if (status == INPUT_EXIT_SIGNAL)
         {
