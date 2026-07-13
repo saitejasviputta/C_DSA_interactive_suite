@@ -27,7 +27,7 @@ void graph_traversals_demo(void)
                                                     "9. Kruskal MST\n"
                                                     "10. Prim MST\n"
                                                     "11. Floyd-Warshall\n"
-                                                    "\nEnter choice (-1 to return): ",
+                                                    "\nenter choice (\'-1\' to exit, or \'help\') : ",
                                                     1, 11);
 
         if (graph_traversal_status == INPUT_EXIT_SIGNAL)
