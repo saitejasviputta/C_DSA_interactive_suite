@@ -37,8 +37,8 @@ void trie_demo(void)
 
         if (choice == 1)
         {
-            printf("enter word (lowercase letters only): ");
-            if (scanf("%255s", word) != 1)
+            status = safe_input_string(word, "enter word (lowercase letters only): ");
+            if (status == INPUT_EXIT_SIGNAL || status == 0)
                 continue;
             if (trie_insert(root, word))
                 printf("inserted: %s\n", word);
@@ -47,8 +47,8 @@ void trie_demo(void)
         }
         else if (choice == 2)
         {
-            printf("enter word to search: ");
-            if (scanf("%255s", word) != 1)
+            status = safe_input_string(word, "enter word to search: ");
+            if (status == INPUT_EXIT_SIGNAL || status == 0)
                 continue;
             if (trie_search(root, word))
                 printf("'%s' found in trie.\n", word);
@@ -57,8 +57,8 @@ void trie_demo(void)
         }
         else if (choice == 3)
         {
-            printf("enter prefix: ");
-            if (scanf("%255s", word) != 1)
+            status = safe_input_string(word, "enter prefix: ");
+            if (status == INPUT_EXIT_SIGNAL || status == 0)
                 continue;
             if (trie_starts_with_prefix(root, word))
                 printf("words with prefix '%s' exist.\n", word);
@@ -67,8 +67,8 @@ void trie_demo(void)
         }
         else if (choice == 4)
         {
-            printf("enter word to delete: ");
-            if (scanf("%255s", word) != 1)
+            status = safe_input_string(word, "enter word to delete: ");
+            if (status == INPUT_EXIT_SIGNAL || status == 0)
                 continue;
             trie_delete(root, word);
             printf("delete attempted for: %s\n", word);
