@@ -5,7 +5,7 @@
 
 int push(stack* s, int value)
 {
-    if (sll_insertAtBeginning(&(s->top), value))
+    if (sll_insertAtBeginning(&(s->top), value) == 1)
     {
         return 1;
     }

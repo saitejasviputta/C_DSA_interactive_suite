@@ -70,7 +70,12 @@ start_dll:
             {
                 goto dll_enter_end_value;
             }
-            dll_insertAtBeginning(&head, dll_end_value);
+            int status = dll_insertAtBeginning(&head, dll_end_value);
+            if (status == -1)
+            {
+                printf("\nmalloc allocation failure. try again\n");
+                goto dll_enter_end_value;
+            }
             dll_printlist(head);
         }
         else if (dll_position_choice == 1)
@@ -94,7 +99,12 @@ start_dll:
             {
                 goto dll_enter_start_value;
             }
-            dll_insertAtEnd(&head, dll_start_value);
+            int status = dll_insertAtEnd(&head, dll_start_value);
+            if (status == -1)
+            {
+                printf("\nmalloc allocation failure. try again\n");
+                goto dll_enter_start_value;
+            }
             dll_printlist(head);
         }
         else if (dll_position_choice == 2)
