@@ -186,6 +186,25 @@ void producer_consumer_demo(void)
             if (step_status != 1)
                 continue;
 
+            int step_mode = 1; // Default to Animated Playback
+            if (!is_instant())
+            {
+                int mode_choice;
+                int mode_status = safe_input_int(
+                    &mode_choice,
+                    "\nSelect Simulation Playback Mode:\n1. Animated Playback (Automatic)\n2. "
+                    "Step-by-Step (Manual)\nEnter choice (1 or 2), or '-1' to exit: ",
+                    1, 2);
+                if (mode_status == INPUT_EXIT_SIGNAL)
+                {
+                    continue;
+                }
+                if (mode_status == 1)
+                {
+                    step_mode = mode_choice;
+                }
+            }
+
             srand((unsigned int)time(NULL));
 
             for (int s = 0; s < steps; s++)
@@ -250,10 +269,22 @@ void producer_consumer_demo(void)
                     }
                 }
 
-                sleep_seconds(1.2f);
+                if (step_mode == 2)
+                {
+                    printf("\nPress [ENTER] to step to next action...");
+                    int ch;
+                    while ((ch = getchar()) != '\n' && ch != EOF)
+                        ;
+                }
+                else if (!is_instant())
+                {
+                    sleep_seconds(1.2f);
+                }
             }
             printf("\nAuto-simulation finished. Press Enter to continue...");
-            getchar();
+            int ch;
+            while ((ch = getchar()) != '\n' && ch != EOF)
+                ;
         }
         else if (choice == 4)
         {

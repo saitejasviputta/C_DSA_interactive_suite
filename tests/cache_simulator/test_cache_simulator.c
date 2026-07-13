@@ -289,6 +289,108 @@ void test_enhanced_clock_basic()
     printf("Enhanced Clock basic cache tests passed\n");
 }
 
+void test_enhanced_clock_advanced()
+{
+    // Test Step 2 matching: Class 1 (0, 1)
+    {
+        Cache cache;
+        cache_init(&cache, 3);
+
+        assert(!cache_access_enhanced_clock(&cache, 1, false)); // (1, 0) at index 0
+        assert(!cache_access_enhanced_clock(&cache, 2, true));  // (1, 1) at index 1
+        assert(!cache_access_enhanced_clock(&cache, 3, true));  // (1, 1) at index 2
+
+        // Manually configure states:
+        // Index 0 (page 1): (1, 0)
+        cache.blocks[0].reference_bit = 1;
+        cache.blocks[0].is_dirty = false;
+        // Index 1 (page 2): (0, 1)
+        cache.blocks[1].reference_bit = 0;
+        cache.blocks[1].is_dirty = true;
+        // Index 2 (page 3): (1, 1)
+        cache.blocks[2].reference_bit = 1;
+        cache.blocks[2].is_dirty = true;
+
+        cache.fifo_index = 0; // Reset hand to 0
+
+        // Access 4:
+        // Pass 1 (Class 0: 0,0) -> fails (all are (1,0), (0,1), (1,1))
+        // Pass 2 (Class 1: 0,1) -> index 0 (1,0) gets cleared to (0,0), index 1 (0,1) matches!
+        // Page 2 should be evicted, hand should advance to 2.
+        assert(!cache_access_enhanced_clock(&cache, 4, false));
+
+        // Page 2 is evicted
+        bool found_2 = false;
+        for (int i = 0; i < 3; i++)
+        {
+            if (cache.blocks[i].page_id == 2)
+                found_2 = true;
+        }
+        assert(!found_2);
+        assert(cache.blocks[0].reference_bit == 0); // Bypassed page reference bit cleared
+        assert(cache.fifo_index == 2);              // Hand advanced to index 2
+    }
+
+    // Test Step 3 matching: Class 2 (1, 0) -> (0, 0) after clear
+    {
+        Cache cache;
+        cache_init(&cache, 3);
+
+        assert(!cache_access_enhanced_clock(&cache, 1, false)); // (1, 0) at index 0
+        assert(!cache_access_enhanced_clock(&cache, 2, false)); // (1, 0) at index 1
+        assert(!cache_access_enhanced_clock(&cache, 3, false)); // (1, 0) at index 2
+
+        cache.fifo_index = 0; // Hand to 0
+
+        // Access 4:
+        // Pass 1 (Class 0: 0,0) -> fails
+        // Pass 2 (Class 1: 0,1) -> fails, resets all reference bits to 0. (All become 0,0)
+        // Pass 3 (Class 0: 0,0) -> index 0 matches!
+        // Page 1 is evicted, hand advances to 1.
+        assert(!cache_access_enhanced_clock(&cache, 4, false));
+
+        bool found_1 = false;
+        for (int i = 0; i < 3; i++)
+        {
+            if (cache.blocks[i].page_id == 1)
+                found_1 = true;
+        }
+        assert(!found_1);
+        assert(cache.fifo_index == 1);
+    }
+
+    // Test Step 4 matching: Class 3 (1, 1) -> (0, 1) after clear
+    {
+        Cache cache;
+        cache_init(&cache, 3);
+
+        assert(!cache_access_enhanced_clock(&cache, 1, true)); // (1, 1) at index 0
+        assert(!cache_access_enhanced_clock(&cache, 2, true)); // (1, 1) at index 1
+        assert(!cache_access_enhanced_clock(&cache, 3, true)); // (1, 1) at index 2
+
+        cache.fifo_index = 0; // Hand to 0
+
+        // Access 4:
+        // Pass 1 (Class 0: 0,0) -> fails
+        // Pass 2 (Class 1: 0,1) -> fails, resets all reference bits to 0. (All become 0,1)
+        // Pass 3 (Class 0: 0,0) -> fails
+        // Pass 4 (Class 1: 0,1) -> index 0 matches!
+        // Page 1 is evicted, hand advances to 1.
+        assert(!cache_access_enhanced_clock(&cache, 4, false));
+
+        bool found_1 = false;
+        for (int i = 0; i < 3; i++)
+        {
+            if (cache.blocks[i].page_id == 1)
+                found_1 = true;
+        }
+        assert(!found_1);
+        assert(cache.fifo_index == 1);
+    }
+
+    printf("Enhanced Clock advanced cache tests passed\n");
+}
+
 int main()
 {
     test_fifo_basic();
@@ -298,6 +400,7 @@ int main()
     test_opt_basic();
     test_clock_basic();
     test_enhanced_clock_basic();
+    test_enhanced_clock_advanced();
     printf("All cache simulator tests passed\n");
     return 0;
 }
