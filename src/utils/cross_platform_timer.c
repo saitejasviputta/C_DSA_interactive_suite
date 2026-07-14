@@ -1,13 +1,8 @@
 #include "cross_platform_timer.h"
 
-#ifdef _WIN32
-#include <windows.h>
-#else
 #define _DEFAULT_SOURCE
-#include <unistd.h>
-#endif
-
 #include <stdlib.h>
+#include <unistd.h>
 
 void sleep_seconds(float seconds)
 {
@@ -15,9 +10,5 @@ void sleep_seconds(float seconds)
     {
         return;
     }
-#ifdef _WIN32
-    Sleep(seconds * 1000);
-#else
     usleep(seconds * 1000000);
-#endif
 }

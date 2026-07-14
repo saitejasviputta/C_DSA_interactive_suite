@@ -33,9 +33,7 @@
 #include "string_algorithms.h"
 #include "trees.h"
 
-#ifndef _WIN32
 #include "tui.h"
-#endif
 
 void data_structures_demo(void);
 
@@ -159,7 +157,6 @@ void run_legacy_menu()
     }
 }
 
-#ifndef _WIN32
 void tui_menu()
 {
     while (1)
@@ -196,7 +193,6 @@ void tui_menu()
         }
     }
 }
-#endif
 
 int main(int argc, char* argv[])
 {
@@ -211,11 +207,7 @@ int main(int argc, char* argv[])
         }
     }
 
-#ifdef _WIN32
-    run_legacy_menu();
-#else
     tui_menu();
-#endif
 
     return 0;
 }

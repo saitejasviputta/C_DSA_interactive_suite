@@ -4,23 +4,11 @@
 #include "step_debugger.h"
 #include <stdio.h>
 
-#ifdef _WIN32
-#include <io.h>
-#include <windows.h>
-#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
-#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
-#endif
-#else
 #include <unistd.h>
-#endif
 
 int is_terminal_interactive(void)
 {
-#ifdef _WIN32
-    return _isatty(1);
-#else
     return isatty(1);
-#endif
 }
 
 // Global static variables to hold the state
@@ -162,20 +150,4 @@ int is_instant(void)
     return (current_delay_seconds == 0) ? 1 : 0;
 }
 
-void init_windows_console(void)
-{
-#ifdef _WIN32
-    if (!is_terminal_interactive())
-    {
-        return;
-    }
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    DWORD dwMode = 0;
-    if (hOut != INVALID_HANDLE_VALUE && GetConsoleMode(hOut, &dwMode))
-    {
-        dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-        SetConsoleMode(hOut, dwMode);
-    }
-    SetConsoleOutputCP(CP_UTF8);
-#endif
-}
+void init_windows_console(void) {}
