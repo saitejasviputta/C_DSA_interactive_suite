@@ -5,17 +5,8 @@
 #include <stdio.h>
 #include <time.h>
 
-#ifdef _WIN32
-#include <windows.h>
-#endif
-
 void graph_coloring_demo(void)
 {
-    // Set console output to UTF-8 on Windows for Unicode support (●)
-#ifdef _WIN32
-    UINT old_cp = GetConsoleOutputCP();
-    SetConsoleOutputCP(CP_UTF8);
-#endif
 
     // Predefined Graph Topologies
     GraphTopology topologies[] = {
@@ -64,9 +55,7 @@ void graph_coloring_demo(void)
 
         if (status == INPUT_EXIT_SIGNAL)
         {
-#ifdef _WIN32
-            SetConsoleOutputCP(old_cp); // restore code page
-#endif
+
             printf("\nReturning to Backtracking menu...\n");
             return;
         }
@@ -81,9 +70,7 @@ void graph_coloring_demo(void)
             &M, "\nEnter the number of colors M (between 1 and 5), or -1 to exit: ", 1, 5);
         if (status == INPUT_EXIT_SIGNAL)
         {
-#ifdef _WIN32
-            SetConsoleOutputCP(old_cp);
-#endif
+
             printf("\nReturning to Backtracking menu...\n");
             return;
         }

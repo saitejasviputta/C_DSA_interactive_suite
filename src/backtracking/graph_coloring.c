@@ -8,9 +8,6 @@
 #include <time.h>
 
 #include "clear_screen.h"
-#ifdef _WIN32
-#include <windows.h>
-#endif
 
 static const char* color_names[] = {"NONE", "RED", "GREEN", "BLUE", "YELLOW", "MAGENTA"};
 static const char* color_ansi[] = {

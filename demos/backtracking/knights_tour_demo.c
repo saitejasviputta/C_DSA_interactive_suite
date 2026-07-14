@@ -4,17 +4,8 @@
 #include <stdio.h>
 #include <time.h>
 
-#ifdef _WIN32
-#include <windows.h>
-#endif
-
 void knights_tour_demo(void)
 {
-    // Set console output to UTF-8 on Windows for Emojis
-#ifdef _WIN32
-    UINT old_cp = GetConsoleOutputCP();
-    SetConsoleOutputCP(CP_UTF8);
-#endif
 
     int board[8][8];
 
@@ -26,9 +17,7 @@ void knights_tour_demo(void)
 
         if (status == INPUT_EXIT_SIGNAL)
         {
-#ifdef _WIN32
-            SetConsoleOutputCP(old_cp); // restore code page
-#endif
+
             printf("\nReturning to Backtracking menu...\n");
             return;
         }

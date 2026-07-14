@@ -8,9 +8,6 @@
 #include <time.h>
 
 #include "clear_screen.h"
-#ifdef _WIN32
-#include <windows.h>
-#endif
 
 // ANSI styles
 #define ANSI_COLOR_RESET "\033[0m"
