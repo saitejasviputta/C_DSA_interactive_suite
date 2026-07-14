@@ -2,19 +2,14 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifndef _WIN32
 #include <ncurses.h>
 #include <sys/select.h>
 #include <termios.h>
 #include <unistd.h>
-#else
-#include <conio.h>
-#endif
 static char event_log[5][128];
 static int event_count = 0;
 
-#ifndef _WIN32
-static int get_keypress_unix(int block)
+static int get_keypress(int block)
 {
     if (stdscr != NULL && !isendwin())
     {
@@ -56,32 +51,6 @@ static int get_keypress_unix(int block)
         tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     }
     return ch;
-}
-#else
-static int get_keypress_windows(int block)
-{
-    if (block)
-    {
-        return _getch();
-    }
-    else
-    {
-        if (_kbhit())
-        {
-            return _getch();
-        }
-    }
-    return -1;
-}
-#endif
-
-static int get_keypress(int block)
-{
-#ifdef _WIN32
-    return get_keypress_windows(block);
-#else
-    return get_keypress_unix(block);
-#endif
 }
 
 void algorithm_step_hook(const char* event_msg)

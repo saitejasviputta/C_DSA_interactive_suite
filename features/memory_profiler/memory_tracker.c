@@ -5,11 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef _WIN32
 #include <execinfo.h>
-#else
-#include <windows.h>
-#endif
 
 #define MAX_BACKTRACE_FRAMES 10
 
@@ -44,12 +40,7 @@ static void add_block(void* addr, size_t size, const char* file, int line)
     block->filename = file;
     block->line = line;
 
-#ifndef _WIN32
     block->backtrace_size = backtrace(block->backtrace_buffer, MAX_BACKTRACE_FRAMES);
-#else
-    block->backtrace_size =
-        CaptureStackBackTrace(1, MAX_BACKTRACE_FRAMES, block->backtrace_buffer, NULL);
-#endif
 
     block->next = head;
     head = block;
@@ -292,7 +283,6 @@ void print_memory_leak_report(void)
     while (curr != NULL)
     {
         printf("%-20p %-10zu %s:%d\n", curr->address, curr->size, curr->filename, curr->line);
-#ifndef _WIN32
         if (curr->backtrace_size > 0)
         {
             char** symbols = backtrace_symbols(curr->backtrace_buffer, curr->backtrace_size);
@@ -306,16 +296,6 @@ void print_memory_leak_report(void)
                 free(symbols);
             }
         }
-#else
-        if (curr->backtrace_size > 0)
-        {
-            printf("  Call Stack (Hex Addresses):\n");
-            for (int j = 0; j < curr->backtrace_size; j++)
-            {
-                printf("    [%d] %p\n", j, curr->backtrace_buffer[j]);
-            }
-        }
-#endif
 
         total_leaked += curr->size;
         leak_count++;
