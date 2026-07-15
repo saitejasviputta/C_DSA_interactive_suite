@@ -11,7 +11,7 @@ void help_sorting_searching_menu(void)
 
         printf("Select a sub-topic:\n\n");
         printf("1. O(N^2) Sorting Algorithms\n");
-        printf("2. Advanced O(N log N) Sorting Algorithms\n");
+        printf("2. Advanced Sorting Algorithms (Quick, Merge, Heap, Bucket, Radix)\n");
         printf("3. Searching Algorithms\n");
         int choice;
         int status =
@@ -57,6 +57,14 @@ void help_sorting_searching_menu(void)
                 printf("HEAP SORT:\n");
                 printf("    Comparison-based sorting technique based on Binary Heap data "
                        "structure.\n\n");
+                printf("BUCKET SORT:\n");
+                printf("    Distributes elements into buckets, sorts each bucket, and "
+                       "concatenates them.\n");
+                printf("    Average O(N + K) for uniformly distributed input.\n\n");
+                printf("RADIX SORT:\n");
+                printf("    Non-comparison sort that processes digits from least to most "
+                       "significant.\n");
+                printf("    O(D * (N + K)) where D is the number of digits.\n\n");
                 printf("=================================================================\n");
                 printf("Press [ENTER] to return...\n");
                 printf("=================================================================\n");

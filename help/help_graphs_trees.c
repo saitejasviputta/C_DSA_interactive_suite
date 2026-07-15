@@ -43,6 +43,19 @@ void help_graphs_trees_menu(void)
                 printf("B-TREE & B+ TREE:\n");
                 printf("    Self-balancing search trees optimized for systems that read/write "
                        "large blocks of data.\n\n");
+                printf("RED-BLACK TREE:\n");
+                printf("    Self-balancing BST using node colors (red/black) to guarantee O(log "
+                       "N) operations.\n\n");
+                printf("SPLAY TREE:\n");
+                printf("    Self-adjusting BST that moves recently accessed nodes to the root "
+                       "(splaying).\n\n");
+                printf("SEGMENT TREE & FENWICK TREE (BIT):\n");
+                printf("    Trees for fast range queries (sum, min, max) and point updates in "
+                       "O(log N).\n\n");
+                printf("THREADED BINARY TREE:\n");
+                printf("    Binary tree where NULL child pointers are reused as \"threads\" to "
+                       "in-order neighbors,\n");
+                printf("    allowing traversal without recursion or a stack.\n\n");
                 printf("=================================================================\n");
                 printf("Press [ENTER] to return...\n");
                 printf("=================================================================\n");
@@ -61,7 +74,14 @@ void help_graphs_trees_menu(void)
                        "weights.\n");
                 printf("    • Bellman-Ford: Finds single-source shortest path; handles negative "
                        "weights.\n");
-                printf("    • A* Search: Uses heuristics to speed up shortest-path searches.\n\n");
+                printf("    • A* Search: Uses heuristics to speed up shortest-path searches.\n");
+                printf("    • Greedy Best-First Search: Expands the node closest to the goal "
+                       "according to a heuristic.\n");
+                printf("    • Floyd-Warshall: Computes shortest paths between all pairs of "
+                       "vertices.\n\n");
+                printf("TOPOLOGICAL SORT:\n");
+                printf("    Linear ordering of a DAG's vertices such that every edge (u, v) has u "
+                       "before v (Kahn's algorithm).\n\n");
                 printf("SPANNING TREES:\n");
                 printf("    • Prim's & Kruskal's algorithms to find Minimum Spanning Trees "
                        "(MST).\n\n");

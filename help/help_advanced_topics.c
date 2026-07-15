@@ -51,7 +51,14 @@ void help_advanced_topics_menu(void)
             case 2:
                 display_header("Help - Strings & Compression");
                 printf("STRING ALGORITHMS:\n");
-                printf("    Pattern matching algorithms (e.g., KMP, Rabin-Karp, Z-algorithm).\n\n");
+                printf("    • Naive Matching: Checks the pattern at every position of the text. "
+                       "O(N*M).\n");
+                printf("    • KMP (Knuth-Morris-Pratt): Uses a prefix table to skip re-checking "
+                       "characters. O(N+M).\n");
+                printf("    • Rabin-Karp: Uses rolling hashes to compare pattern and text "
+                       "windows.\n");
+                printf("    • Suffix Array: Sorted array of all suffixes, enabling fast substring "
+                       "queries.\n\n");
                 printf("COMPRESSION & ENCODING:\n");
                 printf("    • Huffman Coding: Lossless data compression using variable-length "
                        "prefix codes.\n");

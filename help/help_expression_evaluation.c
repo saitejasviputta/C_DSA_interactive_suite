@@ -14,7 +14,7 @@ void help_expression_evaluation_menu(void)
         printf("2. Infix Expression Evaluation\n");
         int choice;
         int status =
-            safe_input_int(&choice, "\nenter choice (\'-1\' to exit, or \'help\') : ", 1, 1);
+            safe_input_int(&choice, "\nenter choice (\'-1\' to exit, or \'help\') : ", 1, 2);
 
         if (status == INPUT_EXIT_SIGNAL)
         {
@@ -40,7 +40,10 @@ void help_expression_evaluation_menu(void)
                        "binary operators),\n");
                 printf("      evaluate the result, and push the result back onto Stack.\n");
                 printf("    • The final result will be the single value left on Stack.\n\n");
-                getchar();
+                printf("=================================================================\n");
+                printf("Press [ENTER] to return...\n");
+                printf("=================================================================\n");
+                press_enter_to_continue();
                 break;
             case 2:
                 display_header("Help - Infix Expression Evaluation");
@@ -55,10 +58,15 @@ void help_expression_evaluation_menu(void)
                 printf("    • Right parentheses ')' pop operators until '(' is encountered.\n");
                 printf("    • Operators pop higher or equal precedence operators from Stack, then "
                        "push themselves.\n\n");
+                printf("INFIX TO PREFIX CONVERSION:\n");
+                printf("    Similar to infix to postfix, but operators end up before their "
+                       "operands (e.g., + A B).\n");
+                printf("    Achieved by reversing the infix expression, converting it, and "
+                       "reversing the result.\n\n");
                 printf("=================================================================\n");
                 printf("Press [ENTER] to return...\n");
                 printf("=================================================================\n");
-                getchar();
+                press_enter_to_continue();
                 break;
         }
     }
