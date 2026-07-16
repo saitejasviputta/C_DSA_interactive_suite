@@ -22,11 +22,12 @@ void launch_help_page(void)
         printf("2. Expression Evaluation Help\n");
         printf("3. Sorting & Searching Help\n");
         printf("4. Graphs & Trees Help\n");
-        printf("5. Advanced & Specialized Topics Help\n");
-        printf("6. Navigation, Commands & General Info\n");
+        printf("5. Hashing Help\n");
+        printf("6. Advanced & Specialized Topics Help\n");
+        printf("7. Navigation, Commands & General Info\n");
         int choice;
         int status =
-            safe_input_int(&choice, "\nenter choice (\'-1\' to exit, or \'help\') : ", 1, 6);
+            safe_input_int(&choice, "\nenter choice (\'-1\' to exit, or \'help\') : ", 1, 7);
 
         if (status == INPUT_EXIT_SIGNAL)
         {
@@ -53,9 +54,12 @@ void launch_help_page(void)
                 help_graphs_trees_menu();
                 break;
             case 5:
-                help_advanced_topics_menu();
+                help_hashing_menu();
                 break;
             case 6:
+                help_advanced_topics_menu();
+                break;
+            case 7:
                 display_header("General Navigation & Commands");
                 printf("DESCRIPTION\n");
                 printf("    The C DSA Interactive Suite is a terminal-based application\n");

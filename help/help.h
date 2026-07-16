@@ -32,4 +32,9 @@ void help_advanced_topics_menu(void);
  */
 void help_expression_evaluation_menu(void);
 
+/**
+ * @brief Sub-menu for Hashing help.
+ */
+void help_hashing_menu(void);
+
 #endif // HELP_H
