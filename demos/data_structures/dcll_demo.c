@@ -1,6 +1,20 @@
 #include "dcll.h"
 #include "safe_input.h"
 #include <stdio.h>
+#include <stdlib.h>
+
+static void print_int(const void* data)
+{
+    if (data != NULL)
+    {
+        printf("%d", *(const int*)data);
+    }
+}
+
+static int compare_ints(const void* a, const void* b)
+{
+    return *(const int*)a - *(const int*)b;
+}
 
 void dcll_demo(void)
 {
@@ -19,7 +33,7 @@ start_dcll:
     if (dcll_length_status == INPUT_EXIT_SIGNAL)
     {
         printf("\nExiting dcll demo\n");
-        dcll_destroy(&list);
+        dcll_destroy(&list, free);
         return;
     }
 
@@ -44,7 +58,7 @@ start_dcll:
         if (dcll_position_status == INPUT_EXIT_SIGNAL)
         {
             printf("\nExiting dcll demo\n");
-            dcll_destroy(&list);
+            dcll_destroy(&list, free);
             return;
         }
 
@@ -66,7 +80,7 @@ start_dcll:
             if (dcll_end_status == INPUT_EXIT_SIGNAL)
             {
                 printf("\nExiting dcll demo\n");
-                dcll_destroy(&list);
+                dcll_destroy(&list, free);
                 return;
             }
 
@@ -75,14 +89,22 @@ start_dcll:
                 goto dcll_enter_end_value;
             }
 
-            int status = dcll_insertAtEnd(&list, dcll_end_value);
-            if (status == -1)
+            int* val = malloc(sizeof(int));
+            if (val == NULL)
             {
                 printf("\nmalloc allocation failure. try again\n");
                 goto dcll_enter_end_value;
             }
+            *val = dcll_end_value;
+            int status = dcll_insertAtEnd(&list, val);
+            if (status == -1)
+            {
+                free(val);
+                printf("\nmalloc allocation failure. try again\n");
+                goto dcll_enter_end_value;
+            }
             printf("\n");
-            dcll_printlist(&list);
+            dcll_printlist(&list, print_int);
         }
         else if (dcll_position_choice == 0)
         {
@@ -98,7 +120,7 @@ start_dcll:
             if (dcll_start_status == INPUT_EXIT_SIGNAL)
             {
                 printf("\nExiting dcll demo\n");
-                dcll_destroy(&list);
+                dcll_destroy(&list, free);
                 return;
             }
 
@@ -106,14 +128,22 @@ start_dcll:
             {
                 goto dcll_enter_start_value;
             }
-            int status = dcll_insertAtBeginning(&list, dcll_start_value);
-            if (status == -1)
+            int* val = malloc(sizeof(int));
+            if (val == NULL)
             {
                 printf("\nmalloc allocation failure. try again\n");
                 goto dcll_enter_start_value;
             }
+            *val = dcll_start_value;
+            int status = dcll_insertAtBeginning(&list, val);
+            if (status == -1)
+            {
+                free(val);
+                printf("\nmalloc allocation failure. try again\n");
+                goto dcll_enter_start_value;
+            }
             printf("\n");
-            dcll_printlist(&list);
+            dcll_printlist(&list, print_int);
         }
         else if (dcll_position_choice == 2)
         {
@@ -131,7 +161,7 @@ start_dcll:
             if (dcll_pos_status == INPUT_EXIT_SIGNAL)
             {
                 printf("\nExiting dcll demo\n");
-                dcll_destroy(&list);
+                dcll_destroy(&list, free);
                 return;
             }
 
@@ -149,7 +179,7 @@ start_dcll:
             if (dcll_pos_status == INPUT_EXIT_SIGNAL)
             {
                 printf("\nExiting dcll demo\n");
-                dcll_destroy(&list);
+                dcll_destroy(&list, free);
                 return;
             }
 
@@ -158,19 +188,28 @@ start_dcll:
                 goto dcll_enter_pos_index;
             }
 
-            int status = dcll_insertAtPosition(&list, dcll_pos_value, dcll_pos_index);
+            int* val = malloc(sizeof(int));
+            if (val == NULL)
+            {
+                printf("\nmalloc allocation failure. try again\n");
+                goto dcll_enter_pos_value;
+            }
+            *val = dcll_pos_value;
+            int status = dcll_insertAtPosition(&list, val, dcll_pos_index);
             if (status == -1)
             {
+                free(val);
                 printf("\nmalloc allocation failure. try again\n");
                 goto dcll_enter_pos_value;
             }
             else if (status == -2)
             {
+                free(val);
                 printf("\ninvalid position. try again\n");
                 goto dcll_enter_pos_index;
             }
             printf("\n");
-            dcll_printlist(&list);
+            dcll_printlist(&list, print_int);
         }
 
         dcll_element_count--;
@@ -194,7 +233,7 @@ start_dcll:
             continue;
         }
 
-        int index = dcll_search(&list, dcll_search_value);
+        int index = dcll_search(&list, &dcll_search_value, compare_ints);
         printf("\nelement found at index :- %d", index);
     }
 
@@ -216,7 +255,7 @@ start_dcll:
         if (dcll_delete_status == INPUT_EXIT_SIGNAL)
         {
             printf("\nExiting dcll demo\n");
-            dcll_destroy(&list);
+            dcll_destroy(&list, free);
             return;
         }
         if (dcll_delete_status == 0)
@@ -226,7 +265,7 @@ start_dcll:
 
         if (dcll_delete_choice == 0)
         {
-            int status = dcll_deleteAtBeginning(&list);
+            int status = dcll_deleteAtBeginning(&list, free);
             if (status == -1)
             {
                 printf("\nList is empty\n");
@@ -234,12 +273,12 @@ start_dcll:
             else
             {
                 printf("\ndcll after deletion - ");
-                dcll_printlist(&list);
+                dcll_printlist(&list, print_int);
             }
         }
         else if (dcll_delete_choice == 1)
         {
-            int status = dcll_deleteAtEnd(&list);
+            int status = dcll_deleteAtEnd(&list, free);
             if (status == -1)
             {
                 printf("\nList is empty\n");
@@ -247,7 +286,7 @@ start_dcll:
             else
             {
                 printf("\ndcll after deletion - ");
-                dcll_printlist(&list);
+                dcll_printlist(&list, print_int);
             }
         }
         else if (dcll_delete_choice == 2)
@@ -261,7 +300,7 @@ start_dcll:
             if (dcll_delete_status == INPUT_EXIT_SIGNAL)
             {
                 printf("\nExiting dcll demo\n");
-                dcll_destroy(&list);
+                dcll_destroy(&list, free);
                 return;
             }
             if (dcll_delete_status == 0)
@@ -269,7 +308,7 @@ start_dcll:
                 continue;
             }
 
-            int status = dcll_deleteByValue(&list, dcll_delete_value);
+            int status = dcll_deleteByValue(&list, &dcll_delete_value, compare_ints, free);
             if (status == -2)
             {
                 printf("\nList is empty\n");
@@ -281,7 +320,7 @@ start_dcll:
             else
             {
                 printf("\ndcll after deletion - ");
-                dcll_printlist(&list);
+                dcll_printlist(&list, print_int);
             }
         }
         else if (dcll_delete_choice == 3)
@@ -306,7 +345,7 @@ start_dcll:
             if (dcll_pos_delete_status == INPUT_EXIT_SIGNAL)
             {
                 printf("\nExiting dcll demo\n");
-                dcll_destroy(&list);
+                dcll_destroy(&list, free);
                 return;
             }
 
@@ -315,7 +354,7 @@ start_dcll:
                 goto dcll_delete_pos_input;
             }
 
-            int status = dcll_deleteAtPosition(&list, dcll_pos_delete_index);
+            int status = dcll_deleteAtPosition(&list, dcll_pos_delete_index, free);
             if (status == -1)
             {
                 printf("\nList is empty\n");
@@ -327,10 +366,10 @@ start_dcll:
             else
             {
                 printf("\ndcll after deletion - ");
-                dcll_printlist(&list);
+                dcll_printlist(&list, print_int);
             }
         }
     }
 
-    dcll_destroy(&list);
+    dcll_destroy(&list, free);
 }

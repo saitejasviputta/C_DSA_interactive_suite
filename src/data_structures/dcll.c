@@ -16,7 +16,7 @@
 // Allocates a node holding `value`. Returns NULL on malloc failure. The caller is responsible
 // for linking it into the ring (next and prev are left as NULL on purpose).
 
-static dcll_Node* dcll_create_node(int value)
+static dcll_Node* dcll_create_node(void* value)
 {
     dcll_Node* node = malloc(sizeof(dcll_Node));
     if (node == NULL)
@@ -36,7 +36,7 @@ void dcll_init(dcll* list)
     list->length = 0;
 }
 
-int dcll_insertAtBeginning(dcll* list, int value)
+int dcll_insertAtBeginning(dcll* list, void* value)
 {
     dcll_Node* node = dcll_create_node(value);
     if (node == NULL)
@@ -66,7 +66,7 @@ int dcll_insertAtBeginning(dcll* list, int value)
     return 1;
 }
 
-int dcll_insertAtEnd(dcll* list, int value)
+int dcll_insertAtEnd(dcll* list, void* value)
 {
     dcll_Node* node = dcll_create_node(value);
     if (node == NULL)
@@ -96,7 +96,7 @@ int dcll_insertAtEnd(dcll* list, int value)
     return 1;
 }
 
-int dcll_insertAtPosition(dcll* list, int value, int position)
+int dcll_insertAtPosition(dcll* list, void* value, int position)
 {
     // Valid insert positions are 0..length (length == append at the end).
     if (position < 0 || position > list->length)
@@ -136,7 +136,7 @@ int dcll_insertAtPosition(dcll* list, int value, int position)
     return 1;
 }
 
-int dcll_deleteAtBeginning(dcll* list)
+int dcll_deleteAtBeginning(dcll* list, void (*free_data)(void*))
 {
     if (list->head == NULL)
     {
@@ -148,6 +148,10 @@ int dcll_deleteAtBeginning(dcll* list)
     if (list->head == list->tail)
     {
         // Single node deletes down to the empty list.
+        if (free_data != NULL)
+        {
+            free_data(old_head->data);
+        }
         free(old_head);
         list->head = NULL;
         list->tail = NULL;
@@ -157,6 +161,10 @@ int dcll_deleteAtBeginning(dcll* list)
         list->head = old_head->next;
         list->head->prev = list->tail; // new head's prev closes onto tail
         list->tail->next = list->head; // tail closes ring onto new head
+        if (free_data != NULL)
+        {
+            free_data(old_head->data);
+        }
         free(old_head);
     }
 
@@ -164,7 +172,7 @@ int dcll_deleteAtBeginning(dcll* list)
     return 1;
 }
 
-int dcll_deleteAtEnd(dcll* list)
+int dcll_deleteAtEnd(dcll* list, void (*free_data)(void*))
 {
     if (list->head == NULL)
     {
@@ -176,6 +184,10 @@ int dcll_deleteAtEnd(dcll* list)
     if (list->head == list->tail)
     {
         // Single node deletes down to the empty list.
+        if (free_data != NULL)
+        {
+            free_data(old_tail->data);
+        }
         free(old_tail);
         list->head = NULL;
         list->tail = NULL;
@@ -186,6 +198,10 @@ int dcll_deleteAtEnd(dcll* list)
         list->tail = old_tail->prev;
         list->tail->next = list->head; // re-close the ring forward
         list->head->prev = list->tail; // re-close the ring backward
+        if (free_data != NULL)
+        {
+            free_data(old_tail->data);
+        }
         free(old_tail);
     }
 
@@ -193,30 +209,55 @@ int dcll_deleteAtEnd(dcll* list)
     return 1;
 }
 
-int dcll_deleteByValue(dcll* list, int value)
+int dcll_deleteByValue(dcll* list, const void* value, int (*compare)(const void*, const void*),
+                       void (*free_data)(void*))
 {
     if (list->head == NULL)
     {
         return -2;
     }
 
-    // Deleting the head value is delegated so the head/tail bookkeeping stays in one place.
-    if (list->head->data == value)
+    int match = 0;
+    if (compare != NULL)
     {
-        return dcll_deleteAtBeginning(list);
+        match = (compare(list->head->data, value) == 0);
+    }
+    else
+    {
+        match = (list->head->data == value);
+    }
+
+    // Deleting the head value is delegated so the head/tail bookkeeping stays in one place.
+    if (match)
+    {
+        return dcll_deleteAtBeginning(list, free_data);
     }
 
     // Search for the node holding `value`, bounded by one full lap.
     dcll_Node* cur = list->head->next;
     while (cur != list->head)
     {
-        if (cur->data == value)
+        int element_match = 0;
+        if (compare != NULL)
+        {
+            element_match = (compare(cur->data, value) == 0);
+        }
+        else
+        {
+            element_match = (cur->data == value);
+        }
+
+        if (element_match)
         {
             cur->prev->next = cur->next;
             cur->next->prev = cur->prev;
             if (cur == list->tail)
             {
                 list->tail = cur->prev; // removed the tail: prev becomes the new tail
+            }
+            if (free_data != NULL)
+            {
+                free_data(cur->data);
             }
             free(cur);
             list->length--;
@@ -228,7 +269,7 @@ int dcll_deleteByValue(dcll* list, int value)
     return -1; // value not present
 }
 
-int dcll_deleteAtPosition(dcll* list, int position)
+int dcll_deleteAtPosition(dcll* list, int position, void (*free_data)(void*))
 {
     if (list->head == NULL)
     {
@@ -242,12 +283,12 @@ int dcll_deleteAtPosition(dcll* list, int position)
 
     if (position == 0)
     {
-        return dcll_deleteAtBeginning(list);
+        return dcll_deleteAtBeginning(list, free_data);
     }
 
     if (position == list->length - 1)
     {
-        return dcll_deleteAtEnd(list);
+        return dcll_deleteAtEnd(list, free_data);
     }
 
     // Walk to the target node.
@@ -259,13 +300,17 @@ int dcll_deleteAtPosition(dcll* list, int position)
 
     target->prev->next = target->next;
     target->next->prev = target->prev;
+    if (free_data != NULL)
+    {
+        free_data(target->data);
+    }
     free(target);
 
     list->length--;
     return 1;
 }
 
-int dcll_search(const dcll* list, int key)
+int dcll_search(const dcll* list, const void* key, int (*compare)(const void*, const void*))
 {
     if (list->head == NULL)
     {
@@ -276,7 +321,17 @@ int dcll_search(const dcll* list, int key)
     const dcll_Node* cur = list->head;
     do
     {
-        if (cur->data == key)
+        int match = 0;
+        if (compare != NULL)
+        {
+            match = (compare(cur->data, key) == 0);
+        }
+        else
+        {
+            match = (cur->data == key);
+        }
+
+        if (match)
         {
             return index;
         }
@@ -292,7 +347,7 @@ int dcll_getLength(const dcll* list)
     return list->length;
 }
 
-void dcll_printlist(const dcll* list)
+void dcll_printlist(const dcll* list, void (*print_element)(const void*))
 {
     printf("HEAD->");
     if (list->head == NULL)
@@ -304,14 +359,22 @@ void dcll_printlist(const dcll* list)
     const dcll_Node* cur = list->head;
     do
     {
-        printf("%d->", cur->data);
+        if (print_element != NULL)
+        {
+            print_element(cur->data);
+        }
+        else
+        {
+            printf("%p", cur->data);
+        }
+        printf("->");
         cur = cur->next;
     } while (cur != list->head);
 
     printf("(back to HEAD)");
 }
 
-void dcll_destroy(dcll* list)
+void dcll_destroy(dcll* list, void (*free_data)(void*))
 {
     if (list->head == NULL)
     {
@@ -324,6 +387,10 @@ void dcll_destroy(dcll* list)
     while (cur != NULL)
     {
         dcll_Node* upcoming = cur->next;
+        if (free_data != NULL)
+        {
+            free_data(cur->data);
+        }
         free(cur);
         cur = upcoming;
     }
