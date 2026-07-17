@@ -91,19 +91,20 @@ void help_data_structures_menu(void)
             case 3:
                 display_header("Help - Circular Linked Lists");
                 printf("CONCEPT:\n");
-                printf("    In Circular Linked Lists, the last node links back to the first node "
-                       "instead of pointing to NULL.\n");
+                printf(
+                    "    In Circular Linked Lists, the last node links back to the first node\n");
+                printf("    instead of pointing to NULL.\n");
                 printf("    • Singly Circular (SCLL): Single link pointing forward, looping last "
                        "to first.\n");
                 printf("    • Doubly Circular (DCLL): Predecessor and successor links form a full "
                        "circular loop.\n\n");
-                printf("GENERIC DESIGN IN SCLL:\n");
-                printf("    Just like the Doubly Linked List, our Singly Circular List is fully "
-                       "generic.\n");
-                printf("    It stores data as generic 'void*' pointers and utilizes "
-                       "programmer-defined\n");
-                printf("    callbacks for printing elements, comparing keys, and cleaning up "
-                       "memory.\n\n");
+                printf("HOW WE ACHIEVE GENERIC DESIGN (Storing any type of data):\n");
+                printf("    Both our SCLL and DCLL implementations are fully generic using void "
+                       "pointers (void* data).\n");
+                printf("    This allows the circular lists to hold integers, strings, or custom "
+                       "structures.\n");
+                printf("    Just like the DLL, you pass helper callbacks for printing, searching, "
+                       "and freeing memory.\n\n");
                 printf("=================================================================\n");
                 printf("Press [ENTER] to return...\n");
                 printf("=================================================================\n");
