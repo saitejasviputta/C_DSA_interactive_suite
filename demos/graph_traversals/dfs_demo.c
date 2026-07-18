@@ -1,5 +1,6 @@
 #include "graph_traversals.h"
 #include "safe_input.h"
+#include "serialization.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -168,6 +169,34 @@ void dfs_demo(void)
             }
 
             add_edge_undirected(graph, src, dest);
+        }
+    }
+
+    int save_choice;
+    int save_status = safe_input_int(
+        &save_choice,
+        "\nDo you want to save this graph to a file? (1 for Yes, 2 for No, or '-1' to exit): ", 1,
+        2);
+    if (save_status == INPUT_EXIT_SIGNAL)
+    {
+        printf("\nExiting dfs demo.....\n");
+        free_graph(graph);
+        return;
+    }
+    if (save_status == 1)
+    {
+        char path[256];
+        int path_status = safe_input_string(path, "\nenter filepath to save to:- ");
+        if (path_status != INPUT_EXIT_SIGNAL)
+        {
+            if (serialize_graph_to_file(graph, path))
+            {
+                printf("\nGraph saved successfully to '%s'.\n", path);
+            }
+            else
+            {
+                printf("\nfailed to save Graph to file.\n");
+            }
         }
     }
 
