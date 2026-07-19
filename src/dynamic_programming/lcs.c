@@ -1,3 +1,4 @@
+#include "dp_visualizer.h"
 #include "dynamic_programming.h"
 #include "safe_input.h"
 #include <stdio.h>
@@ -47,15 +48,7 @@ int lcs(char* X, char* Y, int m, int n)
         }
     }
 
-    printf("\n--- LCS DP Table ---\n");
-    for (i = 0; i <= m; i++)
-    {
-        for (j = 0; j <= n; j++)
-        {
-            printf("%3d ", L[i][j]);
-        }
-        printf("\n");
-    }
+    visualize_dp_table_2d("Longest Common Subsequence DP Table", L, m + 1, n + 1, X, Y, m, n);
 
     int index = L[m][n];
     char lcs_str[index + 1];
