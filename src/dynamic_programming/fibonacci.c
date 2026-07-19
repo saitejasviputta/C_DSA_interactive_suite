@@ -1,3 +1,4 @@
+#include "dp_visualizer.h"
 #include "dynamic_programming.h"
 #include "safe_input.h"
 #include <stdio.h>
@@ -34,6 +35,7 @@ long long fibonacci_iterative(int n)
         dp[i] = dp[i - 1] + dp[i - 2];
     }
 
+    visualize_dp_table_1d("Fibonacci Iterative (Tabulation) DP Table", dp, n + 1, n);
     long long res = dp[n];
     free(dp);
     return res;
@@ -71,6 +73,7 @@ void fibonacci_demo(void)
         long long res_memo = fibonacci_recursive(n, memo);
         clock_t end_m = clock();
         double time_memo = (double)(end_m - start_m) / CLOCKS_PER_SEC;
+        visualize_dp_table_1d("Fibonacci Recursive (Memoized) DP Table", memo, n + 1, n);
 
         clock_t start_t = clock();
         long long res_tab = fibonacci_iterative(n);
