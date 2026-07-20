@@ -41,7 +41,12 @@ int hash_function(int value, int length_of_array)
         return -1;
     }
     int next_prime_no = next_prime(length_of_array);
-    return ((value + 1) * next_prime_no) % length_of_array;
+    int hash = ((value + 1) * next_prime_no) % length_of_array;
+    if (hash < 0)
+    {
+        hash += length_of_array;
+    }
+    return hash;
 }
 
 void linear_probing_demo(void)

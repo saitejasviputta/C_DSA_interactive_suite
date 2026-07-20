@@ -27,6 +27,10 @@ static int second_hash(int value, int length_of_array)
         return 1; // single-slot table: step value is irrelevant, just stay non-zero
     }
     int step = 1 + (value % (length_of_array - 1));
+    if (step <= 0)
+    {
+        step += (length_of_array - 1);
+    }
     while (gcd(step, length_of_array) != 1)
     {
         step++;
