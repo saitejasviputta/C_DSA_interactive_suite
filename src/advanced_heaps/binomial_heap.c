@@ -36,6 +36,10 @@ void destroy_binomial_heap(BinomialNode* head)
 /* Links tree y as a child of tree z (y gets degree z incremented) */
 static void binomial_link(BinomialNode* y, BinomialNode* z)
 {
+    if (y == NULL || z == NULL)
+    {
+        return;
+    }
     y->parent = z;
     y->sibling = z->child;
     z->child = y;
