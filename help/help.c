@@ -25,7 +25,7 @@ void launch_help_page(void)
         printf("5. Hashing Help\n");
         printf("6. Advanced & Specialized Topics Help\n");
         printf("7. Error Correction Help\n");
-        printf("8. Navigation, Commands & General Info\n");
+        printf("8. Navigation, CLI Flags & General Info\n");
         int choice;
         int status =
             safe_input_int(&choice, "\nenter choice (\'-1\' to exit, or \'help\') : ", 1, 8);
@@ -64,15 +64,30 @@ void launch_help_page(void)
                 help_error_correction_menu();
                 break;
             case 8:
-                display_header("General Navigation & Commands");
+                display_header("General Navigation, CLI Flags & Commands");
                 printf("DESCRIPTION\n");
                 printf("    The C DSA Interactive Suite is a terminal-based application\n");
                 printf("    designed to help you visualize and interact with Data Structures\n");
                 printf("    and Algorithms implemented in C.\n\n");
                 printf("NAVIGATION & COMMANDS\n");
-                printf("    help        - Launches this help page from any input prompt.\n");
-                printf("    -1          - Exits the current menu, sub-suite, or application.\n");
-                printf("    Numbers     - Choose specific menu items or menu paths.\n\n");
+                printf("    help               - Launches this help page from any input prompt.\n");
+                printf("    -1                 - Exits the current menu, sub-suite, or "
+                       "application.\n");
+                printf("    Numbers            - Choose specific menu items or menu paths.\n\n");
+                printf("CLI ARGUMENTS & FLAGS\n");
+                printf("    --profile                  - Enable memory tracking and allocation "
+                       "reports.\n");
+                printf("    --export-trace             - Enable execution telemetry tracing.\n");
+                printf("    --export-trace-path <path> - Specify a target path for trace file "
+                       "exports.\n");
+                printf("    --load-bst <path>          - Load and visualize a BST from a "
+                       "serialized file.\n");
+                printf("    --load-avl <path>          - Load and visualize an AVL Tree from a "
+                       "serialized file.\n");
+                printf("    --load-graph <path>        - Load and print an unweighted Graph from a "
+                       "file.\n");
+                printf("    --load-wgraph <path>       - Load and print a Weighted Graph from a "
+                       "file.\n\n");
                 printf("=================================================================\n");
                 printf("Press [ENTER] to return to the main help menu...\n");
                 printf("=================================================================\n");

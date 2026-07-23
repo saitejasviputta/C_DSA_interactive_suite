@@ -14,9 +14,10 @@ void help_advanced_topics_menu(void)
         printf("2. String Algorithms & Compression\n");
         printf("3. Process Synchronization & Job Scheduling\n");
         printf("4. Cache Simulator & Step-Debugger\n");
+        printf("5. Algorithm Benchmarking & Profiling\n");
         int choice;
         int status =
-            safe_input_int(&choice, "\nenter choice (\'-1\' to exit, or \'help\') : ", 1, 4);
+            safe_input_int(&choice, "\nenter choice (\'-1\' to exit, or \'help\') : ", 1, 5);
 
         if (status == INPUT_EXIT_SIGNAL)
         {
@@ -37,6 +38,12 @@ void help_advanced_topics_menu(void)
                        "subproblems,\n");
                 printf("    solving each subproblem once, and storing their solutions (Memoization "
                        "/ Tabulation).\n\n");
+                printf("DP VISUALIZER:\n");
+                printf("    An interactive helper tool integrated into DP demos that traces "
+                       "recursion\n");
+                printf("    trees, caches subproblem states (memoization/tabulation), and "
+                       "visualizes state\n");
+                printf("    transitions step-by-step.\n\n");
                 printf("BACKTRACKING:\n");
                 printf("    Systematic search method that tries to construct a solution "
                        "incrementally and\n");
@@ -95,6 +102,34 @@ void help_advanced_topics_menu(void)
                 printf("STEP-DEBUGGER:\n");
                 printf("    Interactive tool to run algorithms step-by-step to examine variable "
                        "changes and pointer updates.\n\n");
+                printf("=================================================================\n");
+                printf("Press [ENTER] to return...\n");
+                printf("=================================================================\n");
+                press_enter_to_continue();
+                break;
+
+            case 5:
+                display_header("Help - Benchmarking & Profiling");
+                printf("ALGORITHM BENCHMARKING & PROFILING:\n");
+                printf("    Measures and compares execution time, memory usage, or operational\n");
+                printf("    efficiency across different algorithms under uniform conditions.\n\n");
+                printf("CONFIGURATION SETTINGS:\n");
+                printf("    • Iterations: Define how many times each algorithm is executed to "
+                       "calculate\n");
+                printf("                  an accurate average time (mitigates CPU spike "
+                       "anomalies).\n");
+                printf("    • Export Reporting Format: Save the benchmark results to external "
+                       "report\n");
+                printf(
+                    "                               files in CSV, Markdown, or JSON formats.\n\n");
+                printf("BENCHMARK SUITES:\n");
+                printf("    1. Sorting Algorithms           8. Hash Map Collision Resolution\n");
+                printf("    2. Searching Algorithms         9. Trees Lookup Performance\n");
+                printf("    3. Graph Shortest Paths         10. Backtracking Algorithms\n");
+                printf("    4. Minimum Spanning Trees (MST) 11. Network Flow Algorithms\n");
+                printf("    5. Job Scheduling               12. Advanced Heaps\n");
+                printf("    6. String Matching              13. Cache Replacement Simulator\n");
+                printf("    7. DP vs Naive Recursion        14. Compression & Encoding\n\n");
                 printf("=================================================================\n");
                 printf("Press [ENTER] to return...\n");
                 printf("=================================================================\n");

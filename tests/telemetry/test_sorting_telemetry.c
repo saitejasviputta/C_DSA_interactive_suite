@@ -1,149 +1,185 @@
 #include "advanced_sorting.h"
 #include "sorting_algorithms_n2.h"
-#include "telemetry.h"
+#include "sorting_telemetry.h"
 #include <assert.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <unistd.h>
 
-static void verify_telemetry_file(const char* expected_algo_name)
+void test_sorting_telemetry_basic(void)
 {
-    FILE* fp = fopen("test_binaries/sorting_trace.json", "r");
-    assert(fp != NULL);
+    SortingTelemetry t;
+    sorting_telemetry_init(&t, "TestSort");
+    assert(t.comparisons == 0);
+    assert(t.swaps == 0);
+    assert(t.copies == 0);
+    assert(t.max_recursion_depth == 0);
+    assert(t.current_recursion_depth == 0);
 
-    char buffer[65536];
-    size_t bytes_read = fread(buffer, 1, sizeof(buffer) - 1, fp);
-    buffer[bytes_read] = '\0';
-    fclose(fp);
+    sorting_telemetry_start(&t);
+    usleep(1000); // 1 ms delay
+    sorting_telemetry_stop(&t);
 
-    // Verify it is a valid JSON array and has the correct algorithm name
-    assert(buffer[0] == '[');
-    assert(strstr(buffer, expected_algo_name) != NULL);
-    assert(strstr(buffer, "\"step\":") != NULL);
+    assert(t.elapsed_microseconds > 0.0);
 
-    int len = strlen(buffer);
-    while (len > 0 &&
-           (buffer[len - 1] == '\n' || buffer[len - 1] == ' ' || buffer[len - 1] == '\r'))
+    sorting_telemetry_add_comparison(&t, 10);
+    sorting_telemetry_add_swap(&t, 5);
+    sorting_telemetry_add_copy(&t, 8);
+    sorting_telemetry_add_pass(&t, 3);
+
+    assert(t.comparisons == 10);
+    assert(t.swaps == 5);
+    assert(t.copies == 8);
+    assert(t.pass_count == 3);
+
+    sorting_telemetry_enter_recursion(&t);
+    sorting_telemetry_enter_recursion(&t);
+    assert(t.current_recursion_depth == 2);
+    assert(t.max_recursion_depth == 2);
+
+    sorting_telemetry_exit_recursion(&t);
+    assert(t.current_recursion_depth == 1);
+    assert(t.max_recursion_depth == 2);
+
+    sorting_telemetry_reset(&t);
+    assert(t.comparisons == 0);
+    assert(t.swaps == 0);
+
+    printf("test_sorting_telemetry_basic passed successfully!\n");
+}
+
+void test_quicksort_telemetry(void)
+{
+    int arr[] = {5, 2, 9, 1, 7, 6, 3};
+    int n = 7;
+    SortingTelemetry t;
+
+    quicksort_with_telemetry(arr, 0, n - 1, &t);
+
+    assert(t.comparisons > 0);
+    assert(t.swaps > 0);
+    assert(t.max_recursion_depth > 0);
+    assert(t.elapsed_microseconds >= 0.0);
+
+    for (int i = 0; i < n - 1; i++)
     {
-        len--;
+        assert(arr[i] <= arr[i + 1]);
     }
-    assert(buffer[len - 1] == ']');
 
-    // Clean up
-    remove("test_binaries/sorting_trace.json");
+    printf("test_quicksort_telemetry passed successfully!\n");
 }
 
-static void test_bubble_sort_telemetry(void)
+void test_mergesort_telemetry(void)
 {
-    set_telemetry_enabled(true);
-    set_telemetry_filepath("test_binaries/sorting_trace.json");
+    int arr[] = {8, 4, 12, 2, 10, 6, 14};
+    int n = 7;
+    SortingTelemetry t;
 
-    int arr[] = {4, 2, 1, 3};
-    bubble_sort_optimized(arr, 4);
+    merge_sort_with_telemetry(arr, n, &t);
 
-    verify_telemetry_file("bubble_sort");
+    assert(t.comparisons > 0);
+    assert(t.copies > 0);
+    assert(t.max_recursion_depth > 0);
+    assert(t.elapsed_microseconds >= 0.0);
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        assert(arr[i] <= arr[i + 1]);
+    }
+
+    printf("test_mergesort_telemetry passed successfully!\n");
 }
 
-static void test_insertion_sort_telemetry(void)
+void test_heapsort_telemetry(void)
 {
-    set_telemetry_enabled(true);
-    set_telemetry_filepath("test_binaries/sorting_trace.json");
+    int arr[] = {15, 3, 9, 1, 11, 7, 5};
+    int n = 7;
+    SortingTelemetry t;
 
-    int arr[] = {4, 2, 1, 3};
-    insertion_sort(arr, 4);
+    heap_sort_with_telemetry(arr, n, &t);
 
-    verify_telemetry_file("insertion_sort");
+    assert(t.comparisons > 0);
+    assert(t.swaps > 0 || t.copies > 0);
+    assert(t.elapsed_microseconds >= 0.0);
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        assert(arr[i] <= arr[i + 1]);
+    }
+
+    printf("test_heapsort_telemetry passed successfully!\n");
 }
 
-static void test_selection_sort_telemetry(void)
+void test_radixsort_telemetry(void)
 {
-    set_telemetry_enabled(true);
-    set_telemetry_filepath("test_binaries/sorting_trace.json");
+    int arr[] = {170, 45, 75, 90, 802, 24, 2, 66};
+    int n = 8;
+    SortingTelemetry t;
 
-    int arr[] = {4, 2, 1, 3};
-    selection_sort(arr, 4);
+    radix_sort_with_telemetry(arr, n, &t);
 
-    verify_telemetry_file("selection_sort");
+    assert(t.comparisons > 0);
+    assert(t.copies > 0);
+    assert(t.pass_count > 0);
+    assert(t.elapsed_microseconds >= 0.0);
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        assert(arr[i] <= arr[i + 1]);
+    }
+
+    printf("test_radixsort_telemetry passed successfully!\n");
 }
 
-static void test_shell_sort_telemetry(void)
+void test_bucketsort_telemetry(void)
 {
-    set_telemetry_enabled(true);
-    set_telemetry_filepath("test_binaries/sorting_trace.json");
+    int arr[] = {29, 25, 3, 49, 9, 37, 21, 43};
+    int n = 8;
+    SortingTelemetry t;
 
-    int arr[] = {4, 2, 1, 3};
-    shell_sort(arr, 4);
+    bucket_sort_with_telemetry(arr, n, &t);
 
-    verify_telemetry_file("shell_sort");
+    assert(t.comparisons > 0);
+    assert(t.copies > 0);
+    assert(t.elapsed_microseconds >= 0.0);
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        assert(arr[i] <= arr[i + 1]);
+    }
+
+    printf("test_bucketsort_telemetry passed successfully!\n");
 }
 
-static void test_quick_sort_telemetry(void)
+void test_n2_sorting_telemetry(void)
 {
-    set_telemetry_enabled(true);
-    set_telemetry_filepath("test_binaries/sorting_trace.json");
+    int arr1[] = {5, 2, 9, 1, 7};
+    int arr2[] = {5, 2, 9, 1, 7};
+    int arr3[] = {5, 2, 9, 1, 7};
+    int arr4[] = {5, 2, 9, 1, 7};
+    int n = 5;
+    SortingTelemetry t1, t2, t3, t4;
 
-    int arr[] = {4, 2, 1, 3};
-    quicksort(arr, 0, 3);
+    bubble_sort_optimized_with_telemetry(arr1, n, &t1);
+    insertion_sort_with_telemetry(arr2, n, &t2);
+    selection_sort_with_telemetry(arr3, n, &t3);
+    shell_sort_with_telemetry(arr4, n, &t4);
 
-    verify_telemetry_file("quick_sort");
-}
+    assert(t1.comparisons > 0);
+    assert(t2.comparisons > 0);
+    assert(t3.comparisons > 0);
+    assert(t4.comparisons > 0);
 
-static void test_merge_sort_telemetry(void)
-{
-    set_telemetry_enabled(true);
-    set_telemetry_filepath("test_binaries/sorting_trace.json");
-
-    int arr[] = {4, 2, 1, 3};
-    merge_sort(arr, 4);
-
-    verify_telemetry_file("merge_sort");
-}
-
-static void test_heap_sort_telemetry(void)
-{
-    set_telemetry_enabled(true);
-    set_telemetry_filepath("test_binaries/sorting_trace.json");
-
-    int arr[] = {4, 2, 1, 3};
-    heap_sort(arr, 4);
-
-    verify_telemetry_file("heap_sort");
-}
-
-static void test_radix_sort_telemetry(void)
-{
-    set_telemetry_enabled(true);
-    set_telemetry_filepath("test_binaries/sorting_trace.json");
-
-    int arr[] = {4, 2, 1, 3};
-    radix_sort(arr, 4);
-
-    verify_telemetry_file("radix_sort");
-}
-
-static void test_bucket_sort_telemetry(void)
-{
-    set_telemetry_enabled(true);
-    set_telemetry_filepath("test_binaries/sorting_trace.json");
-
-    int arr[] = {4, 2, 1, 3};
-    bucket_sort(arr, 4);
-
-    verify_telemetry_file("bucket_sort");
+    printf("test_n2_sorting_telemetry passed successfully!\n");
 }
 
 int main(void)
 {
-    printf("Starting Sorting Telemetry integration tests...\n");
-    test_bubble_sort_telemetry();
-    test_insertion_sort_telemetry();
-    test_selection_sort_telemetry();
-    test_shell_sort_telemetry();
-    test_quick_sort_telemetry();
-    test_merge_sort_telemetry();
-    test_heap_sort_telemetry();
-    test_radix_sort_telemetry();
-    test_bucket_sort_telemetry();
-    printf("All Sorting Telemetry integration tests passed successfully!\n");
+    test_sorting_telemetry_basic();
+    test_quicksort_telemetry();
+    test_mergesort_telemetry();
+    test_heapsort_telemetry();
+    test_radixsort_telemetry();
+    test_bucketsort_telemetry();
+    test_n2_sorting_telemetry();
     return 0;
 }

@@ -16,6 +16,7 @@
 #include "dynamic_programming.h"
 #include "error_correction_algorithms.h"
 #include "expression.h"
+#include "fuzzer.h"
 #include "graph_traversals.h"
 #include "hash.h"
 #include "job_scheduling.h"
@@ -73,8 +74,9 @@ void run_legacy_menu()
             "click 19 for algorithm benchmarking and profiling demo\n"
             "click 20 for interactive algorithm step-debugger demo\n"
             "click 21 for setting animation speed (by default 2s)\n"
+            "click 22 for Stochastic Fuzz Testing Engine demo\n"
             "\nenter choice (\'-1\' to exit, or \'help\') : ",
-            1, 21 // limits
+            1, 22 // limits
         );
 
         if (status == INPUT_EXIT_SIGNAL)
@@ -153,6 +155,10 @@ void run_legacy_menu()
             case 21:
                 display_header("Settings");
                 settings_menu_demo();
+                break;
+            case 22:
+                display_header("Stochastic Fuzz Testing Engine");
+                fuzzer_demo();
                 break;
         }
     }
